@@ -1,0 +1,19 @@
+default_mode: cloud
+modes:
+  cloud:
+    label: Token Factory cloud
+    api_key_env: TOKEN_FACTORY_API_KEY
+    base_url_env: TOKEN_FACTORY_BASE_URL
+    default_base_url: https://api.tokenfactory.nebius.com/v1/
+    model_aliases:
+      judge: openai/gpt-oss-20b
+      boss: openai/gpt-oss-20b
+  local:
+    label: Ollama local
+    api_key_env: OLLAMA_API_KEY
+    base_url_env: OLLAMA_BASE_URL
+    default_api_key: ollama
+    default_base_url: http://127.0.0.1:11434/v1
+    model_aliases:
+      judge: gpt-oss:20b
+      boss: gpt-oss:20b

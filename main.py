@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-import os
 import sys
 from pathlib import Path
 from typing import Dict
@@ -15,6 +14,7 @@ load_dotenv(Path(__file__).parent / ".env")
 
 from agent_api import AgentAPI, JudgeVerdict, ModelConfig
 from game_content import CampaignCatalog, CampaignConfig, StageConfig, load_campaign_catalog, render_prompt
+from llm_config import load_llm_settings, resolve_llm_config, validate_llm_config
 from state_manager import (
     GameState,
     advance_turn,
@@ -32,6 +32,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
     "ru": {
         "welcome": "🧠 Добро пожаловать в Epistemic Kombat! Введи 'quit', чтобы выйти.",
         "config_error": "Ошибка конфигурации",
+        "llm_mode": "LLM режим: {mode} ({base_url})",
         "language_prompt": "Language / Язык",
         "campaign_prompt": "Выбери кампанию",
         "resume_prompt": "Найдено сохранение. Продолжить (`resume`) или начать заново (`new`)?",
@@ -59,6 +60,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
     "en": {
         "welcome": "🧠 Welcome to Epistemic Kombat! Type 'quit' to leave.",
         "config_error": "Config error",
+        "llm_mode": "LLM mode: {mode} ({base_url})",
         "language_prompt": "Language / Язык",
         "campaign_prompt": "Choose a campaign",
         "resume_prompt": "Saved progress found. Continue (`resume`) or start over (`new`)?",
@@ -268,9 +270,17 @@ def main() -> None:
 
     catalog = load_campaign_catalog(config_dir / "campaigns.yaml")
     model_cfg = load_model_config(config_dir / "model_config.yaml")
+    llm_settings = load_llm_settings(config_dir / "llm_modes.yaml")
 
-    judge_model_cfg = model_cfg.get("judge")
-    boss_model_cfg = model_cfg.get("boss")
+    try:
+        resolved_llm = resolve_llm_config(llm_settings, model_cfg)
+        validate_llm_config(resolved_llm)
+    except ValueError as exc:
+        panel(str(exc), title=text("ru", "config_error"))
+        sys.exit(1)
+
+    judge_model_cfg = resolved_llm.role_models.get("judge")
+    boss_model_cfg = resolved_llm.role_models.get("boss")
     if not judge_model_cfg or not boss_model_cfg:
         panel("Model configuration missing for judge or boss", title=text("ru", "config_error"))
         sys.exit(1)
@@ -301,15 +311,11 @@ def main() -> None:
     session_dir = history_root / state.session_id
     setup_logging(session_dir)
     logger.info("Session started: %s", state.session_id)
+    logger.info("LLM mode resolved: %s (%s)", resolved_llm.mode, resolved_llm.base_url)
 
-    nebius_api_key = os.getenv("NEBIUS_API_KEY")
-    nebius_base_url = os.getenv("NEBIUS_BASE_URL")
-    if not nebius_api_key or not nebius_base_url:
-        panel("NEBIUS_API_KEY and NEBIUS_BASE_URL are required", title=text(state.locale, "config_error"))
-        sys.exit(1)
-
-    api = AgentAPI(api_key=nebius_api_key, base_url=nebius_base_url)
+    api = AgentAPI(api_key=resolved_llm.api_key, base_url=resolved_llm.base_url)
     cprint(text(state.locale, "welcome"))
+    cprint(text(state.locale, "llm_mode", mode=resolved_llm.mode, base_url=resolved_llm.base_url))
     show_stage_header(state.locale, campaign, get_stage(campaign, state), state)
 
     while True:
