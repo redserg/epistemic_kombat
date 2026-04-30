@@ -13,6 +13,7 @@ campaigns:
           topic: Действительно ли Земля плоская, или она имеет шарообразную форму?
           boss_name: Анаксимен Милетский
           epoch: 6 век до н. э., Милет
+          start_hp: 90
           response_language: Russian
           worldview:
             - Земля это широкий плоский диск, покоящийся на воздухе.
@@ -232,6 +233,7 @@ campaigns:
           topic: Is the Earth truly flat, or is it spherical?
           boss_name: Anaximenes of Miletus
           epoch: 6th century BCE, Miletus
+          start_hp: 90
           response_language: English
           worldview:
             - Earth is a broad flat disk resting on air.

@@ -20,6 +20,11 @@ class GameContentTests(unittest.TestCase):
         campaign = self.catalog.get("ru", "earth_shape")
         self.assertGreaterEqual(len(campaign.stages), 3)
         self.assertEqual(campaign.stages[0].boss_name, "Анаксимен Милетский")
+        self.assertEqual(campaign.stages[0].start_hp, 90)
+
+    def test_english_flat_earth_stage_uses_tuned_hp(self) -> None:
+        campaign = self.catalog.get("en", "earth_shape")
+        self.assertEqual(campaign.stages[0].start_hp, 90)
 
     def test_prompt_render_includes_stage_specific_content(self) -> None:
         campaign = self.catalog.get("en", "light_nature")
