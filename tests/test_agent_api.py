@@ -18,6 +18,7 @@ from agent_api import (
     judge_response_format_for_attempt,
     judge_retry_reminder,
     limit_max_tokens,
+    used_fact_summary_is_repeat,
     stabilize_hidden_directive,
     window_boss_history,
 )
@@ -70,6 +71,30 @@ class JudgeResponseHelperTests(unittest.TestCase):
         params = judge_generation_params_for_attempt({"temperature": 0.2}, 800, 2)
         self.assertEqual(params["max_tokens"], 800)
         self.assertEqual(params["temperature"], 0.1)
+
+    def test_repeat_fact_summary_detects_close_paraphrase(self) -> None:
+        self.assertTrue(
+            used_fact_summary_is_repeat(
+                "Глаз не испускает свет, иначе бы видели в темноте.",
+                ["Глаз не освещает предметы в полной темноте"],
+            )
+        )
+
+    def test_normalized_verdict_downgrades_repeat_fact_summary(self) -> None:
+        verdict = JudgeVerdict(
+            is_anachronism=False,
+            damage=15,
+            player_damage=0,
+            reasoning="Repeat presented as new.",
+            hidden_directive="Admit the observation is powerful, but resist and defend your worldview.",
+            used_fact_summary="Глаз не испускает свет, иначе бы видели в темноте.",
+        ).normalized(
+            used_facts=["Глаз не освещает предметы в полной темноте"],
+            locale="ru",
+        )
+        self.assertEqual(verdict.damage, 4)
+        self.assertEqual(verdict.player_damage, 3)
+        self.assertEqual(verdict.used_fact_summary, "")
 
     def test_normalized_verdict_removes_player_damage_from_strong_valid_hit(self) -> None:
         verdict = JudgeVerdict(

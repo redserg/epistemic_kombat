@@ -1,8 +1,10 @@
 """LLM call helpers for Epistemic Kombat."""
 from __future__ import annotations
 
+from difflib import SequenceMatcher
 import json
 import logging
+import re
 from typing import Any, Dict, List, Optional
 
 from openai import OpenAI
@@ -30,11 +32,21 @@ class JudgeVerdict(BaseModel):
         except ValidationError as exc:  # Defensive parsing for malformed responses
             raise ValueError(f"Invalid judge payload: {exc}") from exc
 
-    def normalized(self) -> "JudgeVerdict":
+    def normalized(self, *, used_facts: List[str] | None = None, locale: str = "ru") -> "JudgeVerdict":
         """Smooth out contradictory scoring before gameplay logic consumes it."""
         updates: Dict[str, Any] = {}
         if not self.is_anachronism and self.damage >= 12 and self.player_damage > 0:
             updates["player_damage"] = 0
+        if used_fact_summary_is_repeat(self.used_fact_summary, used_facts or []):
+            updates["damage"] = min(self.damage, 4)
+            updates["player_damage"] = max(self.player_damage, 3)
+            updates["used_fact_summary"] = ""
+            updates["hidden_directive"] = default_hidden_directive(
+                locale=locale,
+                damage=updates["damage"],
+                player_damage=updates["player_damage"],
+                is_anachronism=self.is_anachronism,
+            )
         return self.model_copy(update=updates) if updates else self
 
 
@@ -193,7 +205,10 @@ class AgentAPI:
                 continue
 
             try:
-                verdict = JudgeVerdict.validate_payload(raw).normalized()
+                verdict = JudgeVerdict.validate_payload(raw).normalized(
+                    used_facts=used_facts,
+                    locale=locale,
+                )
                 return verdict
             except ValueError as exc:
                 last_error = exc
@@ -315,6 +330,28 @@ def extract_json_object(content: str) -> str:
                 return content[start : index + 1]
 
     return content[start:]
+
+
+def normalize_fact_summary(summary: str) -> str:
+    """Normalize short fact summaries before fuzzy repeat matching."""
+    tokens = re.findall(r"\w+", summary.lower())
+    return " ".join(tokens)
+
+
+def used_fact_summary_is_repeat(summary: str, used_facts: List[str]) -> bool:
+    """Catch obvious paraphrase repeats that the judge failed to downscore."""
+    normalized_summary = normalize_fact_summary(summary)
+    if not normalized_summary:
+        return False
+
+    for previous in used_facts:
+        normalized_previous = normalize_fact_summary(previous)
+        if not normalized_previous:
+            continue
+        similarity = SequenceMatcher(None, normalized_summary, normalized_previous).ratio()
+        if similarity >= 0.55:
+            return True
+    return False
 
 
 def clean_boss_reply(content: str) -> str:
