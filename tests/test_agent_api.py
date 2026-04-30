@@ -18,6 +18,7 @@ from agent_api import (
     judge_response_format_for_attempt,
     judge_retry_reminder,
     limit_max_tokens,
+    salvage_boss_reply,
     used_fact_summary_is_repeat,
     stabilize_hidden_directive,
     window_boss_history,
@@ -131,6 +132,36 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_accepts_complete_boss_reply(self) -> None:
         self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
+
+    def test_rejects_overlong_local_boss_reply(self) -> None:
+        reply = " ".join(["word"] * 56) + "."
+        self.assertFalse(boss_reply_is_usable(reply, "stop", llm_mode="local"))
+
+    def test_salvages_complete_sentences_from_truncated_local_reply(self) -> None:
+        reply = (
+            "I see your point, yet the horizon may still be shaped by the air above us. "
+            "A flat Earth can still explain the sight. This unfinished tail"
+        )
+        self.assertEqual(
+            salvage_boss_reply(reply, "length", llm_mode="local"),
+            "I see your point, yet the horizon may still be shaped by the air above us. A flat Earth can still explain the sight.",
+        )
+
+    def test_salvages_first_short_sentences_from_overlong_local_reply(self) -> None:
+        reply = (
+            "I grant the sight is striking, yet the air may veil the lower hull before the mast. "
+            "A flat Earth can still explain that appearance. "
+            + " ".join(["extra"] * 70)
+            + "."
+        )
+        self.assertEqual(
+            salvage_boss_reply(reply, "stop", llm_mode="local"),
+            "I grant the sight is striking, yet the air may veil the lower hull before the mast. A flat Earth can still explain that appearance.",
+        )
+
+    def test_local_boss_reminder_is_stricter(self) -> None:
+        self.assertIn("under 45 words", boss_reply_reminder("en", llm_mode="local").lower())
+        self.assertIn("35 words", boss_retry_reminder("en", llm_mode="local").lower())
 
     def test_boss_retry_uses_stricter_token_cap(self) -> None:
         self.assertEqual(boss_response_token_limit_for_attempt(500, 1), 500)

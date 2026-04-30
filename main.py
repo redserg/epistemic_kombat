@@ -431,6 +431,7 @@ def main() -> None:
                 system_prompt=boss_prompt,
                 chat_history=state.chat_history,
                 hidden_directive=verdict.hidden_directive,
+                llm_mode=resolved_llm.mode,
                 locale=state.locale,
                 response_token_limit=resolved_llm.boss_response_tokens,
             )

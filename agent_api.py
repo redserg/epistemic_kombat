@@ -224,6 +224,7 @@ class AgentAPI:
         chat_history: List[Dict[str, str]],
         hidden_directive: str,
         *,
+        llm_mode: str = "cloud",
         locale: str = "ru",
         max_retries: int = 2,
         response_token_limit: int = DEFAULT_BOSS_RESPONSE_TOKENS,
@@ -245,7 +246,7 @@ class AgentAPI:
         # Reminder at bottom of context for max attention weight
         messages.append({
             "role": "system",
-            "content": boss_reply_reminder(locale),
+            "content": boss_reply_reminder(locale, llm_mode=llm_mode),
         })
 
         for attempt in range(1, max_retries + 1):
@@ -254,7 +255,7 @@ class AgentAPI:
                 attempt_messages.append(
                     {
                         "role": "system",
-                        "content": boss_retry_reminder(locale),
+                        "content": boss_retry_reminder(locale, llm_mode=llm_mode),
                     }
                 )
 
@@ -269,10 +270,13 @@ class AgentAPI:
                 caller="boss",
             )
             cleaned_reply = clean_boss_reply(result.content)
-            if boss_reply_is_usable(cleaned_reply, result.finish_reason):
+            if boss_reply_is_usable(cleaned_reply, result.finish_reason, llm_mode=llm_mode):
                 return cleaned_reply
+            salvaged_reply = salvage_boss_reply(cleaned_reply, result.finish_reason, llm_mode=llm_mode)
+            if salvaged_reply:
+                return salvaged_reply
 
-        return boss_fallback_reply(locale)
+        return boss_fallback_reply(locale, llm_mode=llm_mode)
 
 
 def window_boss_history(
@@ -360,13 +364,33 @@ def clean_boss_reply(content: str) -> str:
     return cleaned
 
 
-def boss_reply_is_usable(reply: str, finish_reason: str) -> bool:
+def boss_reply_is_usable(reply: str, finish_reason: str, *, llm_mode: str = "cloud") -> bool:
     """Accept only complete-looking boss replies."""
     if not reply:
         return False
     if finish_reason != "stop":
         return False
+    if llm_mode == "local" and len(reply.split()) > 55:
+        return False
     return reply[-1] in ".!?"
+
+
+def salvage_boss_reply(reply: str, finish_reason: str, *, llm_mode: str = "cloud") -> str:
+    """Recover a short usable rebuttal from truncated local-model output."""
+    if llm_mode != "local" or not reply:
+        return ""
+    if finish_reason == "stop" and len(reply.split()) <= 55:
+        return ""
+
+    sentences = re.findall(r"[^.!?]+[.!?]", reply)
+    if not sentences:
+        return ""
+
+    for count in (2, 1):
+        candidate = " ".join(sentence.strip() for sentence in sentences[:count]).strip()
+        if candidate and len(candidate.split()) <= 55:
+            return candidate
+    return ""
 
 
 def boss_response_token_limit_for_attempt(response_token_limit: int, attempt: int) -> int:
@@ -528,17 +552,31 @@ def judge_retry_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     return "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ НЕВАЛИДЕН ИЛИ ОБРЕЗАН. Верни только короткий JSON-объект без пояснений вокруг него."
 
 
-def boss_reply_reminder(locale: str) -> str:
+def boss_reply_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     if locale == "en":
+        if llm_mode == "local":
+            return "REMINDER: reply in English with at most 2 short sentences and under 45 words. Direct speech only. No JSON."
         return "REMINDER: reply in strictly 2-4 short sentences. Direct speech only. No JSON."
+    if llm_mode == "local":
+        return "НАПОМИНАНИЕ: отвечай по-русски не более чем 2 короткими предложениями и до 45 слов. Только прямая речь персонажа. Никакого JSON."
     return "НАПОМИНАНИЕ: отвечай СТРОГО не более 3-4 предложений. Только прямая речь персонажа. Никакого JSON."
 
 
-def boss_retry_reminder(locale: str) -> str:
+def boss_retry_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     if locale == "en":
+        if llm_mode == "local":
+            return (
+                "THE PREVIOUS ANSWER WAS TOO LONG, EMPTY, OR CUT OFF. "
+                "Return at most 2 short English sentences, under 35 words total, direct speech only."
+            )
         return (
             "THE PREVIOUS ANSWER WAS EMPTY OR CUT OFF. "
             "Return at most 2 short sentences in English, under 45 words total, direct speech only."
+        )
+    if llm_mode == "local":
+        return (
+            "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ СЛИШКОМ ДЛИННЫМ, ПУСТЫМ ИЛИ ОБОРВАН. "
+            "Верни не более 2 коротких предложений на русском, суммарно до 35 слов, только прямую речь персонажа."
         )
     return (
         "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. "
@@ -546,7 +584,11 @@ def boss_retry_reminder(locale: str) -> str:
     )
 
 
-def boss_fallback_reply(locale: str) -> str:
+def boss_fallback_reply(locale: str, *, llm_mode: str = "cloud") -> str:
     if locale == "en":
+        if llm_mode == "local":
+            return "I still resist your claim, but gather my thoughts. Repeat the argument once more."
         return "I fall silent for a moment to gather my thoughts. Repeat your argument once more, and I will answer more clearly."
+    if llm_mode == "local":
+        return "Я всё ещё спорю с тобой, но собираю мысли. Повтори довод ещё раз."
     return "Я на миг умолк, собирая мысли. Повтори свой довод еще раз, и я отвечу яснее."
