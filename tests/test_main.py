@@ -2,7 +2,7 @@ from types import SimpleNamespace
 import unittest
 
 from agent_api import JudgeVerdict, ModelConfig
-from main import run_self_check
+from main import parse_turn_command, run_self_check
 
 
 class FakeAgentAPI:
@@ -27,6 +27,12 @@ class FakeAgentAPI:
 
 
 class SelfCheckTests(unittest.TestCase):
+    def test_parse_turn_command_understands_help_status_and_quit(self) -> None:
+        self.assertEqual(parse_turn_command("help"), "help")
+        self.assertEqual(parse_turn_command("/status"), "status")
+        self.assertEqual(parse_turn_command("выход"), "quit")
+        self.assertIsNone(parse_turn_command("argument text"))
+
     def test_run_self_check_exercises_judge_and_boss(self) -> None:
         api = FakeAgentAPI()
         resolved_llm = SimpleNamespace(

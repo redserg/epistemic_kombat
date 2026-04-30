@@ -1,0 +1,29 @@
+{
+  "status": "paused",
+  "saved_at": "2026-04-30T19:05:21",
+  "metadata": {
+    "campaign_title": "From Earth's Shape to Cosmology",
+    "stage_title": "Level 1. Anaximenes and the Flat Earth",
+    "boss_name": "Anaximenes of Miletus",
+    "llm_mode": "local",
+    "base_url": "http://127.0.0.1:11434/v1"
+  },
+  "state": {
+    "locale": "en",
+    "campaign_id": "earth_shape",
+    "stage_index": 0,
+    "current_hp": 100,
+    "player_hp": 100,
+    "turn_number": 1,
+    "chat_history": [
+      {
+        "role": "assistant",
+        "content": "Greetings, seeker of truth. I hold that Earth rests as a flat disk upon air while the heavens wheel above it. If you think that picture is wrong, defeat it with observation and reasoning."
+      }
+    ],
+    "judge_logs": [],
+    "used_facts": [],
+    "completed_stages": [],
+    "session_id": "2026-04-30_19-05-21-385900"
+  }
+}

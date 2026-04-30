@@ -1,0 +1,4 @@
+2026-04-30 19:05:21,386 [epistemic_kombat] INFO Session started: 2026-04-30_19-05-21-385900
+2026-04-30 19:05:21,386 [epistemic_kombat] INFO LLM mode resolved: local (http://127.0.0.1:11434/v1)
+2026-04-30 19:05:21,390 [epistemic_kombat] INFO Paused game snapshot saved to /Users/explorer/epistemic_kombat/history/2026-04-30_19-05-21-385900
+2026-04-30 19:05:21,390 [epistemic_kombat] INFO Game paused: 2026-04-30_19-05-21-385900

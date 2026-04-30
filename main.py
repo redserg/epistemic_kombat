@@ -51,6 +51,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "argument_prompt": "Твой аргумент",
         "saved_state_missing": "Сохранённая игра ссылается на неизвестную кампанию. Начинаю новую.",
         "resume_choices": "resume,new",
+        "help_text": "Команды: quit, help, status",
         "stage_header": "Кампания: {campaign_title}\nУровень: {stage_title}\nБосс: {boss_name}\nЭпоха: {epoch}\nТема: {topic}\nHP Босса: {boss_hp} | HP Игрока: {player_hp}",
         "boss_status": "{boss_name} (Boss HP: {boss_hp} | Player HP: {player_hp})",
         "judge_result": "{status} | Урон боссу: {damage} | Урон игроку: {player_damage}\nРешение: {reasoning}",
@@ -79,6 +80,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "argument_prompt": "Your argument",
         "saved_state_missing": "Saved game points to an unknown campaign. Starting a new one.",
         "resume_choices": "resume,new",
+        "help_text": "Commands: quit, help, status",
         "stage_header": "Campaign: {campaign_title}\nStage: {stage_title}\nBoss: {boss_name}\nEra: {epoch}\nTopic: {topic}\nBoss HP: {boss_hp} | Player HP: {player_hp}",
         "boss_status": "{boss_name} (Boss HP: {boss_hp} | Player HP: {player_hp})",
         "judge_result": "{status} | Boss damage: {damage} | Player damage: {player_damage}\nRuling: {reasoning}",
@@ -241,6 +243,17 @@ def history_metadata(
         "llm_mode": llm_mode,
         "base_url": base_url,
     }
+
+
+def parse_turn_command(raw_input: str) -> str | None:
+    lowered = raw_input.strip().lower()
+    if lowered in {"quit", "exit", "выход"}:
+        return "quit"
+    if lowered in {"help", "/help"}:
+        return "help"
+    if lowered in {"status", "/status"}:
+        return "status"
+    return None
 
 
 def show_stage_header(locale: str, campaign: CampaignConfig, stage: StageConfig, state: GameState) -> None:
@@ -419,10 +432,17 @@ def main(argv: Sequence[str] | None = None) -> None:
 
         turn_label = text(state.locale, "turn_label", turn_number=state.turn_number)
         player_msg = ask(f"{turn_label} - {text(state.locale, 'argument_prompt')}")
+        command = parse_turn_command(player_msg)
 
-        if player_msg.strip().lower() in {"quit", "exit", "выход"}:
+        if command == "quit":
             cprint(text(state.locale, "quit"))
             break
+        if command == "help":
+            panel(text(state.locale, "help_text"), title="Help")
+            continue
+        if command == "status":
+            show_stage_header(state.locale, campaign, stage, state)
+            continue
 
         state.chat_history.append({"role": "user", "content": player_msg})
         boss_state: Dict[str, object] = {
