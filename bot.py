@@ -8,6 +8,6 @@ from main import main
 
 if __name__ == "__main__":
     try:
-        main()
+        main(sys.argv[1:])
     except KeyboardInterrupt:
         sys.exit(0)

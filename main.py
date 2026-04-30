@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 import sys
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Sequence
 
 from dotenv import load_dotenv
 import yaml
@@ -13,6 +13,7 @@ import yaml
 load_dotenv(Path(__file__).parent / ".env")
 
 from agent_api import AgentAPI, JudgeVerdict, ModelConfig, stabilize_hidden_directive
+from agent_api import HistoricalFact
 from game_content import CampaignCatalog, CampaignConfig, StageConfig, load_campaign_catalog, render_prompt
 from llm_config import load_llm_settings, resolve_llm_config, validate_llm_config
 from state_manager import (
@@ -278,7 +279,48 @@ def judge_status_text(locale: str, verdict: JudgeVerdict, damage: int, player_da
     )
 
 
-def main() -> None:
+def run_self_check(
+    api: AgentAPI,
+    *,
+    judge_model_cfg: ModelConfig,
+    boss_model_cfg: ModelConfig,
+    resolved_llm,
+) -> list[str]:
+    judge_verdict = api.judge(
+        model=judge_model_cfg,
+        system_prompt=(
+            "Return short JSON. Reward valid reasoning from the given observation. "
+            "Keep hidden_directive resistive and concise."
+        ),
+        player_message="Ships disappear hull-first below the horizon, so a curved Earth explains the sight better.",
+        boss_state={"topic": "earth shape", "turn_number": 1, "current_hp": 100, "player_hp": 100},
+        facts=[HistoricalFact(fact="Ships disappear hull-first below the horizon.")],
+        llm_mode=resolved_llm.mode,
+        locale="en",
+        used_facts=[],
+        response_token_limit=resolved_llm.judge_response_tokens,
+    )
+    boss_reply = api.boss(
+        model=boss_model_cfg,
+        system_prompt="Reply in English as a skeptical ancient thinker in at most 2 short sentences.",
+        chat_history=[{"role": "user", "content": "A ship vanishes hull-first beyond the horizon."}],
+        hidden_directive="Admit the observation is powerful, but resist and defend your worldview.",
+        llm_mode=resolved_llm.mode,
+        locale="en",
+        response_token_limit=resolved_llm.boss_response_tokens,
+    )
+    return [
+        f"LLM mode: {resolved_llm.mode}",
+        f"Base URL: {resolved_llm.base_url}",
+        f"Judge model: {judge_model_cfg.model}",
+        f"Boss model: {boss_model_cfg.model}",
+        f"Judge OK: damage={judge_verdict.damage}, anachronism={judge_verdict.is_anachronism}",
+        f"Boss OK: {boss_reply}",
+    ]
+
+
+def main(argv: Sequence[str] | None = None) -> None:
+    argv = list(argv or [])
     root = Path(__file__).parent
     prompts_dir = root / "prompts"
     config_dir = root / "config"
@@ -301,6 +343,16 @@ def main() -> None:
     if not judge_model_cfg or not boss_model_cfg:
         panel("Model configuration missing for judge or boss", title=text("ru", "config_error"))
         sys.exit(1)
+
+    api = AgentAPI(api_key=resolved_llm.api_key, base_url=resolved_llm.base_url)
+    if "--self-check" in argv:
+        panel("\n".join(run_self_check(
+            api,
+            judge_model_cfg=judge_model_cfg,
+            boss_model_cfg=boss_model_cfg,
+            resolved_llm=resolved_llm,
+        )), title="Self-check")
+        return
 
     saved_state = load_state(state_path)
     state: GameState
@@ -330,7 +382,6 @@ def main() -> None:
     logger.info("Session started: %s", state.session_id)
     logger.info("LLM mode resolved: %s (%s)", resolved_llm.mode, resolved_llm.base_url)
 
-    api = AgentAPI(api_key=resolved_llm.api_key, base_url=resolved_llm.base_url)
     cprint(text(state.locale, "welcome"))
     cprint(text(state.locale, "llm_mode", mode=resolved_llm.mode, base_url=resolved_llm.base_url))
     show_stage_header(state.locale, campaign, get_stage(campaign, state), state)

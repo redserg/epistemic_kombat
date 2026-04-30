@@ -24,6 +24,7 @@
   - Добавлен `LICENSE`.
   - Добавлен `.env.example`.
   - Добавлен сам `CHANGELOG.md`.
+  - Добавлен CLI self-check для быстрой проверки `judge` и `boss` без запуска полноценной игры.
 
 ### Changed
 
