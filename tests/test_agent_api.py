@@ -1,6 +1,7 @@
 import unittest
 
 from agent_api import (
+    boss_response_token_limit_for_attempt,
     boss_reply_is_usable,
     boss_fallback_reply,
     boss_reply_reminder,
@@ -79,6 +80,10 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_accepts_complete_boss_reply(self) -> None:
         self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
+
+    def test_boss_retry_uses_stricter_token_cap(self) -> None:
+        self.assertEqual(boss_response_token_limit_for_attempt(500, 1), 500)
+        self.assertEqual(boss_response_token_limit_for_attempt(500, 2), 220)
 
     def test_stabilizes_english_accept_directive_before_boss_defeat(self) -> None:
         directive = stabilize_hidden_directive(

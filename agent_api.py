@@ -239,7 +239,7 @@ class AgentAPI:
                 messages=attempt_messages,
                 generation_params=limit_max_tokens(
                     model.generation_params(),
-                    response_token_limit,
+                    boss_response_token_limit_for_attempt(response_token_limit, attempt),
                 ),
                 caller="boss",
             )
@@ -322,6 +322,13 @@ def boss_reply_is_usable(reply: str, finish_reason: str) -> bool:
     return reply[-1] in ".!?"
 
 
+def boss_response_token_limit_for_attempt(response_token_limit: int, attempt: int) -> int:
+    """Use a stricter cap on retries to force concise completed boss replies."""
+    if attempt <= 1:
+        return response_token_limit
+    return min(response_token_limit, 220)
+
+
 def stabilize_hidden_directive(
     directive: str,
     *,
@@ -388,8 +395,14 @@ def boss_reply_reminder(locale: str) -> str:
 
 def boss_retry_reminder(locale: str) -> str:
     if locale == "en":
-        return "THE PREVIOUS ANSWER WAS EMPTY OR CUT OFF. Return 2-3 short sentences in English, direct speech only."
-    return "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. Верни 2-3 коротких предложения на русском, только прямую речь персонажа."
+        return (
+            "THE PREVIOUS ANSWER WAS EMPTY OR CUT OFF. "
+            "Return at most 2 short sentences in English, under 45 words total, direct speech only."
+        )
+    return (
+        "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. "
+        "Верни не более 2 коротких предложений на русском, суммарно до 45 слов, только прямую речь персонажа."
+    )
 
 
 def boss_fallback_reply(locale: str) -> str:
