@@ -5,7 +5,7 @@ import json
 import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Literal
 
 from pydantic import BaseModel, Field
 
@@ -21,6 +21,15 @@ class GameState(BaseModel):
 
     def to_json(self) -> str:
         return self.model_dump_json(indent=2, ensure_ascii=False)
+
+
+def game_outcome(state: GameState) -> Literal["victory", "defeat"] | None:
+    """Return terminal outcome for finished games, otherwise None."""
+    if state.current_hp <= 0:
+        return "victory"
+    if state.player_hp <= 0:
+        return "defeat"
+    return None
 
 
 def load_state(path: Path, *, fallback: GameState) -> GameState:

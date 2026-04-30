@@ -14,7 +14,7 @@ import yaml
 load_dotenv(Path(__file__).parent / ".env")
 
 from agent_api import AgentAPI, BossConfig, HistoricalFact, JudgeVerdict, ModelConfig
-from state_manager import GameState, load_state, save_state, archive_game, clear_current
+from state_manager import GameState, archive_game, clear_current, game_outcome, load_state, save_state
 
 logger = logging.getLogger("epistemic_kombat")
 
@@ -139,7 +139,9 @@ def main() -> None:
         state.chat_history.append({"role": "assistant", "content": greeting})
 
     while True:
-        if state.current_hp <= 0:
+        outcome = game_outcome(state)
+
+        if outcome == "victory":
             defeat_text = (
                 "Я вынужден уступить! Твои умозаключения так же ясны и ярки, как тот разреженный воздух, что рождает огонь. "
                 "Подумать только, Земля — это не плоский лист, парящий на ветрах, а великолепная сфера, подвешенная в космосе... "
@@ -150,7 +152,7 @@ def main() -> None:
             panel(defeat_text, title="Победа! Босс повержен")
             break
 
-        if state.player_hp <= 0:
+        if outcome == "defeat":
             loss_text = (
                 "Ты потерял доверие аудитории! Твои аргументы оказались слабы, полны анахронизмов и повторов. "
                 "Анаксимен торжествующе поднимает руку: 'Вот видишь, друг мой? Плоский диск на подушке воздуха — "
@@ -235,11 +237,14 @@ def main() -> None:
 
     save_state(state_path, state)
 
-    # Archive finished game into the session directory and reset for next run
-    dest = archive_game(history_root, state)
-    clear_current(state_path)
-    logger.info("Game archived to %s", dest)
-    cprint(f"Спасибо за игру. История сохранена в history/{state.session_id}/")
+    if game_outcome(state):
+        dest = archive_game(history_root, state)
+        clear_current(state_path)
+        logger.info("Game archived to %s", dest)
+        cprint(f"Спасибо за игру. История сохранена в history/{state.session_id}/")
+    else:
+        logger.info("Game paused: %s", state.session_id)
+        cprint(f"Игра приостановлена. Продолжение сохранено в state/current_game.json ({state.session_id}).")
 
 
 if __name__ == "__main__":
