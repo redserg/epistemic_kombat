@@ -1,0 +1,40 @@
+2026-04-30 17:51:40,217 [epistemic_kombat] INFO Session started: 2026-04-30_17-51-40
+2026-04-30 17:51:40,217 [epistemic_kombat] INFO LLM mode resolved: local (http://127.0.0.1:11434/v1)
+2026-04-30 17:51:40,287 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 17:51:53,127 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 17:51:53,136 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1193  completion_tokens=220  total_tokens=1413
+2026-04-30 17:51:53,136 [epistemic_kombat.api] WARNING [judge] finish_reason=length (response may be truncated)
+2026-04-30 17:51:53,136 [epistemic_kombat.api] WARNING [judge] validation failed on attempt 1: Invalid judge payload: 4 validation errors for JudgeVerdict
+is_anachronism
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+damage
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+reasoning
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+hidden_directive
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-04-30 17:51:53,136 [epistemic_kombat.api] INFO [judge] attempt 2/2
+2026-04-30 17:51:59,717 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 17:51:59,719 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1237  completion_tokens=220  total_tokens=1457
+2026-04-30 17:51:59,719 [epistemic_kombat.api] WARNING [judge] finish_reason=length (response may be truncated)
+2026-04-30 17:51:59,720 [epistemic_kombat.api] WARNING [judge] validation failed on attempt 2: Invalid judge payload: 4 validation errors for JudgeVerdict
+is_anachronism
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+damage
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+reasoning
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+hidden_directive
+  Field required [type=missing, input_value={}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-04-30 17:52:05,381 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 17:52:05,382 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=704  completion_tokens=160  total_tokens=864
+2026-04-30 17:52:05,382 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 17:52:05,389 [epistemic_kombat] INFO Game paused: 2026-04-30_17-51-40
