@@ -7,6 +7,7 @@ from state_manager import (
     GameState,
     advance_turn,
     game_outcome,
+    new_session_id,
     render_transcript_markdown,
     reset_stage_progress,
     save_history_snapshot,
@@ -14,6 +15,13 @@ from state_manager import (
 
 
 class GameOutcomeTests(unittest.TestCase):
+    def test_new_session_id_is_precise_and_unique(self) -> None:
+        first = new_session_id()
+        second = new_session_id()
+
+        self.assertRegex(first, r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}-\d{6}$")
+        self.assertNotEqual(first, second)
+
     def test_returns_victory_when_boss_hp_is_zero(self) -> None:
         state = GameState(current_hp=0, player_hp=42)
         self.assertEqual(game_outcome(state), "victory")

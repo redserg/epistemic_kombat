@@ -1,0 +1,104 @@
+{
+  "status": "paused",
+  "saved_at": "2026-04-30T18:42:48",
+  "state": {
+    "locale": "en",
+    "campaign_id": "earth_shape",
+    "stage_index": 0,
+    "current_hp": 40,
+    "player_hp": 100,
+    "turn_number": 5,
+    "chat_history": [
+      {
+        "role": "assistant",
+        "content": "Greetings, seeker of truth. I hold that Earth rests as a flat disk upon air while the heavens wheel above it. If you think that picture is wrong, defeat it with observation and reasoning."
+      },
+      {
+        "role": "user",
+        "content": "ships disappear hull-first below the horizon while the mast remains visible longer, which fits a curved surface better than a flat plane."
+      },
+      {
+        "role": "assistant",
+        "content": "I see your point, and the sight is indeed striking. Yet the horizon marks where the air itself becomes too thin to hold the lower parts of a vessel, while the taller mast still stands above that thinness. This fits a flat disk with air that rises and falls. I remain convinced that our world is broad and flat."
+      },
+      {
+        "role": "user",
+        "content": "during a lunar eclipse the Earth casts a round shadow on the Moon, which is what a sphere consistently does from every angle."
+      },
+      {
+        "role": "assistant",
+        "content": "I cannot deny the shadow appears round; it is a striking sight. Yet in our flat world the heavens form a curved dome, and its own curvature casts a circular shade upon the Moon. Thus the roundness does not prove the Earth is a sphere. I still see our Earth as a broad, flat disk."
+      },
+      {
+        "role": "user",
+        "content": "as travelers move south, new constellations appear and familiar stars change altitude, which is exactly what you expect on a curved Earth."
+      },
+      {
+        "role": "assistant",
+        "content": "I admit the stars shift as we travel, a wondrous fact indeed. Yet the heavens are a great dome, and its curvature allows new constellations to appear as we move beneath it. This explains the change in altitude without demanding a curved Earth beneath our feet."
+      },
+      {
+        "role": "user",
+        "content": "from a tower or mast the horizon stretches farther away, which shows that height reveals more of a curved surface."
+      },
+      {
+        "role": "assistant",
+        "content": "I admit the observation is powerful. It shows that the air above us becomes thinner as one rises, letting one see farther over the thin air. This does not require the Earth itself to bend; our flat disk can still explain the effect."
+      }
+    ],
+    "judge_logs": [
+      {
+        "turn": 1,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Ships hull-first disappearance supports curvature.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Ships hull-first disappearance indicates curvature."
+        }
+      },
+      {
+        "turn": 2,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Player uses valid ancient observation to infer spherical Earth.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Round shadow from lunar eclipse supports sphere"
+        }
+      },
+      {
+        "turn": 3,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Star altitude change with latitude supports curvature.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Star altitude change with latitude."
+        }
+      },
+      {
+        "turn": 4,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "New inference from horizon observation.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Horizon extends with height implies curvature."
+        }
+      }
+    ],
+    "used_facts": [
+      "Ships hull-first disappearance indicates curvature.",
+      "Round shadow from lunar eclipse supports sphere",
+      "Star altitude change with latitude.",
+      "Horizon extends with height implies curvature."
+    ],
+    "completed_stages": [],
+    "session_id": "2026-04-30_18-39-06"
+  }
+}

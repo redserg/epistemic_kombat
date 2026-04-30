@@ -10,6 +10,11 @@ from typing import Any, Dict, List, Literal
 from pydantic import BaseModel, Field
 
 
+def new_session_id() -> str:
+    """Generate a readable session id with enough precision to avoid collisions."""
+    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
+
+
 class GameState(BaseModel):
     locale: str = "ru"
     campaign_id: str = "earth_shape"
@@ -21,7 +26,7 @@ class GameState(BaseModel):
     judge_logs: List[Dict[str, Any]] = Field(default_factory=list)
     used_facts: List[str] = Field(default_factory=list)
     completed_stages: List[Dict[str, Any]] = Field(default_factory=list)
-    session_id: str = Field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+    session_id: str = Field(default_factory=new_session_id)
 
     def to_json(self) -> str:
         return self.model_dump_json(indent=2, ensure_ascii=False)
