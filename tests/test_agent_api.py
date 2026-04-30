@@ -13,7 +13,9 @@ from agent_api import (
     extract_json_object,
     is_hidden_directive_safe,
     JudgeVerdict,
+    judge_generation_params_for_attempt,
     judge_json_reminder,
+    judge_response_format_for_attempt,
     judge_retry_reminder,
     limit_max_tokens,
     stabilize_hidden_directive,
@@ -59,6 +61,15 @@ class JudgeResponseHelperTests(unittest.TestCase):
     def test_sets_max_tokens_when_missing(self) -> None:
         params = limit_max_tokens({"temperature": 0.2}, 220)
         self.assertEqual(params["max_tokens"], 220)
+
+    def test_local_judge_retry_disables_response_format(self) -> None:
+        self.assertEqual(judge_response_format_for_attempt(llm_mode="cloud", attempt=2), {"type": "json_object"})
+        self.assertIsNone(judge_response_format_for_attempt(llm_mode="local", attempt=2))
+
+    def test_judge_retry_lowers_temperature(self) -> None:
+        params = judge_generation_params_for_attempt({"temperature": 0.2}, 800, 2)
+        self.assertEqual(params["max_tokens"], 800)
+        self.assertEqual(params["temperature"], 0.1)
 
     def test_normalized_verdict_removes_player_damage_from_strong_valid_hit(self) -> None:
         verdict = JudgeVerdict(

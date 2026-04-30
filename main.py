@@ -385,6 +385,7 @@ def main() -> None:
                 player_message=player_msg,
                 boss_state=boss_state,
                 facts=stage.facts,
+                llm_mode=resolved_llm.mode,
                 locale=state.locale,
                 used_facts=state.used_facts,
                 response_token_limit=resolved_llm.judge_response_tokens,

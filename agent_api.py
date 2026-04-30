@@ -133,6 +133,7 @@ class AgentAPI:
         boss_state: Dict[str, Any],
         facts: List[HistoricalFact],
         *,
+        llm_mode: str = "cloud",
         locale: str = "ru",
         used_facts: List[str] | None = None,
         max_retries: int = 2,
@@ -167,16 +168,17 @@ class AgentAPI:
                 attempt_messages.append(
                     {
                         "role": "system",
-                        "content": judge_retry_reminder(locale),
+                        "content": judge_retry_reminder(locale, llm_mode=llm_mode),
                     }
                 )
             result = self._chat(
                 model=model.model,
                 messages=attempt_messages,
-                response_format={"type": "json_object"},
-                generation_params=limit_max_tokens(
+                response_format=judge_response_format_for_attempt(llm_mode=llm_mode, attempt=attempt),
+                generation_params=judge_generation_params_for_attempt(
                     model.generation_params(),
                     response_token_limit,
+                    attempt,
                 ),
                 caller="judge",
             )
@@ -349,6 +351,25 @@ def boss_generation_params_for_attempt(
     return params
 
 
+def judge_generation_params_for_attempt(
+    generation_params: Dict[str, Any],
+    token_limit: int,
+    attempt: int,
+) -> Dict[str, Any]:
+    """Retries for judge should be compact and deterministic."""
+    params = limit_max_tokens(generation_params, token_limit)
+    if attempt > 1:
+        params["temperature"] = min(params.get("temperature", 0.2), 0.1)
+    return params
+
+
+def judge_response_format_for_attempt(*, llm_mode: str, attempt: int) -> Optional[Dict[str, str]]:
+    """Local retries fall back to plain JSON generation when structured mode is flaky."""
+    if llm_mode == "local" and attempt > 1:
+        return None
+    return {"type": "json_object"}
+
+
 def stabilize_hidden_directive(
     directive: str,
     *,
@@ -460,9 +481,13 @@ def judge_json_reminder(locale: str) -> str:
     )
 
 
-def judge_retry_reminder(locale: str) -> str:
+def judge_retry_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     if locale == "en":
+        if llm_mode == "local":
+            return "THE PREVIOUS ANSWER FAILED. Return ONLY a short JSON object in normal message content, with no surrounding text."
         return "THE PREVIOUS ANSWER WAS INVALID OR TRUNCATED. Return only a short JSON object with no surrounding text."
+    if llm_mode == "local":
+        return "ПРЕДЫДУЩИЙ ОТВЕТ НЕ ПОДОШЁЛ. Верни ТОЛЬКО короткий JSON-объект обычным текстом ответа, без пояснений вокруг."
     return "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ НЕВАЛИДЕН ИЛИ ОБРЕЗАН. Верни только короткий JSON-объект без пояснений вокруг него."
 
 
