@@ -1,6 +1,6 @@
 import unittest
 
-from agent_api import extract_json_object, limit_max_tokens, window_boss_history
+from agent_api import clean_boss_reply, extract_json_object, limit_max_tokens, window_boss_history
 
 
 class WindowBossHistoryTests(unittest.TestCase):
@@ -41,6 +41,15 @@ class JudgeResponseHelperTests(unittest.TestCase):
     def test_sets_max_tokens_when_missing(self) -> None:
         params = limit_max_tokens({"temperature": 0.2}, 220)
         self.assertEqual(params["max_tokens"], 220)
+
+
+class BossReplyHelperTests(unittest.TestCase):
+    def test_collapses_multiline_reply_into_single_string(self) -> None:
+        reply = "Я отвечаю.\n\nКоротко и ясно."
+        self.assertEqual(clean_boss_reply(reply), "Я отвечаю. Коротко и ясно.")
+
+    def test_returns_empty_string_for_blank_reply(self) -> None:
+        self.assertEqual(clean_boss_reply("   \n\t"), "")
 
 
 if __name__ == "__main__":

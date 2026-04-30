@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger("epistemic_kombat.api")
 MAX_BOSS_HISTORY_MESSAGES = 8
+MAX_BOSS_RESPONSE_TOKENS = 160
 MAX_JUDGE_RESPONSE_TOKENS = 220
 
 
@@ -192,6 +193,8 @@ class AgentAPI:
         system_prompt: str,
         chat_history: List[Dict[str, str]],
         hidden_directive: str,
+        *,
+        max_retries: int = 2,
     ) -> str:
         # Inject directive as a system/assistant message to steer behavior silently
         directive_message = {
@@ -213,13 +216,33 @@ class AgentAPI:
             "content": "НАПОМИНАНИЕ: отвечай СТРОГО не более 3-4 предложений. Только прямая речь персонажа. Никакого JSON.",
         })
 
-        message = self._chat(
-            model=model.model,
-            messages=messages,
-            generation_params=model.generation_params(),
-            caller="boss",
-        )
-        return message.content or ""
+        for attempt in range(1, max_retries + 1):
+            attempt_messages = list(messages)
+            if attempt > 1:
+                attempt_messages.append(
+                    {
+                        "role": "system",
+                        "content": (
+                            "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. "
+                            "Верни 2-3 коротких предложения на русском, только прямую речь персонажа."
+                        ),
+                    }
+                )
+
+            message = self._chat(
+                model=model.model,
+                messages=attempt_messages,
+                generation_params=limit_max_tokens(
+                    model.generation_params(),
+                    MAX_BOSS_RESPONSE_TOKENS,
+                ),
+                caller="boss",
+            )
+            cleaned_reply = clean_boss_reply(message.content or "")
+            if cleaned_reply:
+                return cleaned_reply
+
+        return "Я на миг умолк, собирая мысли. Повтори свой довод еще раз, и я отвечу яснее."
 
 
 def window_boss_history(
@@ -277,3 +300,9 @@ def extract_json_object(content: str) -> str:
                 return content[start : index + 1]
 
     return content[start:]
+
+
+def clean_boss_reply(content: str) -> str:
+    """Normalize boss output and reject empty replies."""
+    cleaned = " ".join(content.split()).strip()
+    return cleaned
