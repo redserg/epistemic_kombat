@@ -1,0 +1,14 @@
+judge:
+  model: openai/gpt-oss-20b
+  temperature: 0.2
+  top_p: 0.9
+  max_tokens: 1024
+  presence_penalty: 0.0
+  frequency_penalty: 0.0
+boss:
+  model: openai/gpt-oss-20b
+  temperature: 0.9
+  top_p: 0.9
+  max_tokens: 512
+  presence_penalty: 0.0
+  frequency_penalty: 0.0
