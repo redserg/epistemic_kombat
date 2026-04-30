@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger("epistemic_kombat.api")
 MAX_BOSS_HISTORY_MESSAGES = 8
+MAX_JUDGE_RESPONSE_TOKENS = 220
 
 
 class JudgeVerdict(BaseModel):
@@ -144,16 +145,30 @@ class AgentAPI:
         last_error: Exception | None = None
         for attempt in range(1, max_retries + 1):
             logger.info("[judge] attempt %d/%d", attempt, max_retries)
+            attempt_messages = list(messages)
+            if attempt > 1:
+                attempt_messages.append(
+                    {
+                        "role": "system",
+                        "content": (
+                            "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ НЕВАЛИДЕН ИЛИ ОБРЕЗАН. "
+                            "Верни только короткий JSON-объект без пояснений вокруг него."
+                        ),
+                    }
+                )
             message = self._chat(
                 model=model.model,
-                messages=messages,
+                messages=attempt_messages,
                 response_format={"type": "json_object"},
-                generation_params=model.generation_params(),
+                generation_params=limit_max_tokens(
+                    model.generation_params(),
+                    MAX_JUDGE_RESPONSE_TOKENS,
+                ),
                 caller="judge",
             )
 
             try:
-                raw = json.loads(message.content or "{}")
+                raw = json.loads(extract_json_object(message.content or "{}"))
             except json.JSONDecodeError as exc:
                 last_error = ValueError(
                     f"Judge returned invalid JSON: {exc}\nContent: {message.content}"
@@ -221,3 +236,44 @@ def window_boss_history(
     if tail_budget == 0:
         return opening_message
     return opening_message + chat_history[-tail_budget:]
+
+
+def limit_max_tokens(generation_params: Dict[str, Any], token_limit: int) -> Dict[str, Any]:
+    """Clamp response size for tightly structured model calls."""
+    params = dict(generation_params)
+    params["max_tokens"] = min(params.get("max_tokens", token_limit), token_limit)
+    return params
+
+
+def extract_json_object(content: str) -> str:
+    """Extract the first balanced JSON object from a model response."""
+    start = content.find("{")
+    if start == -1:
+        return content
+
+    depth = 0
+    in_string = False
+    escaped = False
+
+    for index in range(start, len(content)):
+        char = content[index]
+
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                in_string = False
+            continue
+
+        if char == '"':
+            in_string = True
+        elif char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return content[start : index + 1]
+
+    return content[start:]
