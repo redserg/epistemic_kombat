@@ -255,6 +255,15 @@ class BossReplyHelperTests(unittest.TestCase):
         self.assertNotIn("Repeat your argument", reply)
         self.assertIn("defend my old view", reply)
 
+    def test_fallback_reply_avoids_repeating_latest_assistant_line(self) -> None:
+        reply = boss_fallback_reply(
+            "en",
+            llm_mode="local",
+            hidden_directive="Admit the observation is powerful, but resist and defend your worldview.",
+            chat_history=[{"role": "assistant", "content": "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield."}],
+        )
+        self.assertNotIn("One hard observation does not force me to yield", reply)
+
     def test_boss_retry_uses_stricter_token_cap(self) -> None:
         self.assertEqual(boss_response_token_limit_for_attempt(500, 1), 500)
         self.assertEqual(boss_response_token_limit_for_attempt(500, 2), 220)

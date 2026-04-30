@@ -295,6 +295,7 @@ class AgentAPI:
             locale,
             llm_mode=llm_mode,
             hidden_directive=hidden_directive,
+            chat_history=chat_history,
         )
 
 
@@ -720,16 +721,47 @@ def boss_fallback_reply(
     *,
     llm_mode: str = "cloud",
     hidden_directive: str = "",
+    chat_history: List[Dict[str, str]] | None = None,
 ) -> str:
     directive = hidden_directive.lower()
+    chat_history = chat_history or []
+    recent_reply = latest_boss_reply(chat_history).lower()
     if locale == "en":
         if "dismiss" in directive or "mock" in directive:
-            return "Your claim is weak, and I reject it. Bring me something stronger."
-        if "admit" in directive or "acknowledge" in directive or "resist" in directive:
-            return "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield."
-        return "I still defend my old view. Your argument troubles me, but I do not yield."
+            options = [
+                "Your claim is weak, and I reject it. Bring me something stronger.",
+                "This argument does not move me. Show me a firmer observation if you want my surrender.",
+            ]
+        elif "admit" in directive or "acknowledge" in directive or "resist" in directive:
+            options = [
+                "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield.",
+                "I feel the pressure of your case, but I still hold to my old doctrine. I am not ready to yield from a single blow.",
+            ]
+        else:
+            options = [
+                "I still defend my old view. Your argument troubles me, but I do not yield.",
+                "My old doctrine still stands before me. Your challenge unsettles me, but it does not yet break my resistance.",
+            ]
+        for option in options:
+            if option.lower() not in recent_reply:
+                return option
+        return options[0]
     if "отверг" in directive or "высмей" in directive:
-        return "Твой довод слаб, и я его отвергаю. Принеси что-нибудь сильнее."
-    if "признай" in directive or "сопротив" in directive:
-        return "Твой довод давит на меня, но я всё ещё защищаю своё старое мнение. Одного наблюдения мало, чтобы я уступил."
-    return "Я всё ещё защищаю своё старое мнение. Твой довод тревожит меня, но не убеждает."
+        options = [
+            "Твой довод слаб, и я его отвергаю. Принеси что-нибудь сильнее.",
+            "Меня этот довод не двигает. Если хочешь поколебать меня, покажи наблюдение твёрже.",
+        ]
+    elif "признай" in directive or "сопротив" in directive:
+        options = [
+            "Твой довод давит на меня, но я всё ещё защищаю своё старое мнение. Одного наблюдения мало, чтобы я уступил.",
+            "Я чувствую силу твоего довода, но всё ещё держусь за прежнее учение. Одного удара мне недостаточно, чтобы сдаться.",
+        ]
+    else:
+        options = [
+            "Я всё ещё защищаю своё старое мнение. Твой довод тревожит меня, но не убеждает.",
+            "Моё прежнее учение всё ещё стоит передо мной. Твой вызов тревожит меня, но не ломает моего сопротивления.",
+        ]
+    for option in options:
+        if option.lower() not in recent_reply:
+            return option
+    return options[0]
