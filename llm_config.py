@@ -18,6 +18,8 @@ class LLMModeConfig(BaseModel):
     default_api_key: Optional[str] = None
     default_base_url: str
     model_aliases: Dict[str, str]
+    judge_response_tokens: int = Field(default=220, ge=1)
+    boss_response_tokens: int = Field(default=160, ge=1)
 
 
 class LLMSettings(BaseModel):
@@ -30,6 +32,8 @@ class ResolvedLLMConfig(BaseModel):
     api_key: Optional[str] = None
     base_url: str
     role_models: Dict[str, ModelConfig]
+    judge_response_tokens: int
+    boss_response_tokens: int
 
 
 def load_llm_settings(path: Path) -> LLMSettings:
@@ -62,6 +66,8 @@ def resolve_llm_config(
         api_key=api_key,
         base_url=base_url,
         role_models=with_model_aliases(role_configs, mode_cfg.model_aliases),
+        judge_response_tokens=mode_cfg.judge_response_tokens,
+        boss_response_tokens=mode_cfg.boss_response_tokens,
     )
 
 

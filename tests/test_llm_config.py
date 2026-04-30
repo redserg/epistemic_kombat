@@ -26,6 +26,8 @@ class LLMConfigTests(unittest.TestCase):
         self.assertEqual(resolved.api_key, "secret")
         self.assertEqual(resolved.role_models["judge"].model, "openai/gpt-oss-20b")
         self.assertEqual(resolved.role_models["boss"].model, "openai/gpt-oss-20b")
+        self.assertEqual(resolved.judge_response_tokens, 220)
+        self.assertEqual(resolved.boss_response_tokens, 160)
 
     def test_local_mode_uses_ollama_defaults(self) -> None:
         resolved = resolve_llm_config(
@@ -38,6 +40,8 @@ class LLMConfigTests(unittest.TestCase):
         self.assertEqual(resolved.base_url, "http://127.0.0.1:11434/v1")
         self.assertEqual(resolved.api_key, "ollama")
         self.assertEqual(resolved.role_models["judge"].model, "gpt-oss:20b")
+        self.assertEqual(resolved.judge_response_tokens, 800)
+        self.assertEqual(resolved.boss_response_tokens, 500)
 
     def test_global_overrides_win_over_mode_defaults(self) -> None:
         resolved = resolve_llm_config(

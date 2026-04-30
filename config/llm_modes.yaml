@@ -5,6 +5,8 @@ modes:
     api_key_env: TOKEN_FACTORY_API_KEY
     base_url_env: TOKEN_FACTORY_BASE_URL
     default_base_url: https://api.tokenfactory.nebius.com/v1/
+    judge_response_tokens: 220
+    boss_response_tokens: 160
     model_aliases:
       judge: openai/gpt-oss-20b
       boss: openai/gpt-oss-20b
@@ -14,6 +16,8 @@ modes:
     base_url_env: OLLAMA_BASE_URL
     default_api_key: ollama
     default_base_url: http://127.0.0.1:11434/v1
+    judge_response_tokens: 800
+    boss_response_tokens: 500
     model_aliases:
       judge: gpt-oss:20b
       boss: gpt-oss:20b

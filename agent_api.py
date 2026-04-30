@@ -11,8 +11,8 @@ from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger("epistemic_kombat.api")
 MAX_BOSS_HISTORY_MESSAGES = 8
-MAX_BOSS_RESPONSE_TOKENS = 160
-MAX_JUDGE_RESPONSE_TOKENS = 220
+DEFAULT_BOSS_RESPONSE_TOKENS = 160
+DEFAULT_JUDGE_RESPONSE_TOKENS = 220
 
 
 class JudgeVerdict(BaseModel):
@@ -118,6 +118,7 @@ class AgentAPI:
         locale: str = "ru",
         used_facts: List[str] | None = None,
         max_retries: int = 2,
+        response_token_limit: int = DEFAULT_JUDGE_RESPONSE_TOKENS,
     ) -> JudgeVerdict:
         messages: List[ChatCompletionMessageParam] = [
             {"role": "system", "content": system_prompt},
@@ -157,7 +158,7 @@ class AgentAPI:
                 response_format={"type": "json_object"},
                 generation_params=limit_max_tokens(
                     model.generation_params(),
-                    MAX_JUDGE_RESPONSE_TOKENS,
+                    response_token_limit,
                 ),
                 caller="judge",
             )
@@ -190,6 +191,7 @@ class AgentAPI:
         *,
         locale: str = "ru",
         max_retries: int = 2,
+        response_token_limit: int = DEFAULT_BOSS_RESPONSE_TOKENS,
     ) -> str:
         # Inject directive as a system/assistant message to steer behavior silently
         directive_message = {
@@ -226,7 +228,7 @@ class AgentAPI:
                 messages=attempt_messages,
                 generation_params=limit_max_tokens(
                     model.generation_params(),
-                    MAX_BOSS_RESPONSE_TOKENS,
+                    response_token_limit,
                 ),
                 caller="boss",
             )

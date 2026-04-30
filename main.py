@@ -386,6 +386,7 @@ def main() -> None:
                 facts=stage.facts,
                 locale=state.locale,
                 used_facts=state.used_facts,
+                response_token_limit=resolved_llm.judge_response_tokens,
             )
         except Exception as exc:  # noqa: BLE001
             panel(
@@ -421,6 +422,7 @@ def main() -> None:
                 chat_history=state.chat_history,
                 hidden_directive=verdict.hidden_directive,
                 locale=state.locale,
+                response_token_limit=resolved_llm.boss_response_tokens,
             )
         except Exception as exc:  # noqa: BLE001
             boss_reply = text(state.locale, "system_boss_fail", error=exc)
