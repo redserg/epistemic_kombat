@@ -42,6 +42,7 @@ class SelfCheckTests(unittest.TestCase):
     def test_parse_turn_command_understands_help_status_and_quit(self) -> None:
         self.assertEqual(parse_turn_command("help"), "help")
         self.assertEqual(parse_turn_command("/status"), "status")
+        self.assertEqual(parse_turn_command("facts"), "facts")
         self.assertEqual(parse_turn_command("выход"), "quit")
         self.assertIsNone(parse_turn_command("argument text"))
 

@@ -53,7 +53,9 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "argument_prompt": "Твой аргумент",
         "saved_state_missing": "Сохранённая игра ссылается на неизвестную кампанию. Начинаю новую.",
         "resume_choices": "resume,new",
-        "help_text": "Команды: quit, help, status",
+        "help_text": "Команды: quit, help, status, facts",
+        "facts_title": "Использованные факты",
+        "facts_empty": "Пока что засчитанных фактов нет.",
         "stage_header": "Кампания: {campaign_title}\nУровень: {stage_title}\nБосс: {boss_name}\nЭпоха: {epoch}\nТема: {topic}\nHP Босса: {boss_hp} | HP Игрока: {player_hp}",
         "boss_status": "{boss_name} (Boss HP: {boss_hp} | Player HP: {player_hp})",
         "judge_result": "{status} | Урон боссу: {damage} | Урон игроку: {player_damage}\nРешение: {reasoning}",
@@ -83,7 +85,9 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "argument_prompt": "Your argument",
         "saved_state_missing": "Saved game points to an unknown campaign. Starting a new one.",
         "resume_choices": "resume,new",
-        "help_text": "Commands: quit, help, status",
+        "help_text": "Commands: quit, help, status, facts",
+        "facts_title": "Used Facts",
+        "facts_empty": "No scored facts yet.",
         "stage_header": "Campaign: {campaign_title}\nStage: {stage_title}\nBoss: {boss_name}\nEra: {epoch}\nTopic: {topic}\nBoss HP: {boss_hp} | Player HP: {player_hp}",
         "boss_status": "{boss_name} (Boss HP: {boss_hp} | Player HP: {player_hp})",
         "judge_result": "{status} | Boss damage: {damage} | Player damage: {player_damage}\nRuling: {reasoning}",
@@ -256,6 +260,8 @@ def parse_turn_command(raw_input: str) -> str | None:
         return "help"
     if lowered in {"status", "/status"}:
         return "status"
+    if lowered in {"facts", "/facts"}:
+        return "facts"
     return None
 
 
@@ -293,6 +299,15 @@ def show_stage_header(locale: str, campaign: CampaignConfig, stage: StageConfig,
         ),
         title=text(locale, "match_started"),
     )
+
+
+def show_used_facts(locale: str, state: GameState) -> None:
+    if not state.used_facts:
+        panel(text(locale, "facts_empty"), title=text(locale, "facts_title"))
+        return
+
+    lines = [f"{index}. {fact}" for index, fact in enumerate(state.used_facts, start=1)]
+    panel("\n".join(lines), title=text(locale, "facts_title"))
 
 
 def ensure_stage_greeting(stage: StageConfig, state: GameState) -> None:
@@ -470,6 +485,9 @@ def main(argv: Sequence[str] | None = None) -> None:
                 continue
             if command == "status":
                 show_stage_header(state.locale, campaign, stage, state)
+                continue
+            if command == "facts":
+                show_used_facts(state.locale, state)
                 continue
 
             state.chat_history.append({"role": "user", "content": player_msg})
