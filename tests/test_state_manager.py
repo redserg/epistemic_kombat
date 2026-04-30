@@ -1,6 +1,16 @@
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from state_manager import GameState, advance_turn, game_outcome, reset_stage_progress
+from state_manager import (
+    GameState,
+    advance_turn,
+    game_outcome,
+    render_transcript_markdown,
+    reset_stage_progress,
+    save_history_snapshot,
+)
 
 
 class GameOutcomeTests(unittest.TestCase):
@@ -39,6 +49,47 @@ class GameOutcomeTests(unittest.TestCase):
         self.assertEqual(state.chat_history, [])
         self.assertEqual(state.judge_logs, [])
         self.assertEqual(state.used_facts, [])
+
+    def test_render_transcript_markdown_contains_dialogue_and_judge_logs(self) -> None:
+        state = GameState(
+            current_hp=85,
+            player_hp=100,
+            chat_history=[
+                {"role": "assistant", "content": "Opening claim."},
+                {"role": "user", "content": "Counterargument."},
+            ],
+            judge_logs=[
+                {"turn": 1, "verdict": {"damage": 15, "reasoning": "Strong move."}},
+            ],
+        )
+
+        transcript = render_transcript_markdown(state)
+
+        self.assertIn("## Dialogue", transcript)
+        self.assertIn("### Boss", transcript)
+        self.assertIn("Counterargument.", transcript)
+        self.assertIn("## Judge Logs", transcript)
+        self.assertIn("Strong move.", transcript)
+
+    def test_save_history_snapshot_writes_game_json_and_transcript(self) -> None:
+        state = GameState(
+            locale="en",
+            campaign_id="earth_shape",
+            stage_index=0,
+            current_hp=90,
+            player_hp=100,
+            chat_history=[{"role": "user", "content": "Test argument."}],
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            session_dir = save_history_snapshot(Path(tmpdir), state, status="paused")
+
+            game_json = json.loads((session_dir / "game.json").read_text(encoding="utf-8"))
+            transcript = (session_dir / "transcript.md").read_text(encoding="utf-8")
+
+            self.assertEqual(game_json["status"], "paused")
+            self.assertEqual(game_json["state"]["session_id"], state.session_id)
+            self.assertIn("Test argument.", transcript)
 
 
 if __name__ == "__main__":

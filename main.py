@@ -23,6 +23,7 @@ from state_manager import (
     game_outcome,
     load_state,
     reset_stage_progress,
+    save_history_snapshot,
     save_state,
 )
 
@@ -449,6 +450,8 @@ def main() -> None:
         logger.info("Game archived to %s", dest)
         cprint(text(state.locale, "archived", session_id=state.session_id))
     else:
+        snapshot_dir = save_history_snapshot(history_root, state, status="paused")
+        logger.info("Paused game snapshot saved to %s", snapshot_dir)
         logger.info("Game paused: %s", state.session_id)
         cprint(text(state.locale, "paused", session_id=state.session_id))
 

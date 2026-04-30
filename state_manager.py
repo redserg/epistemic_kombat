@@ -67,13 +67,73 @@ def save_state(path: Path, state: GameState) -> None:
     path.write_text(state.to_json(), encoding="utf-8")
 
 
-def archive_game(history_root: Path, state: GameState) -> Path:
-    """Copy finished game state into history/<session_id>/game.json."""
+def render_transcript_markdown(state: GameState) -> str:
+    """Render a readable transcript for humans inspecting playtest history."""
+    lines = [
+        f"# Session {state.session_id}",
+        "",
+        f"- Locale: {state.locale}",
+        f"- Campaign: {state.campaign_id}",
+        f"- Stage index: {state.stage_index}",
+        f"- Boss HP: {state.current_hp}",
+        f"- Player HP: {state.player_hp}",
+        f"- Turn number: {state.turn_number}",
+        "",
+        "## Dialogue",
+        "",
+    ]
+
+    for message in state.chat_history:
+        role = message.get("role", "unknown")
+        content = message.get("content", "").strip()
+        if role == "assistant":
+            speaker = "Boss"
+        elif role == "user":
+            speaker = "Player"
+        else:
+            speaker = role.capitalize()
+        lines.append(f"### {speaker}")
+        lines.append("")
+        lines.append(content or "[empty]")
+        lines.append("")
+
+    if state.judge_logs:
+        lines.extend(["## Judge Logs", ""])
+        for entry in state.judge_logs:
+            lines.append(f"### Turn {entry.get('turn', '?')}")
+            lines.append("")
+            verdict = entry.get("verdict", {})
+            for key, value in verdict.items():
+                lines.append(f"- {key}: {value}")
+            lines.append("")
+
+    return "\n".join(lines).strip() + "\n"
+
+
+def save_history_snapshot(history_root: Path, state: GameState, *, status: str) -> Path:
+    """Save a full session snapshot and transcript under history/<session_id>/."""
     session_dir = history_root / state.session_id
     session_dir.mkdir(parents=True, exist_ok=True)
-    dest = session_dir / "game.json"
-    dest.write_text(state.to_json(), encoding="utf-8")
-    return dest
+
+    game_payload = {
+        "status": status,
+        "saved_at": datetime.now().isoformat(timespec="seconds"),
+        "state": state.model_dump(),
+    }
+    (session_dir / "game.json").write_text(
+        json.dumps(game_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (session_dir / "transcript.md").write_text(
+        render_transcript_markdown(state),
+        encoding="utf-8",
+    )
+    return session_dir
+
+
+def archive_game(history_root: Path, state: GameState) -> Path:
+    """Copy finished game state into history/<session_id>/game.json."""
+    return save_history_snapshot(history_root, state, status="finished")
 
 
 def clear_current(path: Path) -> None:
