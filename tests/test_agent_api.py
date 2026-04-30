@@ -4,6 +4,7 @@ from agent_api import (
     boss_generation_params_for_attempt,
     boss_response_token_limit_for_attempt,
     boss_reply_is_usable,
+    boss_reply_is_fresh,
     boss_reply_matches_locale,
     boss_fallback_reply,
     boss_reply_reminder,
@@ -133,6 +134,28 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_accepts_complete_boss_reply(self) -> None:
         self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
+
+    def test_rejects_near_duplicate_boss_reply(self) -> None:
+        history = [
+            {"role": "assistant", "content": "The eye's inner fire meets external light to create sight."},
+        ]
+        self.assertFalse(
+            boss_reply_is_fresh(
+                "The eye's inner fire still meets the external light to produce sight.",
+                history,
+            )
+        )
+
+    def test_accepts_fresh_boss_reply(self) -> None:
+        history = [
+            {"role": "assistant", "content": "The eye's inner fire meets external light to create sight."},
+        ]
+        self.assertTrue(
+            boss_reply_is_fresh(
+                "A bright ray may wound the eye because it overwhelms the fire within it.",
+                history,
+            )
+        )
 
     def test_rejects_english_reply_in_russian_locale(self) -> None:
         self.assertFalse(boss_reply_is_usable("I still resist your claim.", "stop", locale="ru"))

@@ -275,10 +275,10 @@ class AgentAPI:
                 result.finish_reason,
                 llm_mode=llm_mode,
                 locale=locale,
-            ):
+            ) and boss_reply_is_fresh(cleaned_reply, chat_history):
                 return cleaned_reply
             salvaged_reply = salvage_boss_reply(cleaned_reply, result.finish_reason, llm_mode=llm_mode)
-            if salvaged_reply:
+            if salvaged_reply and boss_reply_is_fresh(salvaged_reply, chat_history):
                 return salvaged_reply
 
         return boss_fallback_reply(
@@ -371,6 +371,26 @@ def clean_boss_reply(content: str) -> str:
     """Normalize boss output and reject empty replies."""
     cleaned = " ".join(content.split()).strip()
     return cleaned
+
+
+def boss_reply_is_fresh(reply: str, chat_history: List[Dict[str, str]]) -> bool:
+    """Reject near-duplicate boss paraphrases to keep the debate moving."""
+    if not reply:
+        return False
+
+    previous_assistant_replies = [
+        clean_boss_reply(item.get("content", ""))
+        for item in chat_history
+        if item.get("role") == "assistant"
+    ]
+    normalized_reply = normalize_fact_summary(reply)
+    for previous in previous_assistant_replies[-3:]:
+        if not previous:
+            continue
+        similarity = SequenceMatcher(None, normalized_reply, normalize_fact_summary(previous)).ratio()
+        if similarity >= 0.74:
+            return False
+    return True
 
 
 def boss_reply_is_usable(
