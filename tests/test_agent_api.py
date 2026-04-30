@@ -1,9 +1,11 @@
 import unittest
 
 from agent_api import (
+    boss_reply_is_usable,
     boss_fallback_reply,
     boss_reply_reminder,
     boss_retry_reminder,
+    ChatResult,
     clean_boss_reply,
     extract_json_object,
     judge_json_reminder,
@@ -67,6 +69,15 @@ class BossReplyHelperTests(unittest.TestCase):
         self.assertIn("Direct speech only".lower(), boss_reply_reminder("en").lower())
         self.assertIn("EMPTY OR CUT OFF".lower(), boss_retry_reminder("en").lower())
         self.assertIn("Repeat your argument", boss_fallback_reply("en"))
+
+    def test_rejects_non_stop_boss_reply(self) -> None:
+        self.assertFalse(boss_reply_is_usable("Incomplete but non-empty", "length"))
+
+    def test_rejects_reply_without_terminal_punctuation(self) -> None:
+        self.assertFalse(boss_reply_is_usable("This still trails off", "stop"))
+
+    def test_accepts_complete_boss_reply(self) -> None:
+        self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
 
 
 if __name__ == "__main__":

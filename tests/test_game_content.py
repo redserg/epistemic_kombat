@@ -31,6 +31,14 @@ class GameContentTests(unittest.TestCase):
         self.assertIn("camera obscura", rendered)
         self.assertIn("The Nature of Light", rendered)
 
+    def test_boss_prompt_contains_non_concession_rule(self) -> None:
+        campaign = self.catalog.get("en", "earth_shape")
+        stage = campaign.stages[0]
+        template = (self.root / "prompts" / "boss_prompt.en.txt").read_text(encoding="utf-8")
+        rendered = render_prompt(template, campaign, stage)
+
+        self.assertIn("do not fully agree with the player's main thesis", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

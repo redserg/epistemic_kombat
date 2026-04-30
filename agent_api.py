@@ -67,6 +67,12 @@ class ModelConfig(BaseModel):
         }
 
 
+class ChatResult(BaseModel):
+    content: str
+    reasoning: str = ""
+    finish_reason: str = "stop"
+
+
 class AgentAPI:
     def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None):
         self.client = OpenAI(api_key=api_key, base_url=base_url)
@@ -102,7 +108,12 @@ class AgentAPI:
             if finish != "stop":
                 logger.warning("[%s] finish_reason=%s (response may be truncated)", caller, finish)
 
-            return resp.choices[0].message
+            message = resp.choices[0].message
+            return ChatResult(
+                content=message.content or "",
+                reasoning=getattr(message, "reasoning", None) or "",
+                finish_reason=finish,
+            )
         except Exception as exc:  # noqa: BLE001
             logger.error("[%s] LLM call failed: %s", caller, exc)
             raise RuntimeError(f"LLM call failed: {exc}") from exc
@@ -152,7 +163,7 @@ class AgentAPI:
                         "content": judge_retry_reminder(locale),
                     }
                 )
-            message = self._chat(
+            result = self._chat(
                 model=model.model,
                 messages=attempt_messages,
                 response_format={"type": "json_object"},
@@ -164,10 +175,10 @@ class AgentAPI:
             )
 
             try:
-                raw = json.loads(extract_json_object(message.content or "{}"))
+                raw = json.loads(extract_json_object(result.content or "{}"))
             except json.JSONDecodeError as exc:
                 last_error = ValueError(
-                    f"Judge returned invalid JSON: {exc}\nContent: {message.content}"
+                    f"Judge returned invalid JSON: {exc}\nContent: {result.content}"
                 )
                 logger.warning("[judge] invalid JSON on attempt %d: %s", attempt, exc)
                 continue
@@ -223,7 +234,7 @@ class AgentAPI:
                     }
                 )
 
-            message = self._chat(
+            result = self._chat(
                 model=model.model,
                 messages=attempt_messages,
                 generation_params=limit_max_tokens(
@@ -232,8 +243,8 @@ class AgentAPI:
                 ),
                 caller="boss",
             )
-            cleaned_reply = clean_boss_reply(message.content or "")
-            if cleaned_reply:
+            cleaned_reply = clean_boss_reply(result.content)
+            if boss_reply_is_usable(cleaned_reply, result.finish_reason):
                 return cleaned_reply
 
         return boss_fallback_reply(locale)
@@ -300,6 +311,15 @@ def clean_boss_reply(content: str) -> str:
     """Normalize boss output and reject empty replies."""
     cleaned = " ".join(content.split()).strip()
     return cleaned
+
+
+def boss_reply_is_usable(reply: str, finish_reason: str) -> bool:
+    """Accept only complete-looking boss replies."""
+    if not reply:
+        return False
+    if finish_reason != "stop":
+        return False
+    return reply[-1] in ".!?"
 
 
 def judge_json_reminder(locale: str) -> str:

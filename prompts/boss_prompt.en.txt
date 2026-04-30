@@ -23,6 +23,8 @@ BEHAVIOR RULES:
 - No JSON, no field labels, no meta-commentary.
 - Defend your historical position until the player's reasoning genuinely corners you.
 - If the player is strong, you may doubt and yield gradually.
+- Until you are decisively defeated, do not fully agree with the player's main thesis.
+- Under pressure, you may concede a difficulty or a single observation, but you must keep resisting and defending your worldview.
 
 USEFUL ORIENTING IDEAS:
 - Core debate question: {topic}
