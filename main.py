@@ -411,6 +411,7 @@ def main() -> None:
             locale=state.locale,
             remaining_boss_hp=state.current_hp,
             damage=damage,
+            player_damage=player_damage,
             is_anachronism=verdict.is_anachronism,
         )
 

@@ -335,36 +335,95 @@ def stabilize_hidden_directive(
     locale: str,
     remaining_boss_hp: int,
     damage: int,
+    player_damage: int,
     is_anachronism: bool,
 ) -> str:
     """Prevent premature boss capitulation before a stage is actually won."""
     cleaned = " ".join(directive.split()).strip()
-    if remaining_boss_hp <= 0 or is_anachronism or not cleaned:
+    if remaining_boss_hp <= 0:
         return cleaned
 
-    lowered = cleaned.lower()
-    surrender_markers = (
-        "accept the argument",
-        "accept the player's argument",
-        "fully agree",
-        "accept that",
-        "you are right",
-        "согласись",
-        "прими аргумент",
-        "признай, что игрок прав",
-        "ты неправ, он прав",
-        "признай правоту",
-    )
-    if any(marker in lowered for marker in surrender_markers):
-        if locale == "en":
-            if damage >= 12:
-                return "Admit this observation is strong, but keep defending your worldview."
-            return "Acknowledge the pressure, but keep resisting and defending your position."
-        if damage >= 12:
-            return "Признай силу наблюдения, но продолжай защищать свою картину мира."
-        return "Покажи давление аргумента, но продолжай сопротивляться и спорить."
+    if is_hidden_directive_safe(cleaned):
+        return cleaned
 
-    return cleaned
+    return default_hidden_directive(
+        locale=locale,
+        damage=damage,
+        player_damage=player_damage,
+        is_anachronism=is_anachronism,
+    )
+
+
+def is_hidden_directive_safe(directive: str) -> bool:
+    """Keep only directives that clearly preserve opposition or tone."""
+    if not directive:
+        return False
+    lowered = directive.lower()
+    unsafe_markers = (
+        "accept",
+        "agree",
+        "confirm",
+        "support the argument",
+        "argue for",
+        "curvature",
+        "spherical earth",
+        "external light",
+        "прими",
+        "соглас",
+        "подтверди",
+        "поддержи аргумент",
+        "аргументом о кривизне",
+        "шарообраз",
+        "внешн",
+    )
+    if any(marker in lowered for marker in unsafe_markers):
+        return False
+
+    safe_markers = (
+        "defend",
+        "resist",
+        "justify",
+        "dismiss",
+        "mock",
+        "pressure",
+        "защищ",
+        "сопротив",
+        "оправд",
+        "высмей",
+        "отверг",
+        "оспор",
+    )
+    return any(marker in lowered for marker in safe_markers)
+
+
+def default_hidden_directive(
+    *,
+    locale: str,
+    damage: int,
+    player_damage: int,
+    is_anachronism: bool,
+) -> str:
+    """Provide a robust fallback directive when judge wording is unsafe."""
+    if locale == "en":
+        if is_anachronism:
+            return "Mock the anachronism and reject it sharply."
+        if damage >= 12:
+            return "Admit the observation is powerful, but resist and defend your worldview."
+        if player_damage >= 7 and damage <= 3:
+            return "Dismiss the argument sharply and press your advantage."
+        if damage >= 5:
+            return "Acknowledge the pressure, but explain the observation away and keep resisting."
+        return "Hold your position and demand clearer evidence."
+
+    if is_anachronism:
+        return "Высмей анахронизм и резко отвергни довод."
+    if damage >= 12:
+        return "Признай силу наблюдения, но продолжай защищать свою картину мира."
+    if player_damage >= 7 and damage <= 3:
+        return "Резко отвергни довод и надави на слабость аргумента."
+    if damage >= 5:
+        return "Покажи давление аргумента, но объясни наблюдение по-своему и продолжай сопротивляться."
+    return "Стой на своём и требуй более ясных доказательств."
 
 
 def judge_json_reminder(locale: str) -> str:

@@ -8,7 +8,9 @@ from agent_api import (
     boss_retry_reminder,
     ChatResult,
     clean_boss_reply,
+    default_hidden_directive,
     extract_json_object,
+    is_hidden_directive_safe,
     judge_json_reminder,
     judge_retry_reminder,
     limit_max_tokens,
@@ -91,9 +93,10 @@ class BossReplyHelperTests(unittest.TestCase):
             locale="en",
             remaining_boss_hp=85,
             damage=15,
+            player_damage=0,
             is_anachronism=False,
         )
-        self.assertIn("keep defending", directive.lower())
+        self.assertIn("defend your worldview", directive.lower())
 
     def test_stabilizes_russian_accept_directive_before_boss_defeat(self) -> None:
         directive = stabilize_hidden_directive(
@@ -101,6 +104,7 @@ class BossReplyHelperTests(unittest.TestCase):
             locale="ru",
             remaining_boss_hp=85,
             damage=15,
+            player_damage=0,
             is_anachronism=False,
         )
         self.assertIn("продолжай", directive.lower())
@@ -111,9 +115,33 @@ class BossReplyHelperTests(unittest.TestCase):
             locale="en",
             remaining_boss_hp=0,
             damage=15,
+            player_damage=0,
             is_anachronism=False,
         )
         self.assertEqual(directive, "Accept the argument.")
+
+    def test_unsafe_directive_about_curvature_is_rewritten(self) -> None:
+        directive = stabilize_hidden_directive(
+            "Ответить аргументом о кривизне Земли.",
+            locale="ru",
+            remaining_boss_hp=85,
+            damage=15,
+            player_damage=5,
+            is_anachronism=False,
+        )
+        self.assertNotIn("кривизне земли", directive.lower())
+        self.assertIn("защищать", directive.lower())
+
+    def test_safe_resistive_directive_is_preserved(self) -> None:
+        directive = stabilize_hidden_directive(
+            "Defend your worldview and resist the claim.",
+            locale="en",
+            remaining_boss_hp=85,
+            damage=15,
+            player_damage=0,
+            is_anachronism=False,
+        )
+        self.assertEqual(directive, "Defend your worldview and resist the claim.")
 
 
 if __name__ == "__main__":
