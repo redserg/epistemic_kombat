@@ -54,7 +54,20 @@ class CampaignCatalog(BaseModel):
 
 
 def load_campaign_catalog(path: Path) -> CampaignCatalog:
-    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if path.is_dir():
+        raw = {"campaigns": {}}
+        for campaign_path in sorted(path.glob("*.yaml")):
+            payload = yaml.safe_load(campaign_path.read_text(encoding="utf-8")) or {}
+            for locale, campaigns in (payload.get("campaigns") or {}).items():
+                locale_bucket = raw["campaigns"].setdefault(locale, {})
+                for campaign_id, campaign in campaigns.items():
+                    if campaign_id in locale_bucket:
+                        raise ValueError(
+                            f"Duplicate campaign '{campaign_id}' for locale '{locale}' in {campaign_path}"
+                        )
+                    locale_bucket[campaign_id] = campaign
+    else:
+        raw = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     return CampaignCatalog.model_validate(raw)
 
 

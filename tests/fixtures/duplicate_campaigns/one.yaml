@@ -1,0 +1,20 @@
+campaigns:
+  en:
+    earth_shape:
+      id: earth_shape
+      locale: en
+      title: One
+      description: One
+      introduction: One
+      completion_text: One
+      stages:
+        - id: one
+          title: One
+          topic: One
+          boss_name: One
+          epoch: One
+          response_language: English
+          greeting: One
+          victory_text: One
+          defeat_text: One
+          stage_clear_text: One

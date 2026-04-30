@@ -7,7 +7,7 @@ from game_content import load_campaign_catalog, render_prompt
 class GameContentTests(unittest.TestCase):
     def setUp(self) -> None:
         root = Path(__file__).resolve().parent.parent
-        self.catalog = load_campaign_catalog(root / "config" / "campaigns.yaml")
+        self.catalog = load_campaign_catalog(root / "config" / "campaigns")
         self.root = root
 
     def test_loads_both_locales_and_campaigns(self) -> None:
@@ -25,6 +25,12 @@ class GameContentTests(unittest.TestCase):
     def test_english_flat_earth_stage_uses_tuned_hp(self) -> None:
         campaign = self.catalog.get("en", "earth_shape")
         self.assertEqual(campaign.stages[0].start_hp, 90)
+
+    def test_duplicate_campaign_ids_across_split_files_raise(self) -> None:
+        duplicate_dir = self.root / "tests" / "fixtures" / "duplicate_campaigns"
+
+        with self.assertRaisesRegex(ValueError, "Duplicate campaign 'earth_shape'"):
+            load_campaign_catalog(duplicate_dir)
 
     def test_prompt_render_includes_stage_specific_content(self) -> None:
         campaign = self.catalog.get("en", "light_nature")

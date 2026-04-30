@@ -381,7 +381,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     state_path = root / "state" / "current_game.json"
     history_root = root / "history"
 
-    catalog = load_campaign_catalog(config_dir / "campaigns.yaml")
+    catalog = load_campaign_catalog(config_dir / "campaigns")
     model_cfg = load_model_config(config_dir / "model_config.yaml")
     llm_settings = load_llm_settings(config_dir / "llm_modes.yaml")
 
