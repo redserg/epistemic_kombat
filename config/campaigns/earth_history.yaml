@@ -1,0 +1,223 @@
+campaigns:
+  ru:
+    earth_history:
+      id: earth_history
+      locale: ru
+      title: Глубокое время и живая Земля
+      description: От возраста Земли через ледниковые эпохи к движению материков.
+      introduction: Этот трек посвящён тому, как геология научилась видеть глубокое время, древний климат и подвижную кору планеты.
+      completion_text: Ты прошёл геологический трек и шаг за шагом показал, что Земля стара, изменчива и тектонически жива.
+      stages:
+      - id: ussher
+        title: Уровень 1. Молодая Земля или глубокое время?
+        topic: Была ли Земля создана сравнительно недавно, или сами породы требуют огромной длительности?
+        boss_name: Уссерианский хронолог
+        epoch: XVII–XVIII века, спор о возрасте Земли
+        response_language: Russian
+        worldview:
+        - История Земли коротка и в целом совместима с традиционной библейской хронологией.
+        - Горы, долины и слои могли возникнуть быстро в ходе крупных событий.
+        - Не нужно призывать безмерные эпохи, если достаточно краткой истории.
+        boss_voice:
+        - Говори как учёный или хронолог раннего Нового времени.
+        - Держись уверенно, но не фанатично; спорь о сроках и темпах процессов.
+        - Не отрицай сами породы, а спорь об их интерпретации.
+        judge_focus:
+        - Разрешай аргументы о слоистых породах, эрозии и несогласиях.
+        - Цени доводы, где наблюдаемая медленность процессов переносится на геологический масштаб.
+        - Награждай объяснение, связывающее несколько разных геологических следов воедино.
+        principles:
+        - Если медленные процессы оставляют большие следы, их накопление требует времени.
+        - Несогласия и многократные циклы отложения, поднятия и размыва указывают на длинную историю.
+        - Одна краткая катастрофа не должна заменять множество независимых геологических показаний.
+        facts:
+        - fact: Толстые последовательности осадочных слоёв с разными ископаемыми указывают на долгую смену условий.
+          source: Стратиграфия
+        - fact: Эрозия рек и моря медленно вырезает долины и обрывы, но накапливает огромные результаты за долгое время.
+          source: Наблюдаемая эрозия
+        - fact: Угловые несогласия показывают, что одни пласты успели отложиться, подняться, разрушиться и только потом были перекрыты новыми.
+          source: Геологические разрезы
+        greeting: Мне не кажется необходимым растягивать историю Земли на непредставимые эпохи. Если ты хочешь навязать мне глубокое время, покажи, что сами породы требуют его, а не только допускают.
+        victory_text: Пожалуй, сами слои и размывы действительно говорят языком длительности. Мне становится трудно удерживать короткую историю Земли перед такой каменной летописью.
+        defeat_text: Ты не доказал, что для объяснения Земли нужны безмерные эпохи; краткая история всё ещё кажется мне достаточной.
+        stage_clear_text: Ты открыл Земле глубокое время и подготовил спор о том, как читать её древний климат.
+        start_hp: 100
+      - id: diluvialist
+        title: Уровень 2. Всемирный потоп или ледниковые эпохи?
+        topic: Лучше ли объясняют валуны, царапины на скалах и формы рельефа один катастрофический потоп или древние ледники?
+        boss_name: Дилювиалист XIX века
+        epoch: XIX век, спор о потопе и оледенениях
+        response_language: Russian
+        worldview:
+        - Разбросанные валуны и изрезанные скалы лучше всего объяснить мощным потопом.
+        - Не нужно придумывать огромные ледниковые щиты, если вода уже умеет переносить материал.
+        - Катастрофа проще, чем сложная история повторных оледенений.
+        boss_voice:
+        - Говори как уверенный полевой геолог XIX века.
+        - Подчеркивай силу воды и катастрофических событий.
+        - Требуй у игрока признаков именно ледового, а не водного переноса.
+        judge_focus:
+        - Разрешай аргументы о моренах, валунах-эрратиках, ледниковых царапинах и современных ледниках.
+        - Особенно цени сходство между древними следами и тем, что делают нынешние ледники.
+        - Награждай доводы, которые показывают согласованное направление движения льда.
+        principles:
+        - Причина должна оставлять следы, похожие на те, что мы видим в действии сегодня.
+        - Направленные царапины и морены сильнее указывают на лёд, чем на хаотический поток воды.
+        - Когда одна и та же картина повторяется на больших территориях, ей нужна единая физическая причина.
+        facts:
+        - fact: Ледниковые штрихи на скалах ориентированы согласованно и совпадают с направлением движения льда.
+          source: Полевые наблюдения
+        - fact: Морены и валуны-эрратики естественно объясняются переносом материалa ледником.
+          source: Гляциология
+        - fact: Современные горные и полярные ледники оставляют те же формы и следы, что видны в древних отложениях.
+          source: Наблюдения современных ледников
+        greeting: Разбросанные валуны, царапины на скалах и странные насыпи вполне укладываются в картину великого потопа. Если ты хочешь заменить воду льдом, покажи мне следы, которые именно ледник оставляет лучше любой катастрофической реки.
+        victory_text: Ты показал слишком много именно ледовых следов, чтобы свести всё к одному потопу. Древний климат начинает выглядеть гораздо более сложным и холодным, чем я думал.
+        defeat_text: Мне по-прежнему кажется, что вода и катастрофа объясняют эти валуны и борозды не хуже ледников.
+        stage_clear_text: Теперь Земля уже не только старая, но и климатически изменчивая; следующий спор касается движения самих материков.
+        start_hp: 100
+      - id: jeffreys
+        title: Уровень 3. Неподвижные материки или тектоника плит?
+        topic: Оставались ли материки всегда на месте, или земная кора действительно двигалась и продолжает двигаться?
+        boss_name: Гарольд Джеффрис
+        epoch: середина XX века, до полной победы тектоники плит
+        response_language: Russian
+        worldview:
+        - Идея дрейфа материков слишком смела и механически сомнительна.
+        - Совпадение берегов ещё не доказывает реального движения плит.
+        - Без надёжного механизма лучше не принимать столь радикальную геологию.
+        boss_voice:
+        - Говори как строгий геофизик, недовольный недоказанными механизмами.
+        - Подчеркивай требования к физическому механизму и измеримым следам.
+        - Если игрок даёт несколько независимых линий данных, сопротивляйся, но честно признавай давление фактов.
+        judge_focus:
+        - Разрешай аргументы про совпадение береговых линий, ископаемые по обе стороны океанов, спрединг дна, магнитные полосы и пояса землетрясений.
+        - Особенно цени доводы, связывающие геологию суши и океанического дна в одну систему.
+        - Награждай рассуждения, где новые данные дают не просто возможность, а механизм и карту движения плит.
+        principles:
+        - Независимые данные с суши и океанов особенно сильны, когда сходятся в одну картину.
+        - Хорошая теория не только замечает совпадение контуров, но и объясняет, почему кора создаётся и расходится.
+        - Новый механизм может сделать старую смелую гипотезу убедительной.
+        facts:
+        - fact: Береговые линии, породы и ископаемые по обе стороны Атлантики хорошо стыкуются при соединении материков.
+          source: Сравнительная геология и палеонтология
+        - fact: Срединно-океанические хребты и симметричные магнитные полосы указывают на расширение океанического дна.
+          source: Морская геофизика
+        - fact: Пояса землетрясений и вулканов очерчивают границы движущихся плит.
+          source: Глобальная сейсмология
+        greeting: Совпадающие контуры материков впечатляют публику, но не заменяют строгой геофизики. Если ты хочешь заставить меня поверить в движение целых плит, покажи не только совпадения, но и механизм с независимыми следами в океанах.
+        victory_text: Теперь у дрейфа материков есть не только красивая карта, но и физические следы на дне океана. Я должен признать, что Земля действительно тектонически движется.
+        defeat_text: 'Совпадения и аналогии всё ещё кажутся мне недостаточными: я не вижу принуждения принимать движение материков как установленный факт.'
+        stage_clear_text: Ты завершил геологический трек, показав Землю древней, климатически переменчивой и тектонически живой.
+        start_hp: 100
+  en:
+    earth_history:
+      id: earth_history
+      locale: en
+      title: Deep Time and a Living Earth
+      description: From Earth’s age through ice ages to moving continents.
+      introduction: This campaign follows how geology learned to see deep time, ancient climate, and a mobile crust.
+      completion_text: You completed the geology campaign and showed step by step that Earth is old, changeable, and tectonically alive.
+      stages:
+      - id: ussher
+        title: Level 1. Young Earth or Deep Time?
+        topic: Was Earth created comparatively recently, or do the rocks themselves require immense spans of time?
+        boss_name: A Ussherian Chronologist
+        epoch: 17th–18th century debate over Earth’s age
+        response_language: English
+        worldview:
+        - Earth’s history is short and broadly compatible with traditional chronology.
+        - Mountains, valleys, and strata could have formed rapidly in a few great events.
+        - There is no need to invoke immeasurable ages if a shorter history can do the work.
+        boss_voice:
+        - Speak like an early modern scholar or chronologist.
+        - Stay confident but not fanatical; argue about timescale and tempo.
+        - Do not deny the rocks themselves; contest their interpretation.
+        judge_focus:
+        - Allow arguments about layered strata, erosion, and angular unconformities.
+        - Reward moves that scale observed slow processes up to geology.
+        - Favor explanations that tie several geological traces into one timeline.
+        principles:
+        - If slow processes leave large marks, their accumulation requires time.
+        - Unconformities and repeated cycles of deposition, uplift, and erosion imply long history.
+        - One short catastrophe should not replace many independent geological signs.
+        facts:
+        - fact: Thick sedimentary successions with changing fossils indicate long-changing environments.
+          source: Stratigraphy
+        - fact: Rivers and seas slowly cut valleys and cliffs, but produce enormous results over long spans.
+          source: Observed erosion
+        - fact: Angular unconformities show that some layers were deposited, uplifted, eroded, and only later buried by new strata.
+          source: Geological sections
+        greeting: I see no need to stretch Earth’s story across unimaginable ages. If you want to impose deep time on me, show that the rocks themselves require it rather than merely allowing it.
+        victory_text: The strata and erosional surfaces really do seem to speak the language of duration. It is becoming hard to keep a short Earth history in the face of such a stone record.
+        defeat_text: You have not shown that Earth needs immense ages; a shorter history still seems sufficient to me.
+        stage_clear_text: You opened the door to deep time and prepared the next argument about how to read Earth’s ancient climate.
+        start_hp: 100
+      - id: diluvialist
+        title: Level 2. Great Flood or Ice Ages?
+        topic: Are scattered boulders, scratched bedrock, and strange landforms best explained by a single flood or by ancient glaciers?
+        boss_name: A 19th-Century Diluvialist
+        epoch: 19th century debate over flood geology and glaciation
+        response_language: English
+        worldview:
+        - Scattered boulders and scarred rock are best explained by a great flood.
+        - There is no need to imagine continental ice sheets if water can already move debris.
+        - Catastrophe is simpler than a long story of repeated glaciations.
+        boss_voice:
+        - Speak like a confident nineteenth-century field geologist.
+        - Stress the power of water and catastrophic events.
+        - Demand signs that point specifically to ice rather than water transport.
+        judge_focus:
+        - Allow arguments about moraines, erratics, glacial striations, and modern glaciers.
+        - Especially reward comparisons between ancient traces and modern glacial action.
+        - Favor moves that show coherent directions of ice flow.
+        principles:
+        - A cause should leave traces like those we see it producing today.
+        - Directional scratches and moraines point more strongly to ice than to chaotic water.
+        - When the same pattern repeats across broad regions, it calls for a unified physical cause.
+        facts:
+        - fact: Glacial striations on bedrock are aligned and match the direction of ice movement.
+          source: Field observation
+        - fact: Moraines and erratic boulders are naturally explained by transport in moving ice.
+          source: Glaciology
+        - fact: Modern alpine and polar glaciers leave the same kinds of traces seen in older deposits.
+          source: Observation of living glaciers
+        greeting: Scattered boulders, scratched rock, and odd ridges fit well enough into a picture of catastrophic floodwaters. If you want to replace water with ice, show me marks that glaciers leave better than any violent river could.
+        victory_text: You have shown too many specifically glacial signatures to reduce everything to one flood. Ancient climate now looks far colder and more structured than I wished to admit.
+        defeat_text: It still seems to me that water and catastrophe explain these boulders and grooves at least as well as glaciers do.
+        stage_clear_text: Earth is now not only old but climatically changeable; the next debate concerns the motion of continents themselves.
+        start_hp: 100
+      - id: jeffreys
+        title: Level 3. Fixed Continents or Plate Tectonics?
+        topic: Have continents always stayed in place, or has Earth’s crust truly moved across time?
+        boss_name: Harold Jeffreys
+        epoch: mid-20th century before plate tectonics fully won out
+        response_language: English
+        worldview:
+        - Continental drift is too bold and mechanically doubtful.
+        - Matching coastlines do not by themselves prove moving plates.
+        - Without a secure mechanism, such radical geology should be resisted.
+        boss_voice:
+        - Speak like a strict geophysicist dissatisfied with underpowered mechanisms.
+        - Press hard on mechanism and measurable traces.
+        - If several independent data streams converge, resist but acknowledge the pressure honestly.
+        judge_focus:
+        - Allow arguments about matching coastlines, fossil belts, seafloor spreading, magnetic stripes, and earthquake belts.
+        - Especially reward reasoning that ties continental geology to the ocean floor.
+        - Favor moves where new data provide not only possibility but mechanism and map of plate motion.
+        principles:
+        - Independent evidence from continents and oceans is especially powerful when it converges.
+        - A good theory does more than notice matching shapes; it explains why crust is created and separated.
+        - A new mechanism can turn an old bold hypothesis into a convincing theory.
+        facts:
+        - fact: Coastlines, rock belts, and fossils on opposite sides of the Atlantic fit when the continents are rejoined.
+          source: Comparative geology and paleontology
+        - fact: Mid-ocean ridges and symmetric magnetic stripes indicate seafloor spreading.
+          source: Marine geophysics
+        - fact: Earthquake and volcano belts trace the boundaries of moving plates.
+          source: Global seismology
+        greeting: Matching continental outlines impress the public, but they do not replace rigorous geophysics. If you want me to believe whole plates move, show me not only suggestive fits but also a mechanism and independent traces in the oceans.
+        victory_text: 'Continental drift now has more than a pretty map: it has physical traces on the ocean floor. I must admit that Earth’s crust really does move tectonically.'
+        defeat_text: Similarities and analogies still seem insufficient to me; I do not yet see a compelling case for moving continents as established fact.
+        stage_clear_text: You completed the geology campaign by showing Earth to be old, climatically variable, and tectonically alive.
+        start_hp: 100

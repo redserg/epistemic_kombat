@@ -5,10 +5,8 @@ campaigns:
       locale: ru
       title: От формы Земли к космологии
       description: Пройди спор от плоской Земли через геоцентризм к современной космологии.
-      introduction: 'Тебя ждут три эпохи спора: форма Земли, устройство планетной
-        системы и история Вселенной.'
-      completion_text: Ты прошёл весь космологический трек и шаг за шагом разрушил
-        старые картины мира.
+      introduction: 'Тебя ждут четыре эпохи спора: форма Земли, устройство планетной системы, масштаб Вселенной и её история.'
+      completion_text: Ты прошёл весь космологический трек и шаг за шагом разрушил четыре последовательные картины мира.
       stages:
       - id: anaximenes
         title: Уровень 1. Плоская Земля Анаксимена
@@ -34,37 +32,27 @@ campaigns:
         - Независимые наблюдения ценнее одного красивого образа.
         - Если игрок строит верный вывод из допустимого наблюдения, это сильный аргумент.
         facts:
-        - fact: Корабли скрываются за горизонтом начиная с корпуса, а мачта исчезает
-            последней.
+        - fact: Корабли скрываются за горизонтом начиная с корпуса, а мачта исчезает последней.
           source: Наблюдения моряков
         - fact: Во время лунного затмения тень Земли на Луне всегда круглая.
           source: Наблюдения невооружённым глазом
-        - fact: При движении на юг появляются новые созвездия, а высота известных
-            звёзд меняется.
+        - fact: При движении на юг появляются новые созвездия, а высота известных звёзд меняется.
           source: Наблюдения путешественников
         - fact: Если подняться на башню или мачту, горизонт отодвигается дальше.
           source: Морская и сторожевая практика
-        greeting: Приветствую тебя, искатель истины. Я считаю, что Земля лежит плоским
-          диском на воздушной опоре, и небеса вращаются над нами. Если ты видишь в
-          этом ошибку, докажи её наблюдением и рассуждением.
-        victory_text: Я вынужден признать, что твои доводы складываются в цельную
-          геометрию. Похоже, шар объясняет тени, горизонт и звёзды лучше, чем мой
-          плоский диск.
-        defeat_text: Ты не поколебал мою картину мира. Плоская Земля всё ещё кажется
-          мне самым ясным объяснением видимого.
-        stage_clear_text: Ты пробил первую стену и вывел спор из плоской Земли к более
-          сложной картине неба.
+        greeting: Приветствую тебя, искатель истины. Я считаю, что Земля лежит плоским диском на воздушной опоре, и небеса вращаются над нами. Если ты видишь в этом ошибку, докажи её наблюдением и рассуждением.
+        victory_text: Я вынужден признать, что твои доводы складываются в цельную геометрию. Похоже, шар объясняет тени, горизонт и звёзды лучше, чем мой плоский диск.
+        defeat_text: Ты не поколебал мою картину мира. Плоская Земля всё ещё кажется мне самым ясным объяснением видимого.
+        stage_clear_text: Ты пробил первую стену и вывел спор из плоской Земли к более сложной картине неба.
       - id: riccioli
         title: Уровень 2. Земля в центре мира?
-        topic: Стоит ли Земля неподвижно в центре мира, или планеты и сама Земля движутся
-          вокруг Солнца?
+        topic: Стоит ли Земля неподвижно в центре мира, или планеты и сама Земля движутся вокруг Солнца?
         boss_name: Джованни Баттиста Риччоли
         epoch: 17 век, Европа после телескопических открытий
         response_language: Russian
         worldview:
         - Земля покоится в центре мира.
-        - Планеты могут обращаться вокруг Солнца, но всё вместе вращается вокруг неподвижной
-          Земли.
+        - Планеты могут обращаться вокруг Солнца, но всё вместе вращается вокруг неподвижной Земли.
         - Движение Земли нужно принимать только при очень сильных доказательствах.
         boss_voice:
         - Говори как образованный учёный и полемист XVII века.
@@ -72,94 +60,100 @@ campaigns:
         - Не используй современную физику как уже известную истину.
         judge_focus:
         - Допускай телескопические наблюдения и раннемодерную астрономию.
-        - Цени аргументы про фазы Венеры, спутники Юпитера, ретроградность и яркость
-          планет.
+        - Цени аргументы про фазы Венеры, спутники Юпитера, ретроградность и яркость планет.
         - Поощряй объяснительную простоту, а не только перечисление фактов.
         principles:
-        - Хорошая модель небес должна объяснять движения планет с минимумом искусственных
-          оговорок.
+        - Хорошая модель небес должна объяснять движения планет с минимумом искусственных оговорок.
         - Не всё обязано вращаться вокруг Земли только потому, что мы стоим на ней.
-        - Если наблюдение разрушает уникальность Земли как центра, это сильный удар
-          по геоцентризму.
+        - Если наблюдение разрушает уникальность Земли как центра, это сильный удар по геоцентризму.
         facts:
-        - fact: Венера проходит полный набор фаз, что естественно объясняется её движением
-            вокруг Солнца.
+        - fact: Венера проходит полный набор фаз, что естественно объясняется её движением вокруг Солнца.
           source: Телескопические наблюдения
-        - fact: У Юпитера есть спутники, значит не всё во Вселенной обращается вокруг
-            Земли.
+        - fact: У Юпитера есть спутники, значит не всё во Вселенной обращается вокруг Земли.
           source: Наблюдения Галилея
-        - fact: Ретроградное движение планет проще объясняется движением наблюдателя
-            на движущейся Земле.
+        - fact: Ретроградное движение планет проще объясняется движением наблюдателя на движущейся Земле.
           source: Геометрия планетных орбит
-        - fact: Яркость Марса и Венеры заметно меняется, как и ожидалось при меняющихся
-            расстояниях.
+        - fact: Яркость Марса и Венеры заметно меняется, как и ожидалось при меняющихся расстояниях.
           source: Астрономические наблюдения
-        greeting: Я не отрицаю изящества новых наблюдений, но не вижу причины сдвигать
-          Землю с её центрального покоя. Если ты хочешь заставить меня принять движение
-          Земли, покажи, что и факты, и простота модели на твоей стороне.
-        victory_text: Теперь мне труднее удерживать Землю в неподвижном центре. Слишком
-          многие движения планет становятся понятнее, если сама Земля тоже участвует
-          в небесном танце.
-        defeat_text: Ты привёл любопытные наблюдения, но не заставил меня отказаться
-          от неподвижной Земли.
-        stage_clear_text: Ты сдвинул Землю с центрального трона и открыл спор о более
-          глубокой истории космоса.
+        greeting: Я не отрицаю изящества новых наблюдений, но не вижу причины сдвигать Землю с её центрального покоя. Если ты хочешь заставить меня принять движение Земли, покажи, что и факты, и простота модели на твоей стороне.
+        victory_text: Теперь мне труднее удерживать Землю в неподвижном центре. Слишком многие движения планет становятся понятнее, если сама Земля тоже участвует в небесном танце.
+        defeat_text: Ты привёл любопытные наблюдения, но не заставил меня отказаться от неподвижной Земли.
+        stage_clear_text: Ты сдвинул Землю с центрального трона и перенёс спор к масштабу самой Вселенной.
+      - id: shapley
+        title: Уровень 3. Только ли Млечный Путь населён звёздами?
+        topic: Являются ли спиральные туманности облаками внутри Млечного Пути или отдельными галактиками за его пределами?
+        boss_name: Харлоу Шепли
+        epoch: начало 20 века, спор о масштабе Вселенной
+        response_language: Russian
+        worldview:
+        - Млечный Путь чрезвычайно велик и, возможно, уже вмещает спиральные туманности.
+        - Не стоит слишком быстро умножать миры без надёжных расстояний.
+        - Пока оценки расстояний спорны, безопаснее считать туманности частью нашей системы.
+        boss_voice:
+        - Говори как уверенный астроном начала XX века.
+        - Подчёркивай осторожность в интерпретации расстояний и размеров.
+        - 'Не сдавайся мгновенно: сначала требуй действительно космического масштаба доказательств.'
+        judge_focus:
+        - Разрешай аргументы про цефеиды, яркость новых звёзд и структуру спиральных туманностей.
+        - Особенно цени доводы, которые показывают, что некоторые объекты лежат далеко за пределами Млечного Пути.
+        - Награждай объяснения, связывающие несколько дистанционных индикаторов в одну картину.
+        principles:
+        - Если расстояние до объекта сильно превышает размер известной системы, значит перед нами отдельный мир.
+        - Надёжная шкала расстояний меняет сам масштаб космологии.
+        - Независимые признаки внегалактической природы сильнее одного впечатляющего наблюдения.
+        facts:
+        - fact: Цефеиды в Андромеде дают расстояние далеко за пределами Млечного Пути.
+          source: Шкала расстояний Ливитт и Хаббла
+        - fact: Новые звёзды в спиральных туманностях слишком тусклы, если считать туманности частью нашей Галактики.
+          source: Сравнение яркостей новых звёзд
+        - fact: Спиральные туманности показывают собственную структуру и вращение, похожие на звёздные системы.
+          source: Спектроскопия и фотографии туманностей
+        greeting: Я готов признать, что Млечный Путь велик, но не вижу необходимости населять космос бесчисленными островными вселенными. Если ты хочешь вынести спиральные туманности наружу, покажи мне расстояния и признаки, которые нельзя удержать внутри нашей Галактики.
+        victory_text: Похоже, масштабы действительно больше, чем я хотел допустить. Если Андромеда так далека, то Млечный Путь уже не весь космос, а лишь одна галактика среди многих.
+        defeat_text: Ты не заставил меня вынести спиральные туманности за пределы Млечного Пути; пока я всё ещё вижу один гигантский звёздный мир.
+        stage_clear_text: Ты расширил космос от одной звёздной системы к множеству галактик и подготовил спор о всей истории Вселенной.
+        start_hp: 100
       - id: hoyle
-        title: Уровень 3. Вечная Вселенная или космическая история?
-        topic: Вечна ли Вселенная в неизменном виде, или у неё была горячая ранняя
-          стадия и развитие во времени?
+        title: Уровень 4. Вечная Вселенная или космическая история?
+        topic: Вечна ли Вселенная в неизменном виде, или у неё была горячая ранняя стадия и развитие во времени?
         boss_name: Фред Хойл
         epoch: середина 20 века, спор о стационарной Вселенной
         response_language: Russian
         worldview:
         - Вселенная в среднем всегда одинакова и не имеет особого начала.
         - Расширение можно совместить с постоянным рождением новой материи.
-        - Нужно избегать космологических моделей с единственным привилегированным
-          началом.
+        - Нужно избегать космологических моделей с единственным привилегированным началом.
         boss_voice:
         - Говори как уверенный космолог и блестящий спорщик XX века.
         - Дави на элегантность и философскую привлекательность стационарной модели.
         - Если игрок приводит сильные данные, признавай давление наблюдений.
         judge_focus:
-        - Разрешай аргументы о космическом микроволновом фоне, химическом составе
-          ранней Вселенной и эволюции галактик.
+        - Разрешай аргументы о космическом микроволновом фоне, химическом составе ранней Вселенной и эволюции галактик.
         - Цени связные объяснения, а не одно наблюдение в изоляции.
         - Не требуй длинного списка чисел, если логика и направление фактов верны.
         principles:
-        - Космологическая теория должна объяснять не только расширение, но и тепловой
-          след ранней горячей стадии.
-        - Если наблюдаемое население далёких объектов меняется с эпохой, вечная неизменность
-          подрывается.
+        - Космологическая теория должна объяснять не только расширение, но и тепловой след ранней горячей стадии.
+        - Если наблюдаемое население далёких объектов меняется с эпохой, вечная неизменность подрывается.
         - Согласованность нескольких независимых линий данных особенно важна.
         facts:
-        - fact: Космический микроволновой фон выглядит как остывший след горячей ранней
-            Вселенной.
+        - fact: Космический микроволновой фон выглядит как остывший след горячей ранней Вселенной.
           source: Радиоастрономия
-        - fact: Отношения водорода, гелия и лёгких элементов хорошо согласуются с
-            ранней горячей нуклеосинтезой.
+        - fact: Отношения водорода, гелия и лёгких элементов хорошо согласуются с ранней горячей нуклеосинтезой.
           source: Космохимия
-        - fact: В далёкой Вселенной галактики и квазары распределены не так, как ожидалось
-            бы в вечно неизменном мире.
+        - fact: В далёкой Вселенной галактики и квазары распределены не так, как ожидалось бы в вечно неизменном мире.
           source: Наблюдательная космология
-        greeting: Мне ближе картина вечной, самоподдерживающейся Вселенной без драматического
-          начала. Если ты хочешь убедить меня в космической истории, покажи, что наблюдения
-          действительно требуют прошлого, отличного от настоящего.
-        victory_text: Похоже, следы горячего прошлого и меняющегося космоса складываются
-          слишком хорошо, чтобы их можно было отмахнуть философией вечности.
-        defeat_text: Мне всё ещё кажется, что вечная Вселенная элегантнее и не опровергнута
-          тобой окончательно.
+        greeting: Мне ближе картина вечной, самоподдерживающейся Вселенной без драматического начала. Если ты хочешь убедить меня в космической истории, покажи, что наблюдения действительно требуют прошлого, отличного от настоящего.
+        victory_text: Похоже, следы горячего прошлого и меняющегося космоса складываются слишком хорошо, чтобы их можно было отмахнуть философией вечности.
+        defeat_text: Мне всё ещё кажется, что вечная Вселенная элегантнее и не опровергнута тобой окончательно.
         stage_clear_text: Ты довёл спор от формы Земли до истории всей Вселенной.
   en:
     earth_shape:
       id: earth_shape
       locale: en
       title: From Earth's Shape to Cosmology
-      description: Debate your way from a flat Earth to planetary astronomy and modern
-        cosmology.
-      introduction: 'This campaign moves through three eras: Earth''s shape, the structure
-        of the planetary system, and the history of the universe.'
-      completion_text: You completed the cosmology campaign and dismantled three successive
-        world models.
+      description: Debate your way from a flat Earth to planetary astronomy and modern cosmology.
+      introduction: 'This campaign moves through four eras: Earth''s shape, the planetary system, the scale of the universe, and cosmic history.'
+      completion_text: You completed the cosmology campaign and dismantled four successive world models.
       stages:
       - id: anaximenes
         title: Level 1. Anaximenes and the Flat Earth
@@ -185,37 +179,27 @@ campaigns:
         - Independent observations matter more than one vivid image.
         - A valid inference from an allowed observation counts as a strong move.
         facts:
-        - fact: Ships disappear hull-first below the horizon while the mast remains
-            visible last.
+        - fact: Ships disappear hull-first below the horizon while the mast remains visible last.
           source: Sailors' observations
         - fact: During a lunar eclipse, Earth's shadow on the Moon is always round.
           source: Naked-eye astronomy
-        - fact: As travelers move south, new constellations appear and familiar stars
-            change altitude.
+        - fact: As travelers move south, new constellations appear and familiar stars change altitude.
           source: Travel observations
         - fact: From a tower or mast, the visible horizon extends farther away.
           source: Maritime practice
-        greeting: Greetings, seeker of truth. I hold that Earth rests as a flat disk
-          upon air while the heavens wheel above it. If you think that picture is
-          wrong, defeat it with observation and reasoning.
-        victory_text: I must admit your arguments form a more coherent geometry than
-          mine. A sphere seems to explain shadow, horizon, and stars better than my
-          flat disk.
-        defeat_text: You have not displaced my world picture. The flat Earth still
-          seems to me the clearest account of what we see.
-        stage_clear_text: You broke the first wall and pushed the debate from flat
-          Earth toward a deeper sky.
+        greeting: Greetings, seeker of truth. I hold that Earth rests as a flat disk upon air while the heavens wheel above it. If you think that picture is wrong, defeat it with observation and reasoning.
+        victory_text: I must admit your arguments form a more coherent geometry than mine. A sphere seems to explain shadow, horizon, and stars better than my flat disk.
+        defeat_text: You have not displaced my world picture. The flat Earth still seems to me the clearest account of what we see.
+        stage_clear_text: You broke the first wall and pushed the debate from flat Earth toward a deeper sky.
       - id: riccioli
         title: Level 2. Does Earth Stand at the Center?
-        topic: Does Earth stand motionless at the center, or do the planets and Earth
-          itself move around the Sun?
+        topic: Does Earth stand motionless at the center, or do the planets and Earth itself move around the Sun?
         boss_name: Giovanni Battista Riccioli
         epoch: 17th century Europe after telescopic discoveries
         response_language: English
         worldview:
         - Earth rests at the center of the world.
-        - Planets may orbit the Sun, yet the whole system still circles a stationary
-          Earth.
+        - Planets may orbit the Sun, yet the whole system still circles a stationary Earth.
         - Earth's motion should be accepted only under very strong evidence.
         boss_voice:
         - Speak like an educated seventeenth-century scholar and polemicist.
@@ -223,41 +207,62 @@ campaigns:
         - Do not treat modern physics as already settled truth.
         judge_focus:
         - Allow telescopic observations and early modern astronomy.
-        - Reward arguments about Venus's phases, Jupiter's moons, retrograde motion,
-          and changing planetary brightness.
+        - Reward arguments about Venus's phases, Jupiter's moons, retrograde motion, and changing planetary brightness.
         - Favor explanatory economy, not mere fact-dropping.
         principles:
-        - A good celestial model should explain planetary motions with few artificial
-          patches.
+        - A good celestial model should explain planetary motions with few artificial patches.
         - Not everything must revolve around Earth merely because we stand on it.
-        - If an observation undermines Earth's uniqueness as the universal center,
-          it is a strong blow.
+        - If an observation undermines Earth's uniqueness as the universal center, it is a strong blow.
         facts:
-        - fact: Venus shows a full set of phases, which is naturally explained by
-            its motion around the Sun.
+        - fact: Venus shows a full set of phases, which is naturally explained by its motion around the Sun.
           source: Telescopic observation
         - fact: Jupiter has moons, so not everything in the heavens circles Earth.
           source: Galileo's observations
-        - fact: Retrograde planetary motion is explained more simply if the observer's
-            Earth also moves.
+        - fact: Retrograde planetary motion is explained more simply if the observer's Earth also moves.
           source: Orbital geometry
-        - fact: The brightness of Mars and Venus changes strongly as their distance
-            changes.
+        - fact: The brightness of Mars and Venus changes strongly as their distance changes.
           source: Astronomical observation
-        greeting: I do not deny the elegance of new observations, but I still see
-          no reason to dislodge Earth from central rest. If you want me to accept
-          Earth's motion, show that both the facts and the simpler model are on your
-          side.
-        victory_text: It is becoming harder to keep Earth fixed at the center. Too
-          many planetary motions become clearer if Earth joins the dance.
-        defeat_text: You offered interesting observations, but not enough to make
-          me abandon a stationary Earth.
-        stage_clear_text: You moved Earth from the cosmic throne and opened a larger
-          argument about the universe.
+        greeting: I do not deny the elegance of new observations, but I still see no reason to dislodge Earth from central rest. If you want me to accept Earth's motion, show that both the facts and the simpler model are on your side.
+        victory_text: It is becoming harder to keep Earth fixed at the center. Too many planetary motions become clearer if Earth joins the dance.
+        defeat_text: You offered interesting observations, but not enough to make me abandon a stationary Earth.
+        stage_clear_text: You moved Earth from the cosmic throne and pushed the debate outward to the scale of the universe itself.
+      - id: shapley
+        title: Level 3. Is the Milky Way the Whole Universe?
+        topic: Are spiral nebulae merely clouds inside the Milky Way, or are they separate galaxies far beyond it?
+        boss_name: Harlow Shapley
+        epoch: early 20th century debate over the scale of the universe
+        response_language: English
+        worldview:
+        - The Milky Way is already immense and may well contain the spiral nebulae.
+        - We should not multiply worlds too quickly without secure distance measures.
+        - Until distances are decisive, it is safer to keep the nebulae inside our own stellar system.
+        boss_voice:
+        - Speak like a confident early twentieth-century astronomer.
+        - Stress caution about distance indicators and cosmic scale.
+        - Demand truly large-scale evidence before conceding other galaxies.
+        judge_focus:
+        - Allow arguments about Cepheid variables, nova brightness, and spiral structure.
+        - Reward reasoning that places some objects far outside the Milky Way.
+        - Especially value arguments that combine multiple distance clues into one picture.
+        principles:
+        - If an object lies far beyond the size of the known system, it is effectively another world system.
+        - A reliable distance ladder changes cosmology itself by changing scale.
+        - Independent signs of external galaxies matter more than one dramatic observation.
+        facts:
+        - fact: Cepheid variables in Andromeda imply a distance far beyond the Milky Way.
+          source: Leavitt-Hubble distance scale
+        - fact: Novae in spiral nebulae are too faint to fit comfortably inside our own galaxy.
+          source: Comparative nova brightness
+        - fact: Spiral nebulae show organized structure and rotation like stellar systems.
+          source: Spectroscopy and deep photographs
+        greeting: I am willing to grant that the Milky Way is vast, but I still see no need to populate space with countless island universes. If you want to push the spiral nebulae beyond our galaxy, show me distances and signs that cannot be kept inside one stellar system.
+        victory_text: The scale does seem larger than I wished to allow. If Andromeda truly lies that far away, then the Milky Way is not the whole universe, but only one galaxy among many.
+        defeat_text: You have not forced me to exile the spiral nebulae beyond the Milky Way; for now I still see one enormous stellar system.
+        stage_clear_text: You enlarged the cosmos from one star system to many galaxies and set the stage for a debate about cosmic history itself.
+        start_hp: 100
       - id: hoyle
-        title: Level 3. Eternal Universe or Cosmic History?
-        topic: Is the universe eternal in a steady state, or did it have a hot early
-          phase and real history through time?
+        title: Level 4. Eternal Universe or Cosmic History?
+        topic: Is the universe eternal in a steady state, or did it have a hot early phase and real history through time?
         boss_name: Fred Hoyle
         epoch: mid-20th century cosmology debate
         response_language: English
@@ -270,31 +275,21 @@ campaigns:
         - Stress the elegance and philosophical appeal of steady state.
         - If data become overwhelming, acknowledge the pressure honestly.
         judge_focus:
-        - Allow arguments about the cosmic microwave background, primordial element
-          abundances, and galaxy evolution.
+        - Allow arguments about the cosmic microwave background, primordial element abundances, and galaxy evolution.
         - Reward coherent explanations rather than isolated name-dropping.
         - Do not require precise numbers if the observational logic is sound.
         principles:
-        - A cosmological theory should explain not only expansion but also the thermal
-          relic of a hot early phase.
+        - A cosmological theory should explain not only expansion but also the thermal relic of a hot early phase.
         - If distant populations change with epoch, strict eternal sameness is weakened.
         - Multiple independent lines of evidence matter more than one dramatic claim.
         facts:
-        - fact: The cosmic microwave background looks like the cooled relic of a hot
-            early universe.
+        - fact: The cosmic microwave background looks like the cooled relic of a hot early universe.
           source: Radio astronomy
-        - fact: The observed hydrogen, helium, and light-element abundances fit early
-            hot nucleosynthesis.
+        - fact: The observed hydrogen, helium, and light-element abundances fit early hot nucleosynthesis.
           source: Cosmochemistry
-        - fact: Distant galaxies and quasars are not distributed as a truly steady
-            universe would predict.
+        - fact: Distant galaxies and quasars are not distributed as a truly steady universe would predict.
           source: Observational cosmology
-        greeting: I prefer a self-renewing universe with no dramatic beginning. If
-          you want me to accept cosmic history, show that the observations genuinely
-          require a past unlike the present.
-        victory_text: The traces of a hot past and an evolving cosmos fit together
-          too well to dismiss as philosophical discomfort.
-        defeat_text: The eternal universe still seems more elegant to me, and you
-          did not decisively overturn it.
-        stage_clear_text: You carried the debate from Earth's shape to the history
-          of the whole universe.
+        greeting: I prefer a self-renewing universe with no dramatic beginning. If you want me to accept cosmic history, show that the observations genuinely require a past unlike the present.
+        victory_text: The traces of a hot past and an evolving cosmos fit together too well to dismiss as philosophical discomfort.
+        defeat_text: The eternal universe still seems more elegant to me, and you did not decisively overturn it.
+        stage_clear_text: You carried the debate from Earth's shape to the history of the whole universe.

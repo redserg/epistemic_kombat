@@ -1,0 +1,223 @@
+campaigns:
+  ru:
+    chemistry_revolutions:
+      id: chemistry_revolutions
+      locale: ru
+      title: Революции в химии и материи
+      description: От горения и тепла к атомам и микромиру.
+      introduction: 'Этот трек проходит через три спора: что происходит при горении, что такое тепло и насколько реальны атомы.'
+      completion_text: Ты прошёл химический трек и шаг за шагом показал, как материя перестала быть набором смутных сущностей и стала измеримой микрофизикой.
+      stages:
+      - id: phlogiston
+        title: Уровень 1. Флогистон или кислород?
+        topic: Горение — это выход особого флогистона из тела или соединение вещества с частью воздуха?
+        boss_name: Шталианский химик
+        epoch: XVIII век, до химической революции Лавуазье
+        response_language: Russian
+        worldview:
+        - Горючие тела содержат флогистон, который уходит при сгорании.
+        - Воздух лишь принимает уходящее начало горения.
+        - Старая теория удобна, потому что единообразно описывает горение и прокаливание.
+        boss_voice:
+        - Говори как лабораторный химик XVIII века.
+        - Упирай на традицию и на кажущуюся простоту флогистона.
+        - Пытайся переосмыслить неудобные взвешивания в пользу старой схемы.
+        judge_focus:
+        - Разрешай аргументы про увеличение массы при прокаливании, роль воздуха и восстановление металлов.
+        - Цени доводы, где измерение массы ломает старую сущность.
+        - Награждай объяснения, связывающие горение и дыхание как процессы с участием воздуха.
+        principles:
+        - Если вещество после горения стало тяжелее, трудно сказать, что оно просто что-то потеряло.
+        - Теория должна учитывать участие воздуха как материального реагента.
+        - Измерение массы сильнее привычного словаря старой химии.
+        facts:
+        - fact: Многие металлы при прокаливании увеличивают массу, хотя флогистон должен был бы уходить.
+          source: Взвешивания в химической лаборатории
+        - fact: В закрытом сосуде горение прекращается, когда определённая часть воздуха исчерпана.
+          source: Пневматическая химия
+        - fact: Оксиды металлов можно восстановить, добавив вещества, которые забирают кислород.
+          source: Опыт Лавуазье и его современников
+        greeting: Флогистон по-прежнему кажется мне самым естественным языком горения. Если ты хочешь выгнать его из химии, покажи, почему взвешивания и воздух требуют другой картины.
+        victory_text: Пожалуй, масса и роль воздуха действительно работают против флогистона. Мне всё труднее говорить о горении как о простом уходе невидимого начала.
+        defeat_text: Ты не заставил меня отказаться от флогистона; старая теория всё ещё кажется мне пригодной и понятной.
+        stage_clear_text: Ты изменил язык горения; теперь спор переносится к самой природе тепла.
+        start_hp: 100
+      - id: caloric
+        title: Уровень 2. Теплород или движение?
+        topic: Является ли тепло невесомой жидкостью теплородом или связано с движением и энергией материи?
+        boss_name: Сторонник теплорода
+        epoch: конец XVIII — начало XIX века
+        response_language: Russian
+        worldview:
+        - Тепло удобно мыслить как особую невесомую жидкость, перетекающую между телами.
+        - Наличие горячего и холодного хорошо описывается разным количеством теплорода.
+        - Механическое объяснение слишком грубо и не даёт ясной субстанции тепла.
+        boss_voice:
+        - Говори как аккуратный натурфилософ эпохи теплорода.
+        - Подчеркивай интуитивную ясность перетекания тепла.
+        - С подозрением относись к бесконечному рождению тепла трением.
+        judge_focus:
+        - Разрешай аргументы про трение, сверление пушек, превращение работы в тепло и нагрев при сжатии.
+        - Особенно цени доводы, где тепло получается без видимого расходования особой жидкости.
+        - Награждай связи между механической работой и количеством тепла.
+        principles:
+        - Если тепло можно производить трением почти без конца, трудно считать его запасённой жидкостью.
+        - Хорошая теория должна объяснить превращение механической работы в нагрев.
+        - Сжатие и расширение газа указывают на связь тепла с движением частиц.
+        facts:
+        - fact: При сверлении пушек трение может долго производить большое количество тепла.
+          source: Опыт Румфорда
+        - fact: Механическая работа может превращаться в нагрев, как показывают опыты Джоуля.
+          source: Механический эквивалент тепла
+        - fact: Газ нагревается при сжатии и охлаждается при расширении, что связывает тепло с движением частиц.
+          source: Газовые опыты
+        greeting: Теплород удобен именно тем, что делает тепло почти осязаемой субстанцией. Если ты хочешь заменить его движением, покажи, почему трение и работа дают более сильное объяснение, чем перетекание тонкой жидкости.
+        victory_text: Чем больше я смотрю на трение и работу, тем менее похожим на вещество кажется тепло. Пожалуй, язык движения и энергии действительно сильнее старого теплорода.
+        defeat_text: Ты не заставил меня отказаться от теплорода; субстанциальный язык тепла всё ещё кажется мне нагляднее.
+        stage_clear_text: Ты лишил тепло самостоятельной жидкости и открыл последний спор — о реальности самих атомов.
+        start_hp: 100
+      - id: ostwald
+        title: Уровень 3. Реальны ли атомы?
+        topic: Следует ли считать атомы реальными частями материи, или это лишь удобные вычислительные фикции?
+        boss_name: Вильгельм Оствальд
+        epoch: рубеж XIX–XX веков, спор об атомизме
+        response_language: Russian
+        worldview:
+        - Наука может обходиться измеримыми энергиями и отношениями без буквальной веры в атомы.
+        - Атомы удобны как расчётный язык, но не обязаны быть реальными объектами.
+        - Нужно осторожно относиться к сущностям, которые нельзя увидеть напрямую.
+        boss_voice:
+        - Говори как строгий физико-химик, требующий наблюдаемых оснований.
+        - Дави на экономию понятий и на опасность наивного реализма.
+        - Если игрок даёт количественные следы атомов, признавай их силу, но проверяй, нельзя ли обойтись без буквальных частиц.
+        judge_focus:
+        - Разрешай аргументы про броуновское движение, стехиометрию, электролиз и кристаллический порядок.
+        - Особенно цени случаи, где атомная картина делает количественные предсказания.
+        - Награждай объяснения, в которых разные области химии и физики сходятся на дискретном строении вещества.
+        principles:
+        - Когда невидимая сущность даёт точные количественные следствия, её реальность становится серьёзной гипотезой.
+        - Согласие химии, электричества и микроскопических флуктуаций особенно сильно.
+        - Удобная фикция перестаёт быть просто фикцией, если оставляет измеримые отпечатки повсюду.
+        facts:
+        - fact: Броуновское движение согласуется с ударами множества молекул и позволяет оценивать их число.
+          source: Работы Эйнштейна и Перрена
+        - fact: Стехиометрия и законы постоянных отношений естественно объясняются дискретным составом вещества.
+          source: Химический анализ
+        - fact: Электролиз связывает вещества с дискретными электрическими зарядами и ионами.
+          source: Фарадеева электрохимия
+        greeting: Я не отрицаю удобства атомного языка, но удобство ещё не делает сущность реальной. Если ты хочешь навязать мне атомы как буквальные части материи, покажи, что без них рассыпаются сразу и химия, и физика.
+        victory_text: Похоже, атомы оставляют слишком много количественных следов, чтобы считать их одной лишь бухгалтерией. Мне приходится признать, что микромир гораздо реальнее, чем я хотел допустить.
+        defeat_text: Ты не доказал, что атомы нужно считать реальными объектами, а не просто полезной схемой описания.
+        stage_clear_text: Ты завершил химический трек, проведя спор от горения и тепла к реальности атомов.
+        start_hp: 100
+  en:
+    chemistry_revolutions:
+      id: chemistry_revolutions
+      locale: en
+      title: Revolutions in Chemistry and Matter
+      description: From combustion and heat to atoms and the micro-world.
+      introduction: 'This campaign moves through three disputes: what happens in burning, what heat is, and how real atoms should be taken to be.'
+      completion_text: You completed the chemistry campaign and showed step by step how matter ceased to be a blur of vague essences and became measurable microphysics.
+      stages:
+      - id: phlogiston
+        title: Level 1. Phlogiston or Oxygen?
+        topic: Is burning the release of a special phlogiston, or the combination of matter with part of the air?
+        boss_name: A Stahlian Chemist
+        epoch: 18th century before Lavoisier’s chemical revolution
+        response_language: English
+        worldview:
+        - Combustible bodies contain phlogiston, which leaves them during burning.
+        - Air merely receives the escaping principle of combustion.
+        - The old theory is attractive because it seems to unify burning and calcination.
+        boss_voice:
+        - Speak like an eighteenth-century laboratory chemist.
+        - Lean on tradition and the apparent simplicity of phlogiston.
+        - Try to reinterpret awkward weighings in favor of the older scheme.
+        judge_focus:
+        - Allow arguments about mass gain in calcination, the role of air, and metal reduction.
+        - Reward moves where weighing breaks the old invisible essence.
+        - Favor explanations that connect combustion and respiration through air.
+        principles:
+        - If a substance ends up heavier after burning, it is hard to say it merely lost something.
+        - A theory should account for air as a material participant.
+        - Measured mass outranks the familiar vocabulary of older chemistry.
+        facts:
+        - fact: Many metals gain mass when calcined, even though phlogiston should have left them.
+          source: Laboratory weighing
+        - fact: In a closed vessel, burning stops when a certain part of the air has been used up.
+          source: Pneumatic chemistry
+        - fact: Metal oxides can be reduced by substances that remove oxygen from them.
+          source: Experiments of Lavoisier and contemporaries
+        greeting: Phlogiston still seems to me the most natural language for combustion. If you want to drive it out of chemistry, show me why weighing and the behavior of air require a different picture.
+        victory_text: Mass and the role of air do seem to press against phlogiston. It is becoming harder to describe burning as the mere escape of an invisible principle.
+        defeat_text: You have not forced me to give up phlogiston; the older theory still seems serviceable and intelligible to me.
+        stage_clear_text: You changed the language of burning; now the debate shifts to the nature of heat itself.
+        start_hp: 100
+      - id: caloric
+        title: Level 2. Caloric or Motion?
+        topic: Is heat a weightless fluid called caloric, or is it tied to motion and energy in matter?
+        boss_name: A Caloric Theorist
+        epoch: late 18th to early 19th century
+        response_language: English
+        worldview:
+        - Heat is usefully understood as a subtle weightless fluid flowing between bodies.
+        - Hot and cold are naturally described by different quantities of caloric.
+        - A mechanical explanation seems too crude and does not offer a clear substance of heat.
+        boss_voice:
+        - Speak like a careful natural philosopher of the caloric era.
+        - Stress the intuitive clarity of heat flowing from place to place.
+        - Treat endless heat from friction with suspicion.
+        judge_focus:
+        - Allow arguments about friction, cannon-boring, work turning into heat, and heating under compression.
+        - Especially reward cases where heat is produced without obvious expenditure of a stored fluid.
+        - Favor links between mechanical work and measured heat.
+        principles:
+        - If heat can be generated by friction almost without limit, it is hard to treat it as a stored fluid.
+        - A good theory should explain the conversion of work into heating.
+        - Compression and expansion of gases point toward heat being tied to particle motion.
+        facts:
+        - fact: Boring cannons by friction can produce large quantities of heat for a long time.
+          source: Rumford’s cannon experiment
+        - fact: Mechanical work can be converted into heat, as Joule’s experiments show.
+          source: Mechanical equivalent of heat
+        - fact: A gas warms when compressed and cools when expanded, linking heat to particle motion.
+          source: Gas experiments
+        greeting: Caloric is useful precisely because it makes heat almost tangible. If you want to replace it with motion, show me why friction and work explain more than the flow of a subtle fluid does.
+        victory_text: The more I look at friction and work, the less heat resembles a substance. The language of motion and energy does seem stronger than the old caloric picture.
+        defeat_text: You have not forced me to abandon caloric; the substantial language of heat still seems clearer to me.
+        stage_clear_text: 'You stripped heat of its fluid and opened the last debate: are atoms themselves real?'
+        start_hp: 100
+      - id: ostwald
+        title: Level 3. Are Atoms Real?
+        topic: Should atoms be treated as real constituents of matter, or only as convenient calculational fictions?
+        boss_name: Wilhelm Ostwald
+        epoch: turn of the 20th century, debate over atomism
+        response_language: English
+        worldview:
+        - Science can work with measurable energies and relations without literal belief in atoms.
+        - Atoms are useful as a calculational language, but need not be real objects.
+        - We should be cautious about entities we cannot see directly.
+        boss_voice:
+        - Speak like a strict physical chemist demanding observable grounding.
+        - Press on conceptual economy and the dangers of naive realism.
+        - If the player offers quantitative atomic traces, acknowledge them but test whether literal particles are truly needed.
+        judge_focus:
+        - Allow arguments about Brownian motion, stoichiometry, electrolysis, and crystal order.
+        - Especially reward cases where the atomic picture makes quantitative predictions.
+        - Favor explanations in which chemistry and physics converge on discrete structure.
+        principles:
+        - When an unseen entity yields precise quantitative consequences, its reality becomes a serious hypothesis.
+        - Agreement between chemistry, electricity, and microscopic fluctuations is especially powerful.
+        - A useful fiction stops looking merely fictive when it leaves measurable fingerprints everywhere.
+        facts:
+        - fact: Brownian motion matches bombardment by many molecules and allows their number to be estimated.
+          source: Einstein and Perrin
+        - fact: Stoichiometry and definite proportions are naturally explained by discrete composition.
+          source: Chemical analysis
+        - fact: Electrolysis ties matter to discrete electric charges and ions.
+          source: Faraday’s electrochemistry
+        greeting: I do not deny the convenience of atomic language, but convenience does not make an entity real. If you want to impose atoms on me as literal pieces of matter, show me that both chemistry and physics start to fall apart without them.
+        victory_text: Atoms seem to leave too many quantitative traces to be dismissed as mere bookkeeping. I must admit that the micro-world is more real than I wished to grant.
+        defeat_text: You have not shown that atoms must be treated as real objects rather than simply a useful descriptive scheme.
+        stage_clear_text: You completed the chemistry campaign by carrying the debate from combustion and heat to the reality of atoms.
+        start_hp: 100

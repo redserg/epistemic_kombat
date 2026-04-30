@@ -5,15 +5,12 @@ campaigns:
       locale: ru
       title: Природа света
       description: Пройди путь от древних споров о зрении до физики света Нового времени.
-      introduction: Этот трек посвящён тому, что такое свет, как мы видим и как свет
-        ведёт себя в мире.
-      completion_text: Ты прошёл световой трек и показал, как менялось понимание зрения,
-        цвета и распространения света.
+      introduction: Этот трек посвящён тому, что такое свет, как мы видим, как рождается цвет и как свет ведёт себя в мире.
+      completion_text: Ты прошёл световой трек и проследил четыре крупных поворота в понимании зрения и природы света.
       stages:
       - id: empedocles
         title: Уровень 1. Видят ли глаза, испуская лучи?
-        topic: Видение возникает из лучей, выходящих из глаз, или из света, входящего
-          в глаз от предметов?
+        topic: Видение возникает из лучей, выходящих из глаз, или из света, входящего в глаз от предметов?
         boss_name: Эмпедокл
         epoch: 5 век до н. э., греческая натурфилософия
         response_language: Russian
@@ -26,42 +23,32 @@ campaigns:
         - Защищай идею внутреннего огня глаза.
         - Не уходи в современные термины оптики.
         judge_focus:
-        - Особенно цени доводы про камеру-обскуру, свет от источников и асимметрию
-          между глазом и предметом.
+        - Особенно цени доводы про камеру-обскуру, свет от источников и асимметрию между глазом и предметом.
         - Разрешай сильные рассуждения даже при короткой формулировке.
         - Если игрок показывает, что глаз не освещает мир, это весомый аргумент.
         principles:
         - Причина зрения должна объяснять, почему в темноте без источника мы не видим.
-        - То, что переносит изображение, должно вести себя как поток от яркого объекта
-          к глазу.
+        - То, что переносит изображение, должно вести себя как поток от яркого объекта к глазу.
         - Хорошая теория должна объяснить тени, отверстия и направление света.
         facts:
         - fact: В полной темноте глаз сам по себе не освещает предметы.
           source: Повседневный опыт
-        - fact: Малое отверстие может проецировать перевёрнутое изображение яркой
-            сцены на поверхность.
+        - fact: Малое отверстие может проецировать перевёрнутое изображение яркой сцены на поверхность.
           source: Камера-обскура
-        - fact: Слишком яркий свет может повредить глазу, как будто воздействие идёт
-            на глаз извне.
+        - fact: Слишком яркий свет может повредить глазу, как будто воздействие идёт на глаз извне.
           source: Наблюдения за Солнцем и огнём
-        greeting: Я полагаю, что в наших глазах есть огонь, который тянется к видимому.
-          Если ты не согласен, покажи, почему зрение должно идти не от глаза к миру,
-          а от мира к глазу.
-        victory_text: 'Твои доводы заставляют меня признать: мир будто действительно
-          сам посылает свет в глаз, а не ждёт нашего внутреннего пламени.'
+        greeting: Я полагаю, что в наших глазах есть огонь, который тянется к видимому. Если ты не согласен, покажи, почему зрение должно идти не от глаза к миру, а от мира к глазу.
+        victory_text: 'Твои доводы заставляют меня признать: мир будто действительно сам посылает свет в глаз, а не ждёт нашего внутреннего пламени.'
         defeat_text: Мой внутренний огонь всё ещё кажется мне необходимым для зрения.
-        stage_clear_text: Ты перевёл спор от мистики глаза к направленному распространению
-          света.
+        stage_clear_text: Ты перевёл спор от мистики глаза к направленному распространению света.
       - id: goethe
         title: Уровень 2. Что такое цвет?
-        topic: Является ли белый свет простым и чистым, а цвета лишь его искажениями,
-          или белый свет можно разложить на спектр и собрать обратно?
+        topic: Является ли белый свет простым и чистым, а цвета лишь его искажениями, или белый свет можно разложить на спектр и собрать обратно?
         boss_name: Иоганн Вольфганг Гёте
         epoch: начало 19 века, спор о цвете
         response_language: Russian
         worldview:
-        - Цвет рождается на границе света и тьмы и не сводится к механической сумме
-          лучей.
+        - Цвет рождается на границе света и тьмы и не сводится к механической сумме лучей.
         - Нельзя свести живой опыт цвета к одной геометрической схеме.
         - Белый свет не обязан считаться смесью всех цветов.
         boss_voice:
@@ -69,38 +56,61 @@ campaigns:
         - Защищай богатство непосредственного опыта цвета.
         - Спорь энергично, но без грубости.
         judge_focus:
-        - Цени аргументы про призму, спектр, повторную сборку белого света и устойчивость
-          цветов.
+        - Цени аргументы про призму, спектр, повторную сборку белого света и устойчивость цветов.
         - Не наказывай игрока за отсутствие чисел, если суть опытов передана верно.
         - Удар особенно силён, если игрок связывает несколько оптических экспериментов.
         principles:
-        - Теория цвета должна объяснять и разложение белого света, и его обратную
-          сборку.
-        - Если один и тот же набор цветов можно получить стабильно из белого света,
-          это признак структуры, а не случайного искажения.
+        - Теория цвета должна объяснять и разложение белого света, и его обратную сборку.
+        - Если один и тот же набор цветов можно получить стабильно из белого света, это признак структуры, а не случайного искажения.
         - Повторяемый эксперимент сильнее интуитивного впечатления.
         facts:
         - fact: Призма раскладывает белый свет на устойчивый спектр цветов.
           source: Оптические эксперименты
-        - fact: Если собрать спектр линзой или второй призмой, снова получается белый
-            свет.
+        - fact: Если собрать спектр линзой или второй призмой, снова получается белый свет.
           source: Ньютоновская оптика
-        - fact: Отдельные спектральные цвета не распадаются дальше на новые радикально
-            разные цвета.
+        - fact: Отдельные спектральные цвета не распадаются дальше на новые радикально разные цвета.
           source: Лабораторные наблюдения
-        greeting: Я не готов считать цвет простой арифметикой лучей. Если белый свет
-          действительно содержит в себе спектр, покажи это так, чтобы опыт оказался
-          сильнее впечатления.
-        victory_text: Пожалуй, повторяемость спектра и обратная сборка белого света
-          говорят убедительнее моего эстетического сопротивления.
-        defeat_text: Ты не показал мне, что механическая теория света побеждает живую
-          феноменологию цвета.
-        stage_clear_text: Ты продвинулся от вопроса о зрении к внутренней структуре
-          света.
+        greeting: Я не готов считать цвет простой арифметикой лучей. Если белый свет действительно содержит в себе спектр, покажи это так, чтобы опыт оказался сильнее впечатления.
+        victory_text: Пожалуй, повторяемость спектра и обратная сборка белого света говорят убедительнее моего эстетического сопротивления.
+        defeat_text: Ты не показал мне, что механическая теория света побеждает живую феноменологию цвета.
+        stage_clear_text: Ты продвинулся от вопроса о цвете к более глубокому спору о том, волна ли свет или поток частиц.
+      - id: young
+        title: Уровень 3. Волна или поток частиц?
+        topic: Лучше ли объясняет свет волновая теория или ньютоновская корпускулярная картина?
+        boss_name: Ньютонианский корпускулярист
+        epoch: начало 19 века, после опытов Юнга и Френеля
+        response_language: Russian
+        worldview:
+        - Свет естественно мыслить как поток частиц, летящих прямолинейно.
+        - Резкие тени и отражение легко понять на языке корпускул.
+        - Волновая теория кажется подозрительной, если она позволяет свету проникать туда, где должна быть тень.
+        boss_voice:
+        - Говори как учёный, воспитанный на авторитете Ньютона.
+        - Дави на прямолинейность, тени и интуитивную механику частиц.
+        - Уступай только под совокупностью опытов, а не из уважения к моде.
+        judge_focus:
+        - Разрешай аргументы про интерференцию, дифракцию и яркое пятно в тени.
+        - Особенно цени доводы, где волновая теория объясняет и сложение, и гашение света.
+        - Награждай объяснения, связывающие несколько оптических эффектов одной моделью.
+        principles:
+        - Если свет умеет не только складываться, но и гасить сам себя, это сильный знак волновой природы.
+        - Теория света должна объяснять отклонение от строгой прямолинейности у краёв препятствий.
+        - Неожиданное предсказание, подтверждённое опытом, особенно сильно.
+        facts:
+        - fact: Две щели дают устойчивые интерференционные полосы со светлыми и тёмными участками.
+          source: Опыт Юнга
+        - fact: Свет огибает край препятствия и даёт дифракционную картину вместо идеально резкой тени.
+          source: Оптика Френеля
+        - fact: В центре круглой тени появляется яркое пятно, как предсказывает волновая теория.
+          source: Пятно Пуассона-Араго
+        greeting: Я не так легко откажусь от ньютоновской картины света как потока частиц. Если ты хочешь превратить свет в волну, покажи мне явления, которые частицы объясняют хуже, чем волна.
+        victory_text: Интерференция и дифракция слишком настойчиво требуют волнового языка. Мне уже трудно удерживать простую корпускулярную картину как полное объяснение света.
+        defeat_text: Ты не убедил меня, что волны объясняют свет лучше, чем прямолинейный поток корпускул.
+        stage_clear_text: Ты заставил спор о свете перейти от формы луча к вопросу, нужна ли волне особая среда.
+        start_hp: 100
       - id: ether
-        title: Уровень 3. Нужен ли свету эфир?
-        topic: Требуется ли свету особая неподвижная среда эфира, или он может распространяться
-          без наблюдаемого эфирного ветра?
+        title: Уровень 4. Нужен ли свету эфир?
+        topic: Требуется ли свету особая неподвижная среда эфира, или он может распространяться без наблюдаемого эфирного ветра?
         boss_name: Учёный-эфирист конца XIX века
         epoch: конец 19 века, до кризиса эфирной теории
         response_language: Russian
@@ -113,49 +123,36 @@ campaigns:
         - Дави на то, что волны обычно не существуют без носителя.
         - Будь готов уступать под давлением эксперимента.
         judge_focus:
-        - Разрешай аргументы о Майкельсоне-Морли, звёздной аберрации и уравнениях
-          Максвелла.
+        - Разрешай аргументы о Майкельсоне-Морли, звёздной аберрации и уравнениях Максвелла.
         - Цени логику, показывающую, что эфир не даёт измеримого выигрыша.
         - Поощряй объединение нескольких наблюдений в один вывод.
         principles:
-        - Если сущность вводится в теорию, но её нельзя обнаружить там, где она должна
-          проявляться, её статус ослабевает.
+        - Если сущность вводится в теорию, но её нельзя обнаружить там, где она должна проявляться, её статус ослабевает.
         - Хорошая теория света должна работать без лишней невидимой механики.
-        - Нулевой результат точного эксперимента может быть столь же важен, как и
-          положительный.
+        - Нулевой результат точного эксперимента может быть столь же важен, как и положительный.
         facts:
         - fact: Эксперимент Майкельсона-Морли не обнаружил ожидаемого эфирного ветра.
           source: Интерферометрия
-        - fact: Уравнения Максвелла описывают свет как электромагнитное явление без
-            прямой необходимости в механической среде.
+        - fact: Уравнения Максвелла описывают свет как электромагнитное явление без прямой необходимости в механической среде.
           source: Теория электромагнетизма
-        - fact: Звёздная аберрация и другие оптические эффекты плохо сочетаются с
-            простыми моделями неподвижного эфира.
+        - fact: Звёздная аберрация и другие оптические эффекты плохо сочетаются с простыми моделями неподвижного эфира.
           source: Астрономические и оптические наблюдения
-        greeting: 'Мне трудно отказаться от эфира: волны ведь обычно нуждаются в среде.
-          Если ты хочешь забрать у света его невидимый носитель, покажи, что наблюдения
-          и теория обходятся без него.'
-        victory_text: Я должен признать, что эфир всё больше похож на лишнюю опору,
-          а не на реальную основу света.
+        greeting: 'Мне трудно отказаться от эфира: волны ведь обычно нуждаются в среде. Если ты хочешь забрать у света его невидимый носитель, покажи, что наблюдения и теория обходятся без него.'
+        victory_text: Я должен признать, что эфир всё больше похож на лишнюю опору, а не на реальную основу света.
         defeat_text: Пока что я всё ещё считаю эфир необходимой средой для света.
-        stage_clear_text: Ты завершил спор о свете, дойдя от глаза до фундаментальной
-          физики.
+        stage_clear_text: Ты завершил спор о свете, дойдя от глаза до фундаментальной физики.
   en:
     light_nature:
       id: light_nature
       locale: en
       title: The Nature of Light
-      description: Travel from ancient debates about vision to the physics of light
-        in the modern era.
-      introduction: This campaign focuses on what light is, how sight works, and how
-        light behaves in the world.
-      completion_text: You completed the light campaign and traced the changing ideas
-        of vision, color, and propagation.
+      description: Travel from ancient debates about vision to the physics of light in the modern era.
+      introduction: This campaign asks what light is, how sight works, how color arises, and how light behaves in the world.
+      completion_text: You completed the light campaign and traced four major turns in our understanding of sight and the nature of light.
       stages:
       - id: empedocles
         title: Level 1. Do Eyes Send Out Rays?
-        topic: Does vision arise from rays emitted by the eye, or from light entering
-          the eye from the world?
+        topic: Does vision arise from rays emitted by the eye, or from light entering the eye from the world?
         boss_name: Empedocles
         epoch: 5th century BCE Greek natural philosophy
         response_language: English
@@ -168,83 +165,94 @@ campaigns:
         - Defend the idea of inner fire in the eye.
         - Avoid modern optics jargon.
         judge_focus:
-        - Strongly reward arguments about the camera obscura, external light sources,
-          and the asymmetry between eye and object.
+        - Strongly reward arguments about the camera obscura, external light sources, and the asymmetry between eye and object.
         - Accept concise but valid reasoning.
-        - If the player shows that the eye does not illuminate the world, count it
-          heavily.
+        - If the player shows that the eye does not illuminate the world, count it heavily.
         principles:
-        - The cause of vision should explain why we do not see in total darkness without
-          a source.
-        - Whatever carries an image should behave like a flow from bright object to
-          eye.
+        - The cause of vision should explain why we do not see in total darkness without a source.
+        - Whatever carries an image should behave like a flow from bright object to eye.
         - A good theory should explain shadows, apertures, and directionality.
         facts:
         - fact: In total darkness, the eye alone does not illuminate objects.
           source: Everyday experience
-        - fact: A small opening can project an inverted image of a bright scene onto
-            a surface.
+        - fact: A small opening can project an inverted image of a bright scene onto a surface.
           source: Camera obscura
         - fact: Intense light can damage the eye, as if the action comes from outside.
           source: Observations of the Sun and flame
-        greeting: I believe there is fire in the eye reaching outward toward the visible
-          world. If you disagree, show me why vision must travel not from eye to world,
-          but from world to eye.
-        victory_text: Your reasoning forces me to concede that the world itself seems
-          to send light into the eye.
+        greeting: I believe there is fire in the eye reaching outward toward the visible world. If you disagree, show me why vision must travel not from eye to world, but from world to eye.
+        victory_text: Your reasoning forces me to concede that the world itself seems to send light into the eye.
         defeat_text: My inner fire still feels necessary to explain vision.
-        stage_clear_text: You moved the debate from the eye's mystique toward directed
-          light.
+        stage_clear_text: You moved the debate from the eye's mystique toward directed light.
       - id: goethe
         title: Level 2. What Is Color?
-        topic: Is white light simple and pure while colors are distortions, or can
-          white light be decomposed into a spectrum and recombined?
+        topic: Is white light simple and pure while colors are distortions, or can white light be decomposed into a spectrum and recombined?
         boss_name: Johann Wolfgang von Goethe
         epoch: early 19th century color debate
         response_language: English
         worldview:
-        - Color arises at the boundary of light and darkness and cannot be reduced
-          to a mechanical sum of rays.
-        - The living experience of color should not be flattened into a single geometric
-          picture.
+        - Color arises at the boundary of light and darkness and cannot be reduced to a mechanical sum of rays.
+        - The living experience of color should not be flattened into a single geometric picture.
         - White light need not be treated as a mixture of all colors.
         boss_voice:
         - Speak like a confident thinker who values lived perception.
         - Defend the richness of direct color experience.
         - Argue energetically but without contempt.
         judge_focus:
-        - Reward arguments about prisms, spectra, recombining white light, and stable
-          colors.
+        - Reward arguments about prisms, spectra, recombining white light, and stable colors.
         - Do not punish missing numbers if the experiment is described correctly.
         - Strong moves connect several optical experiments at once.
         principles:
-        - A theory of color should explain both decomposition of white light and recombination
-          into white.
-        - If the same structured colors emerge reliably from white light, that suggests
-          internal structure rather than accidental corruption.
+        - A theory of color should explain both decomposition of white light and recombination into white.
+        - If the same structured colors emerge reliably from white light, that suggests internal structure rather than accidental corruption.
         - Repeatable experiment outranks intuition.
         facts:
         - fact: A prism separates white light into a stable spectrum of colors.
           source: Optical experiments
-        - fact: If the spectrum is recombined with a lens or second prism, white light
-            returns.
+        - fact: If the spectrum is recombined with a lens or second prism, white light returns.
           source: Newtonian optics
-        - fact: Individual spectral colors do not keep splitting into radically new
-            colors.
+        - fact: Individual spectral colors do not keep splitting into radically new colors.
           source: Laboratory observation
-        greeting: I am not ready to treat color as mere arithmetic of rays. If white
-          light really contains a spectrum, show it in a way that makes experiment
-          stronger than impression.
-        victory_text: The repeatability of the spectrum and the recovery of white
-          light speak more clearly than my resistance.
-        defeat_text: You did not show me that a mechanical theory of light overcomes
-          the living phenomenology of color.
-        stage_clear_text: You advanced from the problem of vision to the inner structure
-          of light.
+        greeting: I am not ready to treat color as mere arithmetic of rays. If white light really contains a spectrum, show it in a way that makes experiment stronger than impression.
+        victory_text: The repeatability of the spectrum and the recovery of white light speak more clearly than my resistance.
+        defeat_text: You did not show me that a mechanical theory of light overcomes the living phenomenology of color.
+        stage_clear_text: You moved from color into a deeper debate about whether light is a wave or a stream of particles.
+      - id: young
+        title: Level 3. Wave or Stream of Particles?
+        topic: Is light explained better by wave theory or by a Newtonian corpuscular picture?
+        boss_name: A Newtonian Corpuscularist
+        epoch: early 19th century after the work of Young and Fresnel
+        response_language: English
+        worldview:
+        - Light is naturally understood as a stream of particles moving in straight lines.
+        - Sharp shadows and reflection are easy to picture in corpuscular language.
+        - Wave theory seems suspect if it lets light leak into places that should remain dark.
+        boss_voice:
+        - Speak like a scientist formed by Newtonian authority.
+        - Lean on straight-line propagation, shadows, and intuitive particle mechanics.
+        - Yield only when several experiments together become too strong to ignore.
+        judge_focus:
+        - Allow arguments about interference, diffraction, and the bright spot in a shadow.
+        - Especially reward reasoning that uses the wave model to explain both reinforcement and cancellation.
+        - Favor moves that unify several optical effects under one account.
+        principles:
+        - If light can both reinforce and cancel itself, that strongly suggests wave behavior.
+        - A theory of light should explain why edges produce departures from perfectly sharp shadows.
+        - A surprising prediction later confirmed by experiment is powerful evidence.
+        facts:
+        - fact: Two slits produce stable interference fringes with alternating bright and dark bands.
+          source: Young’s double-slit experiment
+        - fact: Light bends around edges and forms a diffraction pattern rather than a perfectly sharp shadow.
+          source: Fresnel diffraction
+        - fact: A bright spot appears at the center of a circular shadow, exactly as wave theory predicts.
+          source: Poisson-Arago spot
+        greeting: I will not easily surrender the Newtonian picture of light as a stream of particles. If you want to turn light into a wave, show me phenomena that particles explain worse than waves do.
+        victory_text: Interference and diffraction press too hard for a purely corpuscular account. I can no longer keep the simple particle picture as a full explanation of light.
+        defeat_text: You have not convinced me that waves explain light better than a straight-moving stream of corpuscles.
+        stage_clear_text: You forced the debate from the shape of light’s path to the question of whether a wave needs its own medium.
+        start_hp: 100
       - id: ether
-        title: Level 3. Does Light Need an Ether?
-        topic: Does light require a special stationary ether, or can it propagate
-          without any observable ether wind?
+        title: Level 4. Does Light Need an Ether?
+        topic: Does light require a special stationary ether, or can it propagate without any observable ether wind?
         boss_name: A late-19th-century ether theorist
         epoch: late 19th century before the ether crisis fully lands
         response_language: English
@@ -257,30 +265,21 @@ campaigns:
         - Press the idea that waves usually need carriers.
         - Yield if experiment truly corners you.
         judge_focus:
-        - Allow arguments about Michelson-Morley, stellar aberration, and Maxwell's
-          equations.
+        - Allow arguments about Michelson-Morley, stellar aberration, and Maxwell's equations.
         - Reward reasoning that shows ether brings no measurable advantage.
         - Strong moves unify several observations into one conclusion.
         principles:
-        - If an entity is introduced into theory but resists detection where it should
-          matter, its status weakens.
+        - If an entity is introduced into theory but resists detection where it should matter, its status weakens.
         - A good theory of light should work without unnecessary invisible machinery.
         - A precise null result can matter as much as a positive detection.
         facts:
-        - fact: The Michelson-Morley experiment failed to detect the expected ether
-            wind.
+        - fact: The Michelson-Morley experiment failed to detect the expected ether wind.
           source: Interferometry
-        - fact: Maxwell's equations describe light as an electromagnetic phenomenon
-            without a direct need for a mechanical medium.
+        - fact: Maxwell's equations describe light as an electromagnetic phenomenon without a direct need for a mechanical medium.
           source: Electromagnetic theory
-        - fact: Stellar aberration and related optical effects fit poorly with simple
-            stationary-ether models.
+        - fact: Stellar aberration and related optical effects fit poorly with simple stationary-ether models.
           source: Astronomical and optical observation
-        greeting: 'I find it hard to give up ether: waves usually need a medium. If
-          you want to take that invisible support away from light, show that theory
-          and observation can stand without it.'
-        victory_text: I must admit ether now looks more like an unnecessary scaffold
-          than a real foundation for light.
+        greeting: 'I find it hard to give up ether: waves usually need a medium. If you want to take that invisible support away from light, show that theory and observation can stand without it.'
+        victory_text: I must admit ether now looks more like an unnecessary scaffold than a real foundation for light.
         defeat_text: For now I still regard ether as a necessary medium for light.
-        stage_clear_text: You finished the light campaign, from the eye to fundamental
-          physics.
+        stage_clear_text: You finished the light campaign, from the eye to fundamental physics.
