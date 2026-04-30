@@ -1,6 +1,16 @@
 import unittest
 
-from agent_api import clean_boss_reply, extract_json_object, limit_max_tokens, window_boss_history
+from agent_api import (
+    boss_fallback_reply,
+    boss_reply_reminder,
+    boss_retry_reminder,
+    clean_boss_reply,
+    extract_json_object,
+    judge_json_reminder,
+    judge_retry_reminder,
+    limit_max_tokens,
+    window_boss_history,
+)
 
 
 class WindowBossHistoryTests(unittest.TestCase):
@@ -50,6 +60,13 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_returns_empty_string_for_blank_reply(self) -> None:
         self.assertEqual(clean_boss_reply("   \n\t"), "")
+
+    def test_english_localization_helpers_are_english(self) -> None:
+        self.assertIn("strictly valid JSON", judge_json_reminder("en"))
+        self.assertIn("INVALID OR TRUNCATED".lower(), judge_retry_reminder("en").lower())
+        self.assertIn("Direct speech only".lower(), boss_reply_reminder("en").lower())
+        self.assertIn("EMPTY OR CUT OFF".lower(), boss_retry_reminder("en").lower())
+        self.assertIn("Repeat your argument", boss_fallback_reply("en"))
 
 
 if __name__ == "__main__":

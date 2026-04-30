@@ -1,6 +1,6 @@
 import unittest
 
-from state_manager import GameState, advance_turn, game_outcome
+from state_manager import GameState, advance_turn, game_outcome, reset_stage_progress
 
 
 class GameOutcomeTests(unittest.TestCase):
@@ -20,6 +20,25 @@ class GameOutcomeTests(unittest.TestCase):
         state = GameState(current_hp=13, player_hp=42, turn_number=3)
         advance_turn(state)
         self.assertEqual(state.turn_number, 4)
+
+    def test_reset_stage_progress_clears_stage_specific_fields(self) -> None:
+        state = GameState(
+            current_hp=13,
+            player_hp=42,
+            turn_number=5,
+            chat_history=[{"role": "user", "content": "arg"}],
+            judge_logs=[{"turn": 1, "verdict": {"damage": 3}}],
+            used_facts=["round shadow"],
+        )
+
+        reset_stage_progress(state, boss_hp=100, player_hp=90)
+
+        self.assertEqual(state.current_hp, 100)
+        self.assertEqual(state.player_hp, 90)
+        self.assertEqual(state.turn_number, 1)
+        self.assertEqual(state.chat_history, [])
+        self.assertEqual(state.judge_logs, [])
+        self.assertEqual(state.used_facts, [])
 
 
 if __name__ == "__main__":

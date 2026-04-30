@@ -115,6 +115,7 @@ class AgentAPI:
         boss_state: Dict[str, Any],
         facts: List[HistoricalFact],
         *,
+        locale: str = "ru",
         used_facts: List[str] | None = None,
         max_retries: int = 2,
     ) -> JudgeVerdict:
@@ -135,11 +136,7 @@ class AgentAPI:
             # Reminder at bottom of context for max attention weight
             {
                 "role": "system",
-                "content": (
-                    "НАПОМИНАНИЕ: верни строго валидный JSON с полями: "
-                    "is_anachronism, damage (0-20), player_damage (0-20), reasoning, hidden_directive, used_fact_summary. "
-                    "Не обрезай ответ. Пиши кратко."
-                ),
+                "content": judge_json_reminder(locale),
             },
         ]
 
@@ -151,10 +148,7 @@ class AgentAPI:
                 attempt_messages.append(
                     {
                         "role": "system",
-                        "content": (
-                            "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ НЕВАЛИДЕН ИЛИ ОБРЕЗАН. "
-                            "Верни только короткий JSON-объект без пояснений вокруг него."
-                        ),
+                        "content": judge_retry_reminder(locale),
                     }
                 )
             message = self._chat(
@@ -194,6 +188,7 @@ class AgentAPI:
         chat_history: List[Dict[str, str]],
         hidden_directive: str,
         *,
+        locale: str = "ru",
         max_retries: int = 2,
     ) -> str:
         # Inject directive as a system/assistant message to steer behavior silently
@@ -213,7 +208,7 @@ class AgentAPI:
         # Reminder at bottom of context for max attention weight
         messages.append({
             "role": "system",
-            "content": "НАПОМИНАНИЕ: отвечай СТРОГО не более 3-4 предложений. Только прямая речь персонажа. Никакого JSON.",
+            "content": boss_reply_reminder(locale),
         })
 
         for attempt in range(1, max_retries + 1):
@@ -222,10 +217,7 @@ class AgentAPI:
                 attempt_messages.append(
                     {
                         "role": "system",
-                        "content": (
-                            "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. "
-                            "Верни 2-3 коротких предложения на русском, только прямую речь персонажа."
-                        ),
+                        "content": boss_retry_reminder(locale),
                     }
                 )
 
@@ -242,7 +234,7 @@ class AgentAPI:
             if cleaned_reply:
                 return cleaned_reply
 
-        return "Я на миг умолк, собирая мысли. Повтори свой довод еще раз, и я отвечу яснее."
+        return boss_fallback_reply(locale)
 
 
 def window_boss_history(
@@ -306,3 +298,41 @@ def clean_boss_reply(content: str) -> str:
     """Normalize boss output and reject empty replies."""
     cleaned = " ".join(content.split()).strip()
     return cleaned
+
+
+def judge_json_reminder(locale: str) -> str:
+    if locale == "en":
+        return (
+            "REMINDER: return strictly valid JSON with fields "
+            "is_anachronism, damage (0-20), player_damage (0-20), reasoning, hidden_directive, used_fact_summary. "
+            "Keep it short and do not truncate the answer."
+        )
+    return (
+        "НАПОМИНАНИЕ: верни строго валидный JSON с полями "
+        "is_anachronism, damage (0-20), player_damage (0-20), reasoning, hidden_directive, used_fact_summary. "
+        "Не обрезай ответ. Пиши кратко."
+    )
+
+
+def judge_retry_reminder(locale: str) -> str:
+    if locale == "en":
+        return "THE PREVIOUS ANSWER WAS INVALID OR TRUNCATED. Return only a short JSON object with no surrounding text."
+    return "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ НЕВАЛИДЕН ИЛИ ОБРЕЗАН. Верни только короткий JSON-объект без пояснений вокруг него."
+
+
+def boss_reply_reminder(locale: str) -> str:
+    if locale == "en":
+        return "REMINDER: reply in strictly 2-4 short sentences. Direct speech only. No JSON."
+    return "НАПОМИНАНИЕ: отвечай СТРОГО не более 3-4 предложений. Только прямая речь персонажа. Никакого JSON."
+
+
+def boss_retry_reminder(locale: str) -> str:
+    if locale == "en":
+        return "THE PREVIOUS ANSWER WAS EMPTY OR CUT OFF. Return 2-3 short sentences in English, direct speech only."
+    return "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. Верни 2-3 коротких предложения на русском, только прямую речь персонажа."
+
+
+def boss_fallback_reply(locale: str) -> str:
+    if locale == "en":
+        return "I fall silent for a moment to gather my thoughts. Repeat your argument once more, and I will answer more clearly."
+    return "Я на миг умолк, собирая мысли. Повтори свой довод еще раз, и я отвечу яснее."

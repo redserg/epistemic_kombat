@@ -11,12 +11,16 @@ from pydantic import BaseModel, Field
 
 
 class GameState(BaseModel):
+    locale: str = "ru"
+    campaign_id: str = "earth_shape"
+    stage_index: int = 0
     current_hp: int
     player_hp: int = 100
     turn_number: int = 1
     chat_history: List[Dict[str, str]] = Field(default_factory=list)
     judge_logs: List[Dict[str, Any]] = Field(default_factory=list)
     used_facts: List[str] = Field(default_factory=list)
+    completed_stages: List[Dict[str, Any]] = Field(default_factory=list)
     session_id: str = Field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
 
     def to_json(self) -> str:
@@ -37,7 +41,17 @@ def advance_turn(state: GameState) -> None:
     state.turn_number += 1
 
 
-def load_state(path: Path, *, fallback: GameState) -> GameState:
+def reset_stage_progress(state: GameState, *, boss_hp: int, player_hp: int) -> None:
+    """Prepare state for a fresh stage while keeping session-wide metadata."""
+    state.current_hp = boss_hp
+    state.player_hp = player_hp
+    state.turn_number = 1
+    state.chat_history.clear()
+    state.judge_logs.clear()
+    state.used_facts.clear()
+
+
+def load_state(path: Path, *, fallback: GameState | None = None) -> GameState | None:
     if not path.exists():
         return fallback
     try:
