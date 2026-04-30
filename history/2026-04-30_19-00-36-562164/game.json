@@ -1,0 +1,51 @@
+{
+  "status": "paused",
+  "saved_at": "2026-04-30T19:01:00",
+  "metadata": {
+    "campaign_title": "From Earth's Shape to Cosmology",
+    "stage_title": "Level 1. Anaximenes and the Flat Earth",
+    "boss_name": "Anaximenes of Miletus",
+    "llm_mode": "local",
+    "base_url": "http://127.0.0.1:11434/v1"
+  },
+  "state": {
+    "locale": "en",
+    "campaign_id": "earth_shape",
+    "stage_index": 0,
+    "current_hp": 85,
+    "player_hp": 100,
+    "turn_number": 2,
+    "chat_history": [
+      {
+        "role": "assistant",
+        "content": "Greetings, seeker of truth. I hold that Earth rests as a flat disk upon air while the heavens wheel above it. If you think that picture is wrong, defeat it with observation and reasoning."
+      },
+      {
+        "role": "user",
+        "content": "ships disappear hull-first below the horizon while the mast remains visible longer, which fits a curved surface better than a flat plane."
+      },
+      {
+        "role": "assistant",
+        "content": "Ships may vanish because the air itself hides lower parts; only the higher mast pierces the air. This does not prove curvature, but shows that sight is limited by the medium above Earth, not by a curved surface."
+      }
+    ],
+    "judge_logs": [
+      {
+        "turn": 1,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Observation fits spherical model.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Ships hull-first disappearance supports curvature."
+        }
+      }
+    ],
+    "used_facts": [
+      "Ships hull-first disappearance supports curvature."
+    ],
+    "completed_stages": [],
+    "session_id": "2026-04-30_19-00-36-562164"
+  }
+}

@@ -226,6 +226,22 @@ def snapshot_stage(state: GameState, campaign: CampaignConfig, stage: StageConfi
     }
 
 
+def history_metadata(
+    campaign: CampaignConfig,
+    stage: StageConfig,
+    *,
+    llm_mode: str,
+    base_url: str,
+) -> Dict[str, str]:
+    return {
+        "campaign_title": campaign.title,
+        "stage_title": stage.title,
+        "boss_name": stage.boss_name,
+        "llm_mode": llm_mode,
+        "base_url": base_url,
+    }
+
+
 def show_stage_header(locale: str, campaign: CampaignConfig, stage: StageConfig, state: GameState) -> None:
     panel(
         text(
@@ -455,12 +471,33 @@ def main() -> None:
 
     save_state(state_path, state)
     if game_outcome(state):
-        dest = archive_game(history_root, state)
+        final_stage = get_stage(campaign, state)
+        dest = archive_game(
+            history_root,
+            state,
+            metadata=history_metadata(
+                campaign,
+                final_stage,
+                llm_mode=resolved_llm.mode,
+                base_url=resolved_llm.base_url,
+            ),
+        )
         clear_current(state_path)
         logger.info("Game archived to %s", dest)
         cprint(text(state.locale, "archived", session_id=state.session_id))
     else:
-        snapshot_dir = save_history_snapshot(history_root, state, status="paused")
+        final_stage = get_stage(campaign, state)
+        snapshot_dir = save_history_snapshot(
+            history_root,
+            state,
+            status="paused",
+            metadata=history_metadata(
+                campaign,
+                final_stage,
+                llm_mode=resolved_llm.mode,
+                base_url=resolved_llm.base_url,
+            ),
+        )
         logger.info("Paused game snapshot saved to %s", snapshot_dir)
         logger.info("Game paused: %s", state.session_id)
         cprint(text(state.locale, "paused", session_id=state.session_id))

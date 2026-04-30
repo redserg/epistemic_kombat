@@ -1,0 +1,9 @@
+2026-04-30 19:00:36,562 [epistemic_kombat] INFO Session started: 2026-04-30_19-00-36-562164
+2026-04-30 19:00:36,562 [epistemic_kombat] INFO LLM mode resolved: local (http://127.0.0.1:11434/v1)
+2026-04-30 19:00:36,604 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 19:00:54,861 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 19:00:54,872 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1348  completion_tokens=49  total_tokens=1397
+2026-04-30 19:01:00,728 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 19:01:00,731 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=590  completion_tokens=192  total_tokens=782
+2026-04-30 19:01:00,759 [epistemic_kombat] INFO Paused game snapshot saved to /Users/explorer/epistemic_kombat/history/2026-04-30_19-00-36-562164
+2026-04-30 19:01:00,760 [epistemic_kombat] INFO Game paused: 2026-04-30_19-00-36-562164

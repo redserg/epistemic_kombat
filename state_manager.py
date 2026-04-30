@@ -5,7 +5,7 @@ import json
 import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Mapping
 
 from pydantic import BaseModel, Field
 
@@ -72,21 +72,50 @@ def save_state(path: Path, state: GameState) -> None:
     path.write_text(state.to_json(), encoding="utf-8")
 
 
-def render_transcript_markdown(state: GameState) -> str:
+def render_transcript_markdown(
+    state: GameState,
+    *,
+    status: str | None = None,
+    metadata: Mapping[str, Any] | None = None,
+) -> str:
     """Render a readable transcript for humans inspecting playtest history."""
+    metadata = metadata or {}
     lines = [
         f"# Session {state.session_id}",
         "",
+    ]
+
+    if status:
+        lines.append(f"- Status: {status}")
+    if metadata.get("llm_mode"):
+        lines.append(f"- LLM mode: {metadata['llm_mode']}")
+    if metadata.get("campaign_title"):
+        lines.append(f"- Campaign title: {metadata['campaign_title']}")
+    lines.extend(
+        [
         f"- Locale: {state.locale}",
         f"- Campaign: {state.campaign_id}",
+        f"- Stage title: {metadata.get('stage_title', 'unknown')}",
         f"- Stage index: {state.stage_index}",
+        f"- Boss: {metadata.get('boss_name', 'unknown')}",
         f"- Boss HP: {state.current_hp}",
         f"- Player HP: {state.player_hp}",
         f"- Turn number: {state.turn_number}",
         "",
-        "## Dialogue",
-        "",
-    ]
+        ]
+    )
+
+    if state.judge_logs:
+        lines.extend(["## Turn Summary", ""])
+        for entry in state.judge_logs:
+            verdict = entry.get("verdict", {})
+            lines.append(
+                f"- Turn {entry.get('turn', '?')}: boss -{verdict.get('damage', 0)}, "
+                f"player -{verdict.get('player_damage', 0)} | {verdict.get('reasoning', '')}"
+            )
+        lines.append("")
+
+    lines.extend(["## Dialogue", ""])
 
     for message in state.chat_history:
         role = message.get("role", "unknown")
@@ -115,14 +144,22 @@ def render_transcript_markdown(state: GameState) -> str:
     return "\n".join(lines).strip() + "\n"
 
 
-def save_history_snapshot(history_root: Path, state: GameState, *, status: str) -> Path:
+def save_history_snapshot(
+    history_root: Path,
+    state: GameState,
+    *,
+    status: str,
+    metadata: Mapping[str, Any] | None = None,
+) -> Path:
     """Save a full session snapshot and transcript under history/<session_id>/."""
     session_dir = history_root / state.session_id
     session_dir.mkdir(parents=True, exist_ok=True)
+    metadata = dict(metadata or {})
 
     game_payload = {
         "status": status,
         "saved_at": datetime.now().isoformat(timespec="seconds"),
+        "metadata": metadata,
         "state": state.model_dump(),
     }
     (session_dir / "game.json").write_text(
@@ -130,15 +167,20 @@ def save_history_snapshot(history_root: Path, state: GameState, *, status: str) 
         encoding="utf-8",
     )
     (session_dir / "transcript.md").write_text(
-        render_transcript_markdown(state),
+        render_transcript_markdown(state, status=status, metadata=metadata),
         encoding="utf-8",
     )
     return session_dir
 
 
-def archive_game(history_root: Path, state: GameState) -> Path:
+def archive_game(
+    history_root: Path,
+    state: GameState,
+    *,
+    metadata: Mapping[str, Any] | None = None,
+) -> Path:
     """Copy finished game state into history/<session_id>/game.json."""
-    return save_history_snapshot(history_root, state, status="finished")
+    return save_history_snapshot(history_root, state, status="finished", metadata=metadata)
 
 
 def clear_current(path: Path) -> None:

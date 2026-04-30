@@ -87,16 +87,33 @@ class GameOutcomeTests(unittest.TestCase):
             current_hp=90,
             player_hp=100,
             chat_history=[{"role": "user", "content": "Test argument."}],
+            judge_logs=[
+                {"turn": 1, "verdict": {"damage": 15, "player_damage": 0, "reasoning": "Strong move."}},
+            ],
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            session_dir = save_history_snapshot(Path(tmpdir), state, status="paused")
+            session_dir = save_history_snapshot(
+                Path(tmpdir),
+                state,
+                status="paused",
+                metadata={
+                    "campaign_title": "Earth",
+                    "stage_title": "Flat Earth",
+                    "boss_name": "Anaximenes",
+                    "llm_mode": "local",
+                },
+            )
 
             game_json = json.loads((session_dir / "game.json").read_text(encoding="utf-8"))
             transcript = (session_dir / "transcript.md").read_text(encoding="utf-8")
 
             self.assertEqual(game_json["status"], "paused")
+            self.assertEqual(game_json["metadata"]["stage_title"], "Flat Earth")
             self.assertEqual(game_json["state"]["session_id"], state.session_id)
+            self.assertIn("## Turn Summary", transcript)
+            self.assertIn("- Status: paused", transcript)
+            self.assertIn("- Stage title: Flat Earth", transcript)
             self.assertIn("Test argument.", transcript)
 
 
