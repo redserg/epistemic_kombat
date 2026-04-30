@@ -1,0 +1,76 @@
+2026-04-30 20:37:45,815 [epistemic_kombat] INFO Session started: 2026-04-30_20-37-45-814296
+2026-04-30 20:37:45,815 [epistemic_kombat] INFO LLM mode resolved: local (http://127.0.0.1:11434/v1)
+2026-04-30 20:37:45,819 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:38:14,814 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:38:14,821 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1397  completion_tokens=62  total_tokens=1459
+2026-04-30 20:38:32,255 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:38:32,257 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=611  completion_tokens=484  total_tokens=1095
+2026-04-30 20:38:32,264 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:39:05,398 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:39:05,400 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1231  completion_tokens=58  total_tokens=1289
+2026-04-30 20:39:20,467 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:39:20,469 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=693  completion_tokens=382  total_tokens=1075
+2026-04-30 20:39:20,486 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:40:10,756 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:40:10,758 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1679  completion_tokens=61  total_tokens=1740
+2026-04-30 20:40:29,751 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:40:29,752 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=776  completion_tokens=500  total_tokens=1276
+2026-04-30 20:40:29,753 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:40:50,706 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:40:50,707 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=821  completion_tokens=220  total_tokens=1041
+2026-04-30 20:40:50,707 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:40:50,720 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:41:27,512 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:41:27,514 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1478  completion_tokens=57  total_tokens=1535
+2026-04-30 20:41:45,654 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:41:45,656 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=833  completion_tokens=381  total_tokens=1214
+2026-04-30 20:41:45,667 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:42:32,106 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:42:32,108 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1681  completion_tokens=64  total_tokens=1745
+2026-04-30 20:43:00,419 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:43:00,421 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=837  completion_tokens=500  total_tokens=1337
+2026-04-30 20:43:00,421 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:43:14,798 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:43:14,799 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=882  completion_tokens=220  total_tokens=1102
+2026-04-30 20:43:14,799 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:43:14,808 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:44:00,996 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:44:00,999 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1534  completion_tokens=73  total_tokens=1607
+2026-04-30 20:44:23,157 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:44:23,158 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=810  completion_tokens=346  total_tokens=1156
+2026-04-30 20:44:23,181 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:44:57,484 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:44:57,486 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1330  completion_tokens=72  total_tokens=1402
+2026-04-30 20:45:19,548 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:45:19,550 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=841  completion_tokens=257  total_tokens=1098
+2026-04-30 20:45:19,564 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:46:01,215 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:46:01,218 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1488  completion_tokens=79  total_tokens=1567
+2026-04-30 20:46:19,649 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:46:19,650 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=840  completion_tokens=500  total_tokens=1340
+2026-04-30 20:46:19,650 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:46:19,665 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:47:00,403 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:47:00,404 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1286  completion_tokens=50  total_tokens=1336
+2026-04-30 20:47:18,955 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:47:18,957 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=835  completion_tokens=500  total_tokens=1335
+2026-04-30 20:47:18,957 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:47:36,741 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:47:36,742 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=880  completion_tokens=220  total_tokens=1100
+2026-04-30 20:47:36,742 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:47:36,751 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:48:14,089 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:48:14,092 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1561  completion_tokens=64  total_tokens=1625
+2026-04-30 20:48:42,386 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:48:42,387 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=798  completion_tokens=500  total_tokens=1298
+2026-04-30 20:48:42,387 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:48:56,834 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:48:56,840 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=843  completion_tokens=220  total_tokens=1063
+2026-04-30 20:48:56,841 [epistemic_kombat.api] WARNING [boss] finish_reason=length (response may be truncated)
+2026-04-30 20:48:56,847 [epistemic_kombat.api] INFO [judge] attempt 1/2
+2026-04-30 20:49:25,127 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:49:25,129 [epistemic_kombat.api] INFO [judge] model=gpt-oss:20b  prompt_tokens=1331  completion_tokens=61  total_tokens=1392
+2026-04-30 20:49:51,034 [httpx] INFO HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
+2026-04-30 20:49:51,037 [epistemic_kombat.api] INFO [boss] model=gpt-oss:20b  prompt_tokens=769  completion_tokens=472  total_tokens=1241
+2026-04-30 20:49:51,077 [epistemic_kombat] INFO Paused game snapshot saved to /Users/explorer/epistemic_kombat/history/2026-04-30_20-37-45-814296
+2026-04-30 20:49:51,078 [epistemic_kombat] INFO Game paused: 2026-04-30_20-37-45-814296

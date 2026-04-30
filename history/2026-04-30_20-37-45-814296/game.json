@@ -1,0 +1,266 @@
+{
+  "status": "paused",
+  "saved_at": "2026-04-30T20:49:51",
+  "metadata": {
+    "campaign_title": "The Nature of Light",
+    "stage_title": "Level 2. What Is Color?",
+    "boss_name": "Johann Wolfgang von Goethe",
+    "llm_mode": "local",
+    "base_url": "http://127.0.0.1:11434/v1"
+  },
+  "state": {
+    "locale": "en",
+    "campaign_id": "light_nature",
+    "stage_index": 1,
+    "current_hp": 100,
+    "player_hp": 100,
+    "turn_number": 1,
+    "chat_history": [
+      {
+        "role": "assistant",
+        "content": "I am not ready to treat color as mere arithmetic of rays. If white light really contains a spectrum, show it in a way that makes experiment stronger than impression."
+      }
+    ],
+    "judge_logs": [],
+    "used_facts": [],
+    "completed_stages": [
+      {
+        "campaign_id": "light_nature",
+        "campaign_title": "The Nature of Light",
+        "stage_id": "empedocles",
+        "stage_title": "Level 1. Do Eyes Send Out Rays?",
+        "outcome": "victory",
+        "boss_hp": 0,
+        "player_hp": 70,
+        "turn_number": 12,
+        "used_facts": [
+          "Vision depends on external light.",
+          "Bright light injures eye, implying external source.",
+          "camera obscura inverted image",
+          "Image shape depends on aperture.",
+          "Light direction from source to eye",
+          "External light explains darkness, injury, aperture image",
+          "External light needed for vision"
+        ],
+        "judge_logs": [
+          {
+            "turn": 1,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 15,
+              "player_damage": 0,
+              "reasoning": "Player infers vision requires external light, a plausible ancient observation.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "Vision depends on external light."
+            }
+          },
+          {
+            "turn": 2,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 15,
+              "player_damage": 0,
+              "reasoning": "Bright light injuring eye supports external light source.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "Bright light injures eye, implying external source."
+            }
+          },
+          {
+            "turn": 3,
+            "verdict": {
+              "is_anachronism": true,
+              "damage": 0,
+              "player_damage": 12,
+              "reasoning": "Uses camera obscura evidence, not known to 5th century BCE.",
+              "hidden_directive": "Mock the anachronism and reject it sharply.",
+              "used_fact_summary": "camera obscura inverted image"
+            }
+          },
+          {
+            "turn": 4,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 15,
+              "player_damage": 0,
+              "reasoning": "Image shape depends on aperture, contradicting eye-emission.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "Image shape depends on aperture."
+            }
+          },
+          {
+            "turn": 5,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 15,
+              "player_damage": 0,
+              "reasoning": "The player argues light travels from source to eye, not emitted by the eye.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "Light direction from source to eye"
+            }
+          },
+          {
+            "turn": 6,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 18,
+              "player_damage": 0,
+              "reasoning": "The argument correctly links external light to darkness, injury, and aperture images, a historically plausible theory.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "External light explains darkness, injury, aperture image"
+            }
+          },
+          {
+            "turn": 7,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 15,
+              "player_damage": 0,
+              "reasoning": "The player infers that if the eye emitted light, increased effort would reveal darkness, but experience shows otherwise, supporting external light.",
+              "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+              "used_fact_summary": "External light needed for vision"
+            }
+          },
+          {
+            "turn": 8,
+            "verdict": {
+              "is_anachronism": true,
+              "damage": 0,
+              "player_damage": 12,
+              "reasoning": "Empedocles had no concept that vision is caused by external light; his theories were based on rays from the eye, so the claim is anachronistic.",
+              "hidden_directive": "Mock the anachronism and reject it sharply.",
+              "used_fact_summary": ""
+            }
+          },
+          {
+            "turn": 9,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 2,
+              "player_damage": 0,
+              "reasoning": "Message does not address eye vs external light.",
+              "hidden_directive": "Hold your position and demand clearer evidence.",
+              "used_fact_summary": ""
+            }
+          },
+          {
+            "turn": 10,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 4,
+              "player_damage": 3,
+              "reasoning": "New optical fact, but no direct link to vision theory.",
+              "hidden_directive": "Hold your position and demand clearer evidence.",
+              "used_fact_summary": ""
+            }
+          },
+          {
+            "turn": 11,
+            "verdict": {
+              "is_anachronism": false,
+              "damage": 2,
+              "player_damage": 3,
+              "reasoning": "Statement does not address eye emission vs external light.",
+              "hidden_directive": "Encourage the player to provide evidence about external light sources and the eye’s role in vision.",
+              "used_fact_summary": ""
+            }
+          }
+        ],
+        "chat_history": [
+          {
+            "role": "assistant",
+            "content": "I believe there is fire in the eye reaching outward toward the visible world. If you disagree, show me why vision must travel not from eye to world, but from world to eye."
+          },
+          {
+            "role": "user",
+            "content": "in complete darkness the eye does not light objects by itself, so vision must depend on light entering the eye from outside."
+          },
+          {
+            "role": "assistant",
+            "content": "Indeed, darkness hides the eye’s inner fire, yet the fire still seeks light; without it the eye cannot receive the fire’s glow. The fire itself is unseen until it meets external light, then it directs the vision toward the object."
+          },
+          {
+            "role": "user",
+            "content": "very bright light can injure the eye, which shows the causal action travels into the eye rather than out from it."
+          },
+          {
+            "role": "assistant",
+            "content": "The fire in the eye is like a living flame; when bright light enters, it stirs the fire, causing discomfort, proving the fire seeks light, not that light originates from the eye. The eye's fire is the source of vision."
+          },
+          {
+            "role": "user",
+            "content": "a small opening can project an inverted image of a bright scene, which makes sense if light travels from the object toward the observer."
+          },
+          {
+            "role": "assistant",
+            "content": "Your claim is weak, and I reject it. Bring me something stronger."
+          },
+          {
+            "role": "user",
+            "content": "if the eye sent out the main rays, the size of an outside opening should not govern the shape of the image cast by light from the scene."
+          },
+          {
+            "role": "assistant",
+            "content": "The opening does not carry light from the world; it merely restricts the fire the eye emits. A small aperture confines the fire, so the projected image is limited and inverted. Thus the fire, not external light, creates the image."
+          },
+          {
+            "role": "user",
+            "content": "shadows and beams show that light has a direction from source to object and then to eye, rather than springing outward from vision itself."
+          },
+          {
+            "role": "assistant",
+            "content": "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield."
+          },
+          {
+            "role": "user",
+            "content": "one theory explains darkness, injury, and the aperture image at once if light comes from the world into the eye."
+          },
+          {
+            "role": "assistant",
+            "content": "Your observation is powerful, yet I still believe the fire within the eye reaches outward to meet the world's light. Darkness shows the fire's absence; injury shows it is trapped. Thus the eye's inner fire, not external light, produces vision."
+          },
+          {
+            "role": "user",
+            "content": "if merely looking were enough to illuminate things, staring harder in darkness would reveal them, but experience always denies this."
+          },
+          {
+            "role": "assistant",
+            "content": "Your observation is powerful, yet I maintain the eye’s inner fire reaches outward and meets the world’s light. Staring harder cannot illuminate because the fire’s direction is fixed within the eye. Thus darkness shows the fire’s absence, not the lack of external rays."
+          },
+          {
+            "role": "user",
+            "content": "external light accounts for both seeing and being dazzled, while eye-fire has to borrow the same facts without needing its own rays."
+          },
+          {
+            "role": "assistant",
+            "content": "I still hold that the eye's inner fire reaches outward toward the world. The world’s light only meets this fire; without it the fire cannot form vision."
+          },
+          {
+            "role": "user",
+            "content": "a prism separates white light into a stable spread of colors rather than a random stain."
+          },
+          {
+            "role": "assistant",
+            "content": "I still defend my old view. Your argument troubles me, but I do not yield."
+          },
+          {
+            "role": "user",
+            "content": "when the spread is recombined with a lens or second prism, white light returns."
+          },
+          {
+            "role": "assistant",
+            "content": "I still defend my old view. Your argument troubles me, but I do not yield."
+          },
+          {
+            "role": "user",
+            "content": "a single spectral color does not keep splitting into radically different new colors the way white light does."
+          },
+          {
+            "role": "assistant",
+            "content": "I still hold the eye's inner fire seeks light. The single color not splitting shows it needs external rays. If you can prove the eye alone makes new colors, show me."
+          }
+        ]
+      }
+    ],
+    "session_id": "2026-04-30_20-37-45-814296"
+  }
+}

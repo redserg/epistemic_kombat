@@ -1,0 +1,188 @@
+{
+  "status": "paused",
+  "saved_at": "2026-04-30T20:28:44",
+  "metadata": {
+    "campaign_title": "From Earth's Shape to Cosmology",
+    "stage_title": "Level 1. Anaximenes and the Flat Earth",
+    "boss_name": "Anaximenes of Miletus",
+    "llm_mode": "local",
+    "base_url": "http://127.0.0.1:11434/v1"
+  },
+  "state": {
+    "locale": "en",
+    "campaign_id": "earth_shape",
+    "stage_index": 0,
+    "current_hp": 15,
+    "player_hp": 87,
+    "turn_number": 9,
+    "chat_history": [
+      {
+        "role": "assistant",
+        "content": "Greetings, seeker of truth. I hold that Earth rests as a flat disk upon air while the heavens wheel above it. If you think that picture is wrong, defeat it with observation and reasoning."
+      },
+      {
+        "role": "user",
+        "content": "ships disappear hull-first below the horizon while the mast remains visible longer, which fits a curved surface better than a flat plane."
+      },
+      {
+        "role": "assistant",
+        "content": "I hear ships vanish hull‑first, yet the horizon is limited by sight. The sun and stars move as if heavens rotate, not Earth curves. I still see Earth flat; this view accounts for the same facts."
+      },
+      {
+        "role": "user",
+        "content": "during a lunar eclipse the Earth casts a round shadow on the Moon, which is what a sphere consistently does from every angle."
+      },
+      {
+        "role": "assistant",
+        "content": "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield."
+      },
+      {
+        "role": "user",
+        "content": "as travelers move south, new constellations appear and familiar stars change altitude, which is exactly what you expect on a curved Earth."
+      },
+      {
+        "role": "assistant",
+        "content": "I acknowledge that as we move south, stars shift, but this is because the heavens rotate above us, not because Earth bends. The flat disk remains, and the stars travel in great circles. I still see the world as I first described."
+      },
+      {
+        "role": "user",
+        "content": "from a tower or mast the horizon stretches farther away, which shows that height reveals more of a curved surface."
+      },
+      {
+        "role": "assistant",
+        "content": "I admit the horizon stretches higher when one rises, yet that is simply the limit of sight within the air, not a curved Earth. The heavens rotate, not our world. Thus the flat disk remains."
+      },
+      {
+        "role": "user",
+        "content": "one spherical model explains ships, eclipses, stars, and the horizon together, while the flat Earth needs a different excuse for each."
+      },
+      {
+        "role": "assistant",
+        "content": "I admit your point about ships and horizons is powerful."
+      },
+      {
+        "role": "user",
+        "content": "if Earth were a flat disk, the sky should not change with latitude the way sailors and travelers report."
+      },
+      {
+        "role": "assistant",
+        "content": "I do not accept that the sky changes with latitude; perhaps the observations are mistaken or due to the air's."
+      },
+      {
+        "role": "user",
+        "content": "different star heights on north-south journeys make best sense if we stand on a curved surface."
+      },
+      {
+        "role": "assistant",
+        "content": "I am not convinced that the heavens must change with latitude; perhaps the air’s motion or other causes explain it. If you can give me a clear sight of a star’s height at two different latitudes, I shall consider it."
+      },
+      {
+        "role": "user",
+        "content": "when several independent observations all point the same way, the spherical model is the simpler one."
+      },
+      {
+        "role": "assistant",
+        "content": "I remain convinced Earth is a flat disk. You must give me a direct sight that contradicts our shared air model. Without such evidence, my view stands."
+      }
+    ],
+    "judge_logs": [
+      {
+        "turn": 1,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Observation of ships disappearing hull-first supports curvature.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Ships hull-first disappearance supports curvature."
+        }
+      },
+      {
+        "turn": 2,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Lunar eclipse shadow is round, a property of spheres, supporting curvature.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Round lunar eclipse shadow indicates sphere"
+        }
+      },
+      {
+        "turn": 3,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Star altitude change with latitude supports a curved Earth.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Star altitude change with latitude supports curvature."
+        }
+      },
+      {
+        "turn": 4,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Horizon distance increases with height, indicating curvature.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Horizon distance increases with height"
+        }
+      },
+      {
+        "turn": 5,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 15,
+          "player_damage": 0,
+          "reasoning": "Strong unified argument using available observations.",
+          "hidden_directive": "Admit the observation is powerful, but resist and defend your worldview.",
+          "used_fact_summary": "Unified spherical model explains multiple observations."
+        }
+      },
+      {
+        "turn": 6,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 4,
+          "player_damage": 3,
+          "reasoning": "The player infers that latitude-dependent sky changes contradict a flat Earth, using observed star altitude shifts.",
+          "hidden_directive": "Hold your position and demand clearer evidence.",
+          "used_fact_summary": ""
+        }
+      },
+      {
+        "turn": 7,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 3,
+          "player_damage": 5,
+          "reasoning": "Repetition of already used star altitude observation.",
+          "hidden_directive": "Hold your position and demand clearer evidence.",
+          "used_fact_summary": ""
+        }
+      },
+      {
+        "turn": 8,
+        "verdict": {
+          "is_anachronism": false,
+          "damage": 3,
+          "player_damage": 5,
+          "reasoning": "Repetition of prior argument.",
+          "hidden_directive": "Hold your position and demand clearer evidence.",
+          "used_fact_summary": ""
+        }
+      }
+    ],
+    "used_facts": [
+      "Ships hull-first disappearance supports curvature.",
+      "Round lunar eclipse shadow indicates sphere",
+      "Star altitude change with latitude supports curvature.",
+      "Horizon distance increases with height",
+      "Unified spherical model explains multiple observations."
+    ],
+    "completed_stages": [],
+    "session_id": "2026-04-30_20-21-05-301087"
+  }
+}
