@@ -14,7 +14,7 @@ import yaml
 load_dotenv(Path(__file__).parent / ".env")
 
 from agent_api import AgentAPI, BossConfig, HistoricalFact, JudgeVerdict, ModelConfig
-from state_manager import GameState, archive_game, clear_current, game_outcome, load_state, save_state
+from state_manager import GameState, advance_turn, archive_game, clear_current, game_outcome, load_state, save_state
 
 logger = logging.getLogger("epistemic_kombat")
 
@@ -230,10 +230,10 @@ def main() -> None:
 
         panel(boss_reply, title=f"{boss_config.name} (Boss HP: {state.current_hp} | Player HP: {state.player_hp})")
 
+        advance_turn(state)
+
         # Persist after each full turn
         save_state(state_path, state)
-
-        state.turn_number += 1
 
     save_state(state_path, state)
 

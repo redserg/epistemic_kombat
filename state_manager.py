@@ -32,6 +32,11 @@ def game_outcome(state: GameState) -> Literal["victory", "defeat"] | None:
     return None
 
 
+def advance_turn(state: GameState) -> None:
+    """Persist the next turn number after a completed exchange."""
+    state.turn_number += 1
+
+
 def load_state(path: Path, *, fallback: GameState) -> GameState:
     if not path.exists():
         return fallback

@@ -1,6 +1,6 @@
 import unittest
 
-from state_manager import GameState, game_outcome
+from state_manager import GameState, advance_turn, game_outcome
 
 
 class GameOutcomeTests(unittest.TestCase):
@@ -15,6 +15,11 @@ class GameOutcomeTests(unittest.TestCase):
     def test_returns_none_for_in_progress_game(self) -> None:
         state = GameState(current_hp=13, player_hp=42)
         self.assertIsNone(game_outcome(state))
+
+    def test_advance_turn_moves_state_to_next_prompt_number(self) -> None:
+        state = GameState(current_hp=13, player_hp=42, turn_number=3)
+        advance_turn(state)
+        self.assertEqual(state.turn_number, 4)
 
 
 if __name__ == "__main__":
