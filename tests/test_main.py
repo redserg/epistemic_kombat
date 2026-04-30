@@ -2,7 +2,7 @@ from types import SimpleNamespace
 import unittest
 
 from agent_api import JudgeVerdict, ModelConfig
-from main import parse_turn_command, run_self_check
+from main import parse_turn_command, player_argument_is_near_repeat, run_self_check
 
 
 class FakeAgentAPI:
@@ -44,6 +44,28 @@ class SelfCheckTests(unittest.TestCase):
         self.assertEqual(parse_turn_command("/status"), "status")
         self.assertEqual(parse_turn_command("выход"), "quit")
         self.assertIsNone(parse_turn_command("argument text"))
+
+    def test_player_argument_repeat_detects_close_paraphrase(self) -> None:
+        history = [
+            {"role": "user", "content": "Ships disappear hull-first below the horizon."},
+        ]
+        self.assertTrue(
+            player_argument_is_near_repeat(
+                "Ships disappear hull-first beneath the horizon.",
+                history,
+            )
+        )
+
+    def test_player_argument_repeat_allows_new_argument(self) -> None:
+        history = [
+            {"role": "user", "content": "Ships disappear hull-first below the horizon."},
+        ]
+        self.assertFalse(
+            player_argument_is_near_repeat(
+                "During a lunar eclipse the Earth casts a round shadow on the Moon.",
+                history,
+            )
+        )
 
     def test_run_self_check_exercises_judge_and_boss(self) -> None:
         api = FakeAgentAPI()

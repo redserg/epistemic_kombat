@@ -1,6 +1,7 @@
 """Console entrypoint for Epistemic Kombat."""
 from __future__ import annotations
 
+from difflib import SequenceMatcher
 import logging
 import sys
 from pathlib import Path
@@ -258,6 +259,25 @@ def parse_turn_command(raw_input: str) -> str | None:
     return None
 
 
+def player_argument_is_near_repeat(player_message: str, chat_history: list[dict[str, str]]) -> bool:
+    normalized_current = " ".join(player_message.lower().split())
+    if not normalized_current:
+        return False
+
+    previous_user_messages = [
+        " ".join(item.get("content", "").lower().split())
+        for item in chat_history
+        if item.get("role") == "user"
+    ]
+    for previous in previous_user_messages[-3:]:
+        if not previous:
+            continue
+        similarity = SequenceMatcher(None, normalized_current, previous).ratio()
+        if similarity >= 0.82:
+            return True
+    return False
+
+
 def show_stage_header(locale: str, campaign: CampaignConfig, stage: StageConfig, state: GameState) -> None:
     panel(
         text(
@@ -498,8 +518,12 @@ def main(argv: Sequence[str] | None = None) -> None:
                     hidden_directive="Hold stance",
                 )
 
+            repeated_player_argument = player_argument_is_near_repeat(player_msg, state.chat_history[:-1])
             damage = max(0, min(20, verdict.damage))
             player_damage = max(0, min(20, verdict.player_damage))
+            if repeated_player_argument:
+                damage = min(damage, 4)
+                player_damage = max(player_damage, 3)
             state.current_hp = max(0, state.current_hp - damage)
             state.player_hp = max(0, state.player_hp - player_damage)
             verdict.hidden_directive = stabilize_hidden_directive(
