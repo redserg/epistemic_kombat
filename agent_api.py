@@ -281,7 +281,11 @@ class AgentAPI:
             if salvaged_reply:
                 return salvaged_reply
 
-        return boss_fallback_reply(locale, llm_mode=llm_mode)
+        return boss_fallback_reply(
+            locale,
+            llm_mode=llm_mode,
+            hidden_directive=hidden_directive,
+        )
 
 
 def window_boss_history(
@@ -407,12 +411,16 @@ def salvage_boss_reply(reply: str, finish_reason: str, *, llm_mode: str = "cloud
         return ""
 
     sentences = re.findall(r"[^.!?]+[.!?]", reply)
-    if not sentences:
-        return ""
+    if sentences:
+        for count in (2, 1):
+            candidate = " ".join(sentence.strip() for sentence in sentences[:count]).strip()
+            if candidate and len(candidate.split()) <= 55:
+                return candidate
 
-    for count in (2, 1):
-        candidate = " ".join(sentence.strip() for sentence in sentences[:count]).strip()
-        if candidate and len(candidate.split()) <= 55:
+    words = reply.split()
+    if len(words) >= 8:
+        candidate = " ".join(words[: min(len(words), 28)]).rstrip(",;:") + "."
+        if len(candidate.split()) <= 55:
             return candidate
     return ""
 
@@ -608,11 +616,21 @@ def boss_retry_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     )
 
 
-def boss_fallback_reply(locale: str, *, llm_mode: str = "cloud") -> str:
+def boss_fallback_reply(
+    locale: str,
+    *,
+    llm_mode: str = "cloud",
+    hidden_directive: str = "",
+) -> str:
+    directive = hidden_directive.lower()
     if locale == "en":
-        if llm_mode == "local":
-            return "I still resist your claim, but gather my thoughts. Repeat the argument once more."
-        return "I fall silent for a moment to gather my thoughts. Repeat your argument once more, and I will answer more clearly."
-    if llm_mode == "local":
-        return "Я всё ещё спорю с тобой, но собираю мысли. Повтори довод ещё раз."
-    return "Я на миг умолк, собирая мысли. Повтори свой довод еще раз, и я отвечу яснее."
+        if "dismiss" in directive or "mock" in directive:
+            return "Your claim is weak, and I reject it. Bring me something stronger."
+        if "admit" in directive or "acknowledge" in directive or "resist" in directive:
+            return "Your point presses me, yet I still defend my old view. One hard observation does not force me to yield."
+        return "I still defend my old view. Your argument troubles me, but I do not yield."
+    if "отверг" in directive or "высмей" in directive:
+        return "Твой довод слаб, и я его отвергаю. Принеси что-нибудь сильнее."
+    if "признай" in directive or "сопротив" in directive:
+        return "Твой довод давит на меня, но я всё ещё защищаю своё старое мнение. Одного наблюдения мало, чтобы я уступил."
+    return "Я всё ещё защищаю своё старое мнение. Твой довод тревожит меня, но не убеждает."

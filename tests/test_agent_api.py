@@ -123,7 +123,7 @@ class BossReplyHelperTests(unittest.TestCase):
         self.assertIn("INVALID OR TRUNCATED".lower(), judge_retry_reminder("en").lower())
         self.assertIn("Direct speech only".lower(), boss_reply_reminder("en").lower())
         self.assertIn("EMPTY OR CUT OFF".lower(), boss_retry_reminder("en").lower())
-        self.assertIn("Repeat your argument", boss_fallback_reply("en"))
+        self.assertIn("defend my old view", boss_fallback_reply("en"))
 
     def test_rejects_non_stop_boss_reply(self) -> None:
         self.assertFalse(boss_reply_is_usable("Incomplete but non-empty", "length"))
@@ -156,6 +156,13 @@ class BossReplyHelperTests(unittest.TestCase):
             "I see your point, yet the horizon may still be shaped by the air above us. A flat Earth can still explain the sight.",
         )
 
+    def test_salvages_short_clause_when_no_sentence_is_completed(self) -> None:
+        reply = "I admit the bright light wounds the eye, yet the inner fire still seeks it and meets it in vision without surrendering"
+        self.assertEqual(
+            salvage_boss_reply(reply, "length", llm_mode="local"),
+            "I admit the bright light wounds the eye, yet the inner fire still seeks it and meets it in vision without surrendering.",
+        )
+
     def test_salvages_first_short_sentences_from_overlong_local_reply(self) -> None:
         reply = (
             "I grant the sight is striking, yet the air may veil the lower hull before the mast. "
@@ -171,6 +178,15 @@ class BossReplyHelperTests(unittest.TestCase):
     def test_local_boss_reminder_is_stricter(self) -> None:
         self.assertIn("under 45 words", boss_reply_reminder("en", llm_mode="local").lower())
         self.assertIn("35 words", boss_retry_reminder("en", llm_mode="local").lower())
+
+    def test_fallback_reply_is_in_character_instead_of_meta_retry(self) -> None:
+        reply = boss_fallback_reply(
+            "en",
+            llm_mode="local",
+            hidden_directive="Admit the observation is powerful, but resist and defend your worldview.",
+        )
+        self.assertNotIn("Repeat your argument", reply)
+        self.assertIn("defend my old view", reply)
 
     def test_boss_retry_uses_stricter_token_cap(self) -> None:
         self.assertEqual(boss_response_token_limit_for_attempt(500, 1), 500)
