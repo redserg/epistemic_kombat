@@ -4,6 +4,7 @@ from agent_api import (
     boss_generation_params_for_attempt,
     boss_response_token_limit_for_attempt,
     boss_reply_is_usable,
+    boss_reply_matches_locale,
     boss_fallback_reply,
     boss_reply_reminder,
     boss_retry_reminder,
@@ -132,6 +133,14 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_accepts_complete_boss_reply(self) -> None:
         self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
+
+    def test_rejects_english_reply_in_russian_locale(self) -> None:
+        self.assertFalse(boss_reply_is_usable("I still resist your claim.", "stop", locale="ru"))
+        self.assertFalse(boss_reply_matches_locale("I still resist your claim.", "ru"))
+
+    def test_rejects_cyrillic_leak_in_english_locale(self) -> None:
+        self.assertFalse(boss_reply_is_usable("Я всё ещё спорю.", "stop", locale="en"))
+        self.assertFalse(boss_reply_matches_locale("Я всё ещё спорю.", "en"))
 
     def test_rejects_overlong_local_boss_reply(self) -> None:
         reply = " ".join(["word"] * 56) + "."

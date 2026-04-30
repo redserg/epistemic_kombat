@@ -270,7 +270,12 @@ class AgentAPI:
                 caller="boss",
             )
             cleaned_reply = clean_boss_reply(result.content)
-            if boss_reply_is_usable(cleaned_reply, result.finish_reason, llm_mode=llm_mode):
+            if boss_reply_is_usable(
+                cleaned_reply,
+                result.finish_reason,
+                llm_mode=llm_mode,
+                locale=locale,
+            ):
                 return cleaned_reply
             salvaged_reply = salvage_boss_reply(cleaned_reply, result.finish_reason, llm_mode=llm_mode)
             if salvaged_reply:
@@ -364,15 +369,34 @@ def clean_boss_reply(content: str) -> str:
     return cleaned
 
 
-def boss_reply_is_usable(reply: str, finish_reason: str, *, llm_mode: str = "cloud") -> bool:
+def boss_reply_is_usable(
+    reply: str,
+    finish_reason: str,
+    *,
+    llm_mode: str = "cloud",
+    locale: str | None = None,
+) -> bool:
     """Accept only complete-looking boss replies."""
     if not reply:
         return False
     if finish_reason != "stop":
         return False
+    if locale and not boss_reply_matches_locale(reply, locale):
+        return False
     if llm_mode == "local" and len(reply.split()) > 55:
         return False
     return reply[-1] in ".!?"
+
+
+def boss_reply_matches_locale(reply: str, locale: str) -> bool:
+    """Reject obvious language leakage before showing the reply to the player."""
+    has_cyrillic = bool(re.search(r"[А-Яа-яЁё]", reply))
+    has_latin = bool(re.search(r"[A-Za-z]", reply))
+    if locale == "ru":
+        return has_cyrillic
+    if locale == "en":
+        return has_latin and not has_cyrillic
+    return True
 
 
 def salvage_boss_reply(reply: str, finish_reason: str, *, llm_mode: str = "cloud") -> str:
