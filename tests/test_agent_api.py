@@ -11,6 +11,7 @@ from agent_api import (
     default_hidden_directive,
     extract_json_object,
     is_hidden_directive_safe,
+    JudgeVerdict,
     judge_json_reminder,
     judge_retry_reminder,
     limit_max_tokens,
@@ -57,6 +58,17 @@ class JudgeResponseHelperTests(unittest.TestCase):
     def test_sets_max_tokens_when_missing(self) -> None:
         params = limit_max_tokens({"temperature": 0.2}, 220)
         self.assertEqual(params["max_tokens"], 220)
+
+    def test_normalized_verdict_removes_player_damage_from_strong_valid_hit(self) -> None:
+        verdict = JudgeVerdict(
+            is_anachronism=False,
+            damage=15,
+            player_damage=5,
+            reasoning="Strong move.",
+            hidden_directive="Resist.",
+            used_fact_summary="ships",
+        ).normalized()
+        self.assertEqual(verdict.player_damage, 0)
 
 
 class BossReplyHelperTests(unittest.TestCase):

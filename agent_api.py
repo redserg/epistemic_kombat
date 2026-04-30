@@ -30,6 +30,13 @@ class JudgeVerdict(BaseModel):
         except ValidationError as exc:  # Defensive parsing for malformed responses
             raise ValueError(f"Invalid judge payload: {exc}") from exc
 
+    def normalized(self) -> "JudgeVerdict":
+        """Smooth out contradictory scoring before gameplay logic consumes it."""
+        updates: Dict[str, Any] = {}
+        if not self.is_anachronism and self.damage >= 12 and self.player_damage > 0:
+            updates["player_damage"] = 0
+        return self.model_copy(update=updates) if updates else self
+
 
 class BossConfig(BaseModel):
     name: str
@@ -184,7 +191,7 @@ class AgentAPI:
                 continue
 
             try:
-                verdict = JudgeVerdict.validate_payload(raw)
+                verdict = JudgeVerdict.validate_payload(raw).normalized()
                 return verdict
             except ValueError as exc:
                 last_error = exc
