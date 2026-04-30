@@ -11,6 +11,7 @@ from agent_api import (
     judge_json_reminder,
     judge_retry_reminder,
     limit_max_tokens,
+    stabilize_hidden_directive,
     window_boss_history,
 )
 
@@ -78,6 +79,36 @@ class BossReplyHelperTests(unittest.TestCase):
 
     def test_accepts_complete_boss_reply(self) -> None:
         self.assertTrue(boss_reply_is_usable("I still resist your claim.", "stop"))
+
+    def test_stabilizes_english_accept_directive_before_boss_defeat(self) -> None:
+        directive = stabilize_hidden_directive(
+            "Accept the argument.",
+            locale="en",
+            remaining_boss_hp=85,
+            damage=15,
+            is_anachronism=False,
+        )
+        self.assertIn("keep defending", directive.lower())
+
+    def test_stabilizes_russian_accept_directive_before_boss_defeat(self) -> None:
+        directive = stabilize_hidden_directive(
+            "Согласись с аргументом игрока.",
+            locale="ru",
+            remaining_boss_hp=85,
+            damage=15,
+            is_anachronism=False,
+        )
+        self.assertIn("продолжай", directive.lower())
+
+    def test_keeps_directive_after_actual_victory(self) -> None:
+        directive = stabilize_hidden_directive(
+            "Accept the argument.",
+            locale="en",
+            remaining_boss_hp=0,
+            damage=15,
+            is_anachronism=False,
+        )
+        self.assertEqual(directive, "Accept the argument.")
 
 
 if __name__ == "__main__":

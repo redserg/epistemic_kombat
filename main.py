@@ -12,7 +12,7 @@ import yaml
 # Load .env from project root before reading any env vars
 load_dotenv(Path(__file__).parent / ".env")
 
-from agent_api import AgentAPI, JudgeVerdict, ModelConfig
+from agent_api import AgentAPI, JudgeVerdict, ModelConfig, stabilize_hidden_directive
 from game_content import CampaignCatalog, CampaignConfig, StageConfig, load_campaign_catalog, render_prompt
 from llm_config import load_llm_settings, resolve_llm_config, validate_llm_config
 from state_manager import (
@@ -406,6 +406,13 @@ def main() -> None:
         player_damage = max(0, min(20, verdict.player_damage))
         state.current_hp = max(0, state.current_hp - damage)
         state.player_hp = max(0, state.player_hp - player_damage)
+        verdict.hidden_directive = stabilize_hidden_directive(
+            verdict.hidden_directive,
+            locale=state.locale,
+            remaining_boss_hp=state.current_hp,
+            damage=damage,
+            is_anachronism=verdict.is_anachronism,
+        )
 
         if verdict.used_fact_summary:
             state.used_facts.append(verdict.used_fact_summary)

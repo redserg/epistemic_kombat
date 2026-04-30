@@ -322,6 +322,44 @@ def boss_reply_is_usable(reply: str, finish_reason: str) -> bool:
     return reply[-1] in ".!?"
 
 
+def stabilize_hidden_directive(
+    directive: str,
+    *,
+    locale: str,
+    remaining_boss_hp: int,
+    damage: int,
+    is_anachronism: bool,
+) -> str:
+    """Prevent premature boss capitulation before a stage is actually won."""
+    cleaned = " ".join(directive.split()).strip()
+    if remaining_boss_hp <= 0 or is_anachronism or not cleaned:
+        return cleaned
+
+    lowered = cleaned.lower()
+    surrender_markers = (
+        "accept the argument",
+        "accept the player's argument",
+        "fully agree",
+        "accept that",
+        "you are right",
+        "согласись",
+        "прими аргумент",
+        "признай, что игрок прав",
+        "ты неправ, он прав",
+        "признай правоту",
+    )
+    if any(marker in lowered for marker in surrender_markers):
+        if locale == "en":
+            if damage >= 12:
+                return "Admit this observation is strong, but keep defending your worldview."
+            return "Acknowledge the pressure, but keep resisting and defending your position."
+        if damage >= 12:
+            return "Признай силу наблюдения, но продолжай защищать свою картину мира."
+        return "Покажи давление аргумента, но продолжай сопротивляться и спорить."
+
+    return cleaned
+
+
 def judge_json_reminder(locale: str) -> str:
     if locale == "en":
         return (
