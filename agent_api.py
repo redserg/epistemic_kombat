@@ -536,10 +536,17 @@ def judge_generation_params_for_attempt(
     attempt: int,
 ) -> Dict[str, Any]:
     """Retries for judge should be compact and deterministic."""
-    params = limit_max_tokens(generation_params, token_limit)
+    params = limit_max_tokens(generation_params, judge_response_token_limit_for_attempt(token_limit, attempt))
     if attempt > 1:
         params["temperature"] = min(params.get("temperature", 0.2), 0.1)
     return params
+
+
+def judge_response_token_limit_for_attempt(response_token_limit: int, attempt: int) -> int:
+    """Local judge retries should force a much shorter JSON answer."""
+    if attempt <= 1:
+        return response_token_limit
+    return min(response_token_limit, 260)
 
 
 def judge_response_format_for_attempt(*, llm_mode: str, attempt: int) -> Optional[Dict[str, str]]:

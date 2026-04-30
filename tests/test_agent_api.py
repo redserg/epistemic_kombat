@@ -17,6 +17,7 @@ from agent_api import (
     JudgeVerdict,
     judge_generation_params_for_attempt,
     judge_json_reminder,
+    judge_response_token_limit_for_attempt,
     judge_response_format_for_attempt,
     judge_retry_reminder,
     latest_boss_reply,
@@ -76,8 +77,12 @@ class JudgeResponseHelperTests(unittest.TestCase):
 
     def test_judge_retry_lowers_temperature(self) -> None:
         params = judge_generation_params_for_attempt({"temperature": 0.2}, 800, 2)
-        self.assertEqual(params["max_tokens"], 800)
+        self.assertEqual(params["max_tokens"], 260)
         self.assertEqual(params["temperature"], 0.1)
+
+    def test_judge_retry_uses_stricter_token_cap(self) -> None:
+        self.assertEqual(judge_response_token_limit_for_attempt(800, 1), 800)
+        self.assertEqual(judge_response_token_limit_for_attempt(800, 2), 260)
 
     def test_repeat_fact_summary_detects_close_paraphrase(self) -> None:
         self.assertTrue(
