@@ -45,6 +45,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "campaign_complete_title": "Кампания завершена",
         "stage_clear_title": "Новый уровень открыт",
         "paused": "Игра приостановлена. Продолжение сохранено в state/current_game.json ({session_id}).",
+        "interrupted": "Игра прервана. Сохраняю паузу.",
         "archived": "Спасибо за игру. История сохранена в history/{session_id}/",
         "quit": "Покидаем арену.",
         "turn_label": "Ход {turn_number}",
@@ -74,6 +75,7 @@ UI_TEXT: Dict[str, Dict[str, str]] = {
         "campaign_complete_title": "Campaign Complete",
         "stage_clear_title": "Next Stage Unlocked",
         "paused": "Game paused. Progress saved in state/current_game.json ({session_id}).",
+        "interrupted": "Game interrupted. Saving pause snapshot.",
         "archived": "Thanks for playing. History saved in history/{session_id}/",
         "quit": "Leaving the arena.",
         "turn_label": "Turn {turn_number}",
@@ -399,146 +401,151 @@ def main(argv: Sequence[str] | None = None) -> None:
     cprint(text(state.locale, "llm_mode", mode=resolved_llm.mode, base_url=resolved_llm.base_url))
     show_stage_header(state.locale, campaign, get_stage(campaign, state), state)
 
-    while True:
-        campaign = catalog.get(state.locale, state.campaign_id)
-        stage = get_stage(campaign, state)
-        ensure_stage_greeting(stage, state)
-        outcome = game_outcome(state)
+    interrupted = False
+    try:
+        while True:
+            campaign = catalog.get(state.locale, state.campaign_id)
+            stage = get_stage(campaign, state)
+            ensure_stage_greeting(stage, state)
+            outcome = game_outcome(state)
 
-        if outcome == "victory":
-            panel(stage.victory_text, title=text(state.locale, "victory_title"))
-            state.completed_stages.append(snapshot_stage(state, campaign, stage, outcome))
+            if outcome == "victory":
+                panel(stage.victory_text, title=text(state.locale, "victory_title"))
+                state.completed_stages.append(snapshot_stage(state, campaign, stage, outcome))
 
-            if state.stage_index < len(campaign.stages) - 1:
-                panel(stage.stage_clear_text, title=text(state.locale, "stage_clear_title"))
-                state.stage_index += 1
-                next_stage = get_stage(campaign, state)
-                reset_stage_progress(
-                    state,
-                    boss_hp=next_stage.start_hp,
-                    player_hp=next_stage.player_start_hp,
-                )
-                save_state(state_path, state)
-                show_stage_header(state.locale, campaign, next_stage, state)
+                if state.stage_index < len(campaign.stages) - 1:
+                    panel(stage.stage_clear_text, title=text(state.locale, "stage_clear_title"))
+                    state.stage_index += 1
+                    next_stage = get_stage(campaign, state)
+                    reset_stage_progress(
+                        state,
+                        boss_hp=next_stage.start_hp,
+                        player_hp=next_stage.player_start_hp,
+                    )
+                    save_state(state_path, state)
+                    show_stage_header(state.locale, campaign, next_stage, state)
+                    continue
+
+                panel(campaign.completion_text, title=text(state.locale, "campaign_complete_title"))
+                break
+
+            if outcome == "defeat":
+                panel(stage.defeat_text, title=text(state.locale, "defeat_title"))
+                state.completed_stages.append(snapshot_stage(state, campaign, stage, outcome))
+                break
+
+            turn_label = text(state.locale, "turn_label", turn_number=state.turn_number)
+            player_msg = ask(f"{turn_label} - {text(state.locale, 'argument_prompt')}")
+            command = parse_turn_command(player_msg)
+
+            if command == "quit":
+                cprint(text(state.locale, "quit"))
+                break
+            if command == "help":
+                panel(text(state.locale, "help_text"), title="Help")
+                continue
+            if command == "status":
+                show_stage_header(state.locale, campaign, stage, state)
                 continue
 
-            panel(campaign.completion_text, title=text(state.locale, "campaign_complete_title"))
-            break
+            state.chat_history.append({"role": "user", "content": player_msg})
+            boss_state: Dict[str, object] = {
+                "current_hp": state.current_hp,
+                "player_hp": state.player_hp,
+                "turn_number": state.turn_number,
+                "campaign_id": state.campaign_id,
+                "stage_index": state.stage_index,
+                "topic": stage.topic,
+            }
 
-        if outcome == "defeat":
-            panel(stage.defeat_text, title=text(state.locale, "defeat_title"))
-            state.completed_stages.append(snapshot_stage(state, campaign, stage, outcome))
-            break
-
-        turn_label = text(state.locale, "turn_label", turn_number=state.turn_number)
-        player_msg = ask(f"{turn_label} - {text(state.locale, 'argument_prompt')}")
-        command = parse_turn_command(player_msg)
-
-        if command == "quit":
-            cprint(text(state.locale, "quit"))
-            break
-        if command == "help":
-            panel(text(state.locale, "help_text"), title="Help")
-            continue
-        if command == "status":
-            show_stage_header(state.locale, campaign, stage, state)
-            continue
-
-        state.chat_history.append({"role": "user", "content": player_msg})
-        boss_state: Dict[str, object] = {
-            "current_hp": state.current_hp,
-            "player_hp": state.player_hp,
-            "turn_number": state.turn_number,
-            "campaign_id": state.campaign_id,
-            "stage_index": state.stage_index,
-            "topic": stage.topic,
-        }
-
-        judge_prompt = render_prompt(
-            load_prompt(prompts_dir / f"judge_prompt.{state.locale}.txt"),
-            campaign,
-            stage,
-        )
-        boss_prompt = render_prompt(
-            load_prompt(prompts_dir / f"boss_prompt.{state.locale}.txt"),
-            campaign,
-            stage,
-        )
-
-        try:
-            verdict = api.judge(
-                model=judge_model_cfg,
-                system_prompt=judge_prompt,
-                player_message=player_msg,
-                boss_state=boss_state,
-                facts=stage.facts,
-                llm_mode=resolved_llm.mode,
-                locale=state.locale,
-                used_facts=state.used_facts,
-                response_token_limit=resolved_llm.judge_response_tokens,
+            judge_prompt = render_prompt(
+                load_prompt(prompts_dir / f"judge_prompt.{state.locale}.txt"),
+                campaign,
+                stage,
             )
-        except Exception as exc:  # noqa: BLE001
+            boss_prompt = render_prompt(
+                load_prompt(prompts_dir / f"boss_prompt.{state.locale}.txt"),
+                campaign,
+                stage,
+            )
+
+            try:
+                verdict = api.judge(
+                    model=judge_model_cfg,
+                    system_prompt=judge_prompt,
+                    player_message=player_msg,
+                    boss_state=boss_state,
+                    facts=stage.facts,
+                    llm_mode=resolved_llm.mode,
+                    locale=state.locale,
+                    used_facts=state.used_facts,
+                    response_token_limit=resolved_llm.judge_response_tokens,
+                )
+            except Exception as exc:  # noqa: BLE001
+                panel(
+                    text(state.locale, "system_judge_fail", error=exc),
+                    title=text(state.locale, "config_error"),
+                )
+                verdict = JudgeVerdict(
+                    is_anachronism=False,
+                    damage=0,
+                    player_damage=0,
+                    reasoning="Fallback: judge error",
+                    hidden_directive="Hold stance",
+                )
+
+            damage = max(0, min(20, verdict.damage))
+            player_damage = max(0, min(20, verdict.player_damage))
+            state.current_hp = max(0, state.current_hp - damage)
+            state.player_hp = max(0, state.player_hp - player_damage)
+            verdict.hidden_directive = stabilize_hidden_directive(
+                verdict.hidden_directive,
+                locale=state.locale,
+                remaining_boss_hp=state.current_hp,
+                damage=damage,
+                player_damage=player_damage,
+                is_anachronism=verdict.is_anachronism,
+            )
+
+            if verdict.used_fact_summary:
+                state.used_facts.append(verdict.used_fact_summary)
+
+            state.judge_logs.append({"turn": state.turn_number, "verdict": verdict.model_dump()})
             panel(
-                text(state.locale, "system_judge_fail", error=exc),
-                title=text(state.locale, "config_error"),
-            )
-            verdict = JudgeVerdict(
-                is_anachronism=False,
-                damage=0,
-                player_damage=0,
-                reasoning="Fallback: judge error",
-                hidden_directive="Hold stance",
+                judge_status_text(state.locale, verdict, damage, player_damage),
+                title=text(state.locale, "judge_title"),
             )
 
-        damage = max(0, min(20, verdict.damage))
-        player_damage = max(0, min(20, verdict.player_damage))
-        state.current_hp = max(0, state.current_hp - damage)
-        state.player_hp = max(0, state.player_hp - player_damage)
-        verdict.hidden_directive = stabilize_hidden_directive(
-            verdict.hidden_directive,
-            locale=state.locale,
-            remaining_boss_hp=state.current_hp,
-            damage=damage,
-            player_damage=player_damage,
-            is_anachronism=verdict.is_anachronism,
-        )
+            try:
+                boss_reply = api.boss(
+                    model=boss_model_cfg,
+                    system_prompt=boss_prompt,
+                    chat_history=state.chat_history,
+                    hidden_directive=verdict.hidden_directive,
+                    llm_mode=resolved_llm.mode,
+                    locale=state.locale,
+                    response_token_limit=resolved_llm.boss_response_tokens,
+                )
+            except Exception as exc:  # noqa: BLE001
+                boss_reply = text(state.locale, "system_boss_fail", error=exc)
 
-        if verdict.used_fact_summary:
-            state.used_facts.append(verdict.used_fact_summary)
-
-        state.judge_logs.append({"turn": state.turn_number, "verdict": verdict.model_dump()})
-        panel(
-            judge_status_text(state.locale, verdict, damage, player_damage),
-            title=text(state.locale, "judge_title"),
-        )
-
-        try:
-            boss_reply = api.boss(
-                model=boss_model_cfg,
-                system_prompt=boss_prompt,
-                chat_history=state.chat_history,
-                hidden_directive=verdict.hidden_directive,
-                llm_mode=resolved_llm.mode,
-                locale=state.locale,
-                response_token_limit=resolved_llm.boss_response_tokens,
+            state.chat_history.append({"role": "assistant", "content": boss_reply})
+            panel(
+                boss_reply,
+                title=text(
+                    state.locale,
+                    "boss_status",
+                    boss_name=stage.boss_name,
+                    boss_hp=state.current_hp,
+                    player_hp=state.player_hp,
+                ),
             )
-        except Exception as exc:  # noqa: BLE001
-            boss_reply = text(state.locale, "system_boss_fail", error=exc)
 
-        state.chat_history.append({"role": "assistant", "content": boss_reply})
-        panel(
-            boss_reply,
-            title=text(
-                state.locale,
-                "boss_status",
-                boss_name=stage.boss_name,
-                boss_hp=state.current_hp,
-                player_hp=state.player_hp,
-            ),
-        )
-
-        advance_turn(state)
-        save_state(state_path, state)
+            advance_turn(state)
+            save_state(state_path, state)
+    except KeyboardInterrupt:
+        interrupted = True
+        cprint(text(state.locale, "interrupted"))
 
     save_state(state_path, state)
     if game_outcome(state):
