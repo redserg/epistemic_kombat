@@ -209,6 +209,12 @@ class AgentAPI:
                     used_facts=used_facts,
                     locale=locale,
                 )
+                verdict = normalize_false_anachronism(
+                    verdict,
+                    player_message=player_message,
+                    facts=facts,
+                    locale=locale,
+                )
                 return verdict
             except ValueError as exc:
                 last_error = exc
@@ -369,6 +375,53 @@ def used_fact_summary_is_repeat(summary: str, used_facts: List[str]) -> bool:
         if similarity >= 0.55:
             return True
     return False
+
+
+def message_matches_allowed_fact(player_message: str, facts: List[HistoricalFact]) -> bool:
+    """Recognize when a supposedly anachronistic claim closely matches allowed stage facts."""
+    current_tokens = set(normalize_fact_summary(player_message).split())
+    if not current_tokens:
+        return False
+
+    for fact in facts:
+        fact_tokens = set(normalize_fact_summary(fact.fact).split())
+        if not fact_tokens:
+            continue
+        overlap = len(current_tokens & fact_tokens)
+        union = len(current_tokens | fact_tokens)
+        if overlap >= 5 or (union and overlap / union >= 0.35):
+            return True
+    return False
+
+
+def normalize_false_anachronism(
+    verdict: JudgeVerdict,
+    *,
+    player_message: str,
+    facts: List[HistoricalFact],
+    locale: str,
+) -> JudgeVerdict:
+    """Do not punish the player for using evidence that the stage explicitly allows."""
+    if not verdict.is_anachronism:
+        return verdict
+    if not message_matches_allowed_fact(player_message, facts):
+        return verdict
+
+    damage = max(verdict.damage, 8)
+    return verdict.model_copy(
+        update={
+            "is_anachronism": False,
+            "damage": damage,
+            "player_damage": 0,
+            "reasoning": verdict.reasoning or "Allowed stage evidence should not count as anachronistic.",
+            "hidden_directive": default_hidden_directive(
+                locale=locale,
+                damage=damage,
+                player_damage=0,
+                is_anachronism=False,
+            ),
+        }
+    )
 
 
 def clean_boss_reply(content: str) -> str:

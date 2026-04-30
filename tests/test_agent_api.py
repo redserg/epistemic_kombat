@@ -21,6 +21,9 @@ from agent_api import (
     judge_retry_reminder,
     latest_boss_reply,
     limit_max_tokens,
+    HistoricalFact,
+    message_matches_allowed_fact,
+    normalize_false_anachronism,
     salvage_boss_reply,
     used_fact_summary_is_repeat,
     stabilize_hidden_directive,
@@ -110,6 +113,34 @@ class JudgeResponseHelperTests(unittest.TestCase):
             used_fact_summary="ships",
         ).normalized()
         self.assertEqual(verdict.player_damage, 0)
+
+    def test_matches_allowed_fact_from_stage(self) -> None:
+        facts = [HistoricalFact(fact="A small opening can project an inverted image of a bright scene onto a surface.")]
+        self.assertTrue(
+            message_matches_allowed_fact(
+                "A small opening can project an inverted image of a bright scene, which makes sense if light travels from the object toward the observer.",
+                facts,
+            )
+        )
+
+    def test_normalize_false_anachronism_recovers_allowed_fact(self) -> None:
+        verdict = JudgeVerdict(
+            is_anachronism=True,
+            damage=0,
+            player_damage=12,
+            reasoning="Camera obscura is anachronistic.",
+            hidden_directive="Mock the anachronism and reject it sharply.",
+            used_fact_summary="",
+        )
+        repaired = normalize_false_anachronism(
+            verdict,
+            player_message="A small opening can project an inverted image of a bright scene, which makes sense if light travels from the object toward the observer.",
+            facts=[HistoricalFact(fact="A small opening can project an inverted image of a bright scene onto a surface.")],
+            locale="en",
+        )
+        self.assertFalse(repaired.is_anachronism)
+        self.assertEqual(repaired.player_damage, 0)
+        self.assertGreaterEqual(repaired.damage, 8)
 
 
 class BossReplyHelperTests(unittest.TestCase):
