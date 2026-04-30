@@ -8,6 +8,7 @@ from state_manager import (
     advance_turn,
     game_outcome,
     new_session_id,
+    render_report_markdown,
     render_transcript_markdown,
     reset_stage_progress,
     save_history_snapshot,
@@ -123,6 +124,12 @@ class GameOutcomeTests(unittest.TestCase):
         )
 
         with tempfile.TemporaryDirectory() as tmpdir:
+            session_dir_path = Path(tmpdir) / state.session_id
+            session_dir_path.mkdir(parents=True, exist_ok=True)
+            (session_dir_path / "game.log").write_text(
+                "Session started: test\nSession started: test\n",
+                encoding="utf-8",
+            )
             session_dir = save_history_snapshot(
                 Path(tmpdir),
                 state,
@@ -137,6 +144,7 @@ class GameOutcomeTests(unittest.TestCase):
 
             game_json = json.loads((session_dir / "game.json").read_text(encoding="utf-8"))
             transcript = (session_dir / "transcript.md").read_text(encoding="utf-8")
+            report = (session_dir / "report.md").read_text(encoding="utf-8")
 
             self.assertEqual(game_json["status"], "paused")
             self.assertEqual(game_json["metadata"]["stage_title"], "Flat Earth")
@@ -145,6 +153,40 @@ class GameOutcomeTests(unittest.TestCase):
             self.assertIn("- Status: paused", transcript)
             self.assertIn("- Stage title: Flat Earth", transcript)
             self.assertIn("Test argument.", transcript)
+            self.assertIn("## Чем интересен этот ран", report)
+            self.assertIn("коллизии `session_id`", report)
+
+    def test_render_report_marks_fallbacks_and_completed_stages(self) -> None:
+        state = GameState(
+            locale="ru",
+            campaign_id="light_nature",
+            stage_index=1,
+            current_hp=12,
+            player_hp=88,
+            turn_number=8,
+            judge_logs=[
+                {"turn": 1, "verdict": {"reasoning": "Сильный ход.", "is_anachronism": False}},
+                {"turn": 2, "verdict": {"reasoning": "Fallback: judge error", "is_anachronism": False}},
+                {"turn": 3, "verdict": {"reasoning": "Повтор прежнего довода.", "is_anachronism": True}},
+            ],
+            completed_stages=[{"stage_title": "Уровень 1", "outcome": "victory"}],
+        )
+
+        report = render_report_markdown(
+            state,
+            status="paused",
+            metadata={
+                "campaign_title": "Природа света",
+                "stage_title": "Уровень 2",
+                "llm_mode": "local",
+            },
+            log_text="Session started: one\n",
+        )
+
+        self.assertIn("Ран успел завершить уровни: Уровень 1.", report)
+        self.assertIn("judge fallback", report)
+        self.assertIn("штрафов за повтор", report)
+        self.assertIn("этапа 2", report)
 
 
 if __name__ == "__main__":

@@ -174,6 +174,112 @@ def render_transcript_markdown(
     return "\n".join(lines).strip() + "\n"
 
 
+def render_report_markdown(
+    state: GameState,
+    *,
+    status: str | None = None,
+    metadata: Mapping[str, Any] | None = None,
+    log_text: str = "",
+) -> str:
+    """Render a short Russian report that explains why a run is interesting."""
+    metadata = metadata or {}
+    judge_logs = state.judge_logs
+    fallback_count = sum(
+        1
+        for entry in judge_logs
+        if "fallback: judge error" in entry.get("verdict", {}).get("reasoning", "").lower()
+    )
+    anachronism_count = sum(
+        1 for entry in judge_logs if entry.get("verdict", {}).get("is_anachronism")
+    )
+    repeat_penalty_count = sum(
+        1
+        for entry in judge_logs
+        if "repetition" in entry.get("verdict", {}).get("reasoning", "").lower()
+        or "повтор" in entry.get("verdict", {}).get("reasoning", "").lower()
+    )
+    collision_markers = log_text.count("Session started:")
+
+    highlights: List[str] = []
+    problems: List[str] = []
+
+    if state.completed_stages:
+        cleared_titles = ", ".join(
+            completed.get("stage_title", completed.get("stage_id", "unknown"))
+            for completed in state.completed_stages
+        )
+        highlights.append(f"Ран успел завершить уровни: {cleared_titles}.")
+    if state.turn_number >= 7:
+        highlights.append(
+            f"Это длинный прогон: сыграно как минимум {state.turn_number - 1} полных ходов."
+        )
+    if status == "paused" and 0 < state.current_hp <= 20:
+        highlights.append(
+            f"Игра поставлена на паузу почти у финиша: у босса осталось всего {state.current_hp} HP."
+        )
+    if status == "paused" and 0 < state.player_hp <= 20:
+        highlights.append(
+            f"Игра прервана на грани поражения игрока: осталось только {state.player_hp} HP."
+        )
+    if state.stage_index > 0:
+        highlights.append(
+            f"Сессия уже добралась до этапа {state.stage_index + 1}, так что видно переход между уровнями."
+        )
+
+    if fallback_count:
+        problems.append(
+            f"Зафиксировано {fallback_count} judge fallback-эпизод(а), где локальная модель не вернула пригодный JSON."
+        )
+    if anachronism_count:
+        problems.append(
+            f"В споре случилось {anachronism_count} отметок анахронизма; полезно проверить, были ли они справедливы."
+        )
+    if repeat_penalty_count:
+        problems.append(
+            f"Сработало {repeat_penalty_count} штрафов за повтор аргумента; это хороший тест анти-спам логики."
+        )
+    if collision_markers > 1:
+        problems.append(
+            "В `game.log` видно несколько стартов одной и той же сессии: это признак коллизии `session_id` при параллельном запуске."
+        )
+
+    if not highlights:
+        highlights.append("Это спокойный базовый ран без редких событий, удобный как контрольный пример.")
+    if not problems:
+        problems.append("Явных аварийных симптомов в этом ране не видно; он полезен как эталон нормальной игры.")
+
+    lines = [
+        f"# Отчёт по рану {state.session_id}",
+        "",
+        "## Сводка",
+        "",
+        f"- Статус: {status or 'unknown'}",
+        f"- Кампания: {metadata.get('campaign_title', state.campaign_id)}",
+        f"- Уровень: {metadata.get('stage_title', 'unknown')}",
+        f"- Локаль: {state.locale}",
+        f"- LLM-режим: {metadata.get('llm_mode', 'unknown')}",
+        f"- Ход: {state.turn_number}",
+        f"- HP босса: {state.current_hp}",
+        f"- HP игрока: {state.player_hp}",
+        "",
+        "## Чем интересен этот ран",
+        "",
+    ]
+    lines.extend(f"- {item}" for item in highlights)
+    lines.extend(["", "## Что стоит заметить", ""])
+    lines.extend(f"- {item}" for item in problems)
+    lines.extend(["", "## Зачем хранить этот пример", ""])
+
+    if collision_markers > 1:
+        lines.append("- Это хороший артефакт для отладки параллельных запусков и сохранения истории.")
+    elif fallback_count or repeat_penalty_count or anachronism_count:
+        lines.append("- Этот ран показывает не только диалог, но и поведение защитных механизмов судьи и игрового цикла.")
+    else:
+        lines.append("- Этот ран полезен как человечески читаемый пример того, как выглядит нормальная партия в текущей версии.")
+
+    return "\n".join(lines).strip() + "\n"
+
+
 def save_history_snapshot(
     history_root: Path,
     state: GameState,
@@ -198,6 +304,14 @@ def save_history_snapshot(
     )
     (session_dir / "transcript.md").write_text(
         render_transcript_markdown(state, status=status, metadata=metadata),
+        encoding="utf-8",
+    )
+    log_text = ""
+    log_path = session_dir / "game.log"
+    if log_path.exists():
+        log_text = log_path.read_text(encoding="utf-8")
+    (session_dir / "report.md").write_text(
+        render_report_markdown(state, status=status, metadata=metadata, log_text=log_text),
         encoding="utf-8",
     )
     return session_dir
