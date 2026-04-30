@@ -19,6 +19,7 @@ from agent_api import (
     judge_json_reminder,
     judge_response_format_for_attempt,
     judge_retry_reminder,
+    latest_boss_reply,
     limit_max_tokens,
     salvage_boss_reply,
     used_fact_summary_is_repeat,
@@ -119,6 +120,14 @@ class BossReplyHelperTests(unittest.TestCase):
     def test_returns_empty_string_for_blank_reply(self) -> None:
         self.assertEqual(clean_boss_reply("   \n\t"), "")
 
+    def test_latest_boss_reply_returns_last_assistant_line(self) -> None:
+        history = [
+            {"role": "assistant", "content": "First reply."},
+            {"role": "user", "content": "Argument."},
+            {"role": "assistant", "content": "Second reply."},
+        ]
+        self.assertEqual(latest_boss_reply(history), "Second reply.")
+
     def test_english_localization_helpers_are_english(self) -> None:
         self.assertIn("strictly valid JSON", judge_json_reminder("en"))
         self.assertIn("INVALID OR TRUNCATED".lower(), judge_retry_reminder("en").lower())
@@ -201,6 +210,10 @@ class BossReplyHelperTests(unittest.TestCase):
     def test_local_boss_reminder_is_stricter(self) -> None:
         self.assertIn("under 45 words", boss_reply_reminder("en", llm_mode="local").lower())
         self.assertIn("35 words", boss_retry_reminder("en", llm_mode="local").lower())
+        self.assertIn(
+            "different line of defense",
+            boss_retry_reminder("en", llm_mode="local", previous_reply="Old reply").lower(),
+        )
 
     def test_fallback_reply_is_in_character_instead_of_meta_retry(self) -> None:
         reply = boss_fallback_reply(

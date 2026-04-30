@@ -255,7 +255,11 @@ class AgentAPI:
                 attempt_messages.append(
                     {
                         "role": "system",
-                        "content": boss_retry_reminder(locale, llm_mode=llm_mode),
+                        "content": boss_retry_reminder(
+                            locale,
+                            llm_mode=llm_mode,
+                            previous_reply=latest_boss_reply(chat_history),
+                        ),
                     }
                 )
 
@@ -421,6 +425,14 @@ def boss_reply_matches_locale(reply: str, locale: str) -> bool:
     if locale == "en":
         return has_latin and not has_cyrillic
     return True
+
+
+def latest_boss_reply(chat_history: List[Dict[str, str]]) -> str:
+    """Return the latest assistant line for retry steering."""
+    for item in reversed(chat_history):
+        if item.get("role") == "assistant":
+            return clean_boss_reply(item.get("content", ""))
+    return ""
 
 
 def salvage_boss_reply(reply: str, finish_reason: str, *, llm_mode: str = "cloud") -> str:
@@ -614,25 +626,39 @@ def boss_reply_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
     return "НАПОМИНАНИЕ: отвечай СТРОГО не более 3-4 предложений. Только прямая речь персонажа. Никакого JSON."
 
 
-def boss_retry_reminder(locale: str, *, llm_mode: str = "cloud") -> str:
+def boss_retry_reminder(
+    locale: str,
+    *,
+    llm_mode: str = "cloud",
+    previous_reply: str = "",
+) -> str:
+    variation_hint_en = ""
+    variation_hint_ru = ""
+    if previous_reply:
+        variation_hint_en = " Use a different line of defense from your previous reply."
+        variation_hint_ru = " Используй другую линию защиты, не повторяй прошлую реплику."
     if locale == "en":
         if llm_mode == "local":
             return (
                 "THE PREVIOUS ANSWER WAS TOO LONG, EMPTY, OR CUT OFF. "
                 "Return at most 2 short English sentences, under 35 words total, direct speech only."
+                f"{variation_hint_en}"
             )
         return (
             "THE PREVIOUS ANSWER WAS EMPTY OR CUT OFF. "
             "Return at most 2 short sentences in English, under 45 words total, direct speech only."
+            f"{variation_hint_en}"
         )
     if llm_mode == "local":
         return (
             "ПРЕДЫДУЩИЙ ОТВЕТ БЫЛ СЛИШКОМ ДЛИННЫМ, ПУСТЫМ ИЛИ ОБОРВАН. "
             "Верни не более 2 коротких предложений на русском, суммарно до 35 слов, только прямую речь персонажа."
+            f"{variation_hint_ru}"
         )
     return (
         "ПРЕДЫДУЩИЙ ОТВЕТ ПУСТ ИЛИ ОБОРВАН. "
         "Верни не более 2 коротких предложений на русском, суммарно до 45 слов, только прямую речь персонажа."
+        f"{variation_hint_ru}"
     )
 
 
