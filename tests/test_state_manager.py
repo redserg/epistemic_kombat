@@ -79,6 +79,36 @@ class GameOutcomeTests(unittest.TestCase):
         self.assertIn("## Judge Logs", transcript)
         self.assertIn("Strong move.", transcript)
 
+    def test_render_transcript_includes_completed_stage_dialogue(self) -> None:
+        state = GameState(
+            current_hp=100,
+            player_hp=100,
+            completed_stages=[
+                {
+                    "stage_title": "Level 1",
+                    "outcome": "victory",
+                    "boss_hp": 0,
+                    "player_hp": 90,
+                    "turn_number": 4,
+                    "chat_history": [
+                        {"role": "assistant", "content": "Opening."},
+                        {"role": "user", "content": "Counter."},
+                    ],
+                    "judge_logs": [
+                        {"turn": 1, "verdict": {"reasoning": "Strong move."}},
+                    ],
+                }
+            ],
+        )
+
+        transcript = render_transcript_markdown(state)
+
+        self.assertIn("## Completed Stages", transcript)
+        self.assertIn("### Stage 1: Level 1", transcript)
+        self.assertIn("#### Dialogue", transcript)
+        self.assertIn("Counter.", transcript)
+        self.assertIn("#### Judge Logs", transcript)
+
     def test_save_history_snapshot_writes_game_json_and_transcript(self) -> None:
         state = GameState(
             locale="en",

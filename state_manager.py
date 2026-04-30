@@ -105,6 +105,36 @@ def render_transcript_markdown(
         ]
     )
 
+    if state.completed_stages:
+        lines.extend(["## Completed Stages", ""])
+        for index, completed in enumerate(state.completed_stages, start=1):
+            lines.append(f"### Stage {index}: {completed.get('stage_title', completed.get('stage_id', 'unknown'))}")
+            lines.append("")
+            lines.append(f"- Outcome: {completed.get('outcome', 'unknown')}")
+            lines.append(f"- Boss HP: {completed.get('boss_hp', '?')}")
+            lines.append(f"- Player HP: {completed.get('player_hp', '?')}")
+            lines.append(f"- Turn number: {completed.get('turn_number', '?')}")
+            lines.append("")
+
+            lines.append("#### Dialogue")
+            lines.append("")
+            for message in completed.get("chat_history", []):
+                role = message.get("role", "unknown")
+                content = message.get("content", "").strip()
+                speaker = "Boss" if role == "assistant" else "Player" if role == "user" else role.capitalize()
+                lines.append(f"##### {speaker}")
+                lines.append("")
+                lines.append(content or "[empty]")
+                lines.append("")
+
+            judge_logs = completed.get("judge_logs", [])
+            if judge_logs:
+                lines.append("#### Judge Logs")
+                lines.append("")
+                for entry in judge_logs:
+                    lines.append(f"- Turn {entry.get('turn', '?')}: {entry.get('verdict', {}).get('reasoning', '')}")
+                lines.append("")
+
     if state.judge_logs:
         lines.extend(["## Turn Summary", ""])
         for entry in state.judge_logs:
