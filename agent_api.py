@@ -10,6 +10,7 @@ from openai.types.chat import ChatCompletionMessageParam
 from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger("epistemic_kombat.api")
+MAX_BOSS_HISTORY_MESSAGES = 8
 
 
 class JudgeVerdict(BaseModel):
@@ -188,8 +189,8 @@ class AgentAPI:
             directive_message,
         ]
 
-        # Append chat history after system context
-        messages.extend(chat_history)
+        # Keep the opening scene plus the most recent turns to avoid prompt bloat.
+        messages.extend(window_boss_history(chat_history))
 
         # Reminder at bottom of context for max attention weight
         messages.append({
@@ -204,3 +205,19 @@ class AgentAPI:
             caller="boss",
         )
         return message.content or ""
+
+
+def window_boss_history(
+    chat_history: List[Dict[str, str]],
+    *,
+    max_messages: int = MAX_BOSS_HISTORY_MESSAGES,
+) -> List[Dict[str, str]]:
+    """Keep the opening assistant greeting plus the latest exchanges."""
+    if len(chat_history) <= max_messages:
+        return chat_history
+
+    opening_message = chat_history[:1]
+    tail_budget = max(max_messages - len(opening_message), 0)
+    if tail_budget == 0:
+        return opening_message
+    return opening_message + chat_history[-tail_budget:]
