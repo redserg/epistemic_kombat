@@ -244,9 +244,10 @@ class AgentAPI:
             result = self._chat(
                 model=model.model,
                 messages=attempt_messages,
-                generation_params=limit_max_tokens(
+                generation_params=boss_generation_params_for_attempt(
                     model.generation_params(),
                     boss_response_token_limit_for_attempt(response_token_limit, attempt),
+                    attempt,
                 ),
                 caller="boss",
             )
@@ -334,6 +335,18 @@ def boss_response_token_limit_for_attempt(response_token_limit: int, attempt: in
     if attempt <= 1:
         return response_token_limit
     return min(response_token_limit, 220)
+
+
+def boss_generation_params_for_attempt(
+    generation_params: Dict[str, Any],
+    token_limit: int,
+    attempt: int,
+) -> Dict[str, Any]:
+    """Retries should be shorter and calmer than the initial boss answer."""
+    params = limit_max_tokens(generation_params, token_limit)
+    if attempt > 1:
+        params["temperature"] = min(params.get("temperature", 0.7), 0.4)
+    return params
 
 
 def stabilize_hidden_directive(

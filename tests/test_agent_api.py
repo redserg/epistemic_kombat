@@ -1,6 +1,7 @@
 import unittest
 
 from agent_api import (
+    boss_generation_params_for_attempt,
     boss_response_token_limit_for_attempt,
     boss_reply_is_usable,
     boss_fallback_reply,
@@ -98,6 +99,11 @@ class BossReplyHelperTests(unittest.TestCase):
     def test_boss_retry_uses_stricter_token_cap(self) -> None:
         self.assertEqual(boss_response_token_limit_for_attempt(500, 1), 500)
         self.assertEqual(boss_response_token_limit_for_attempt(500, 2), 220)
+
+    def test_boss_retry_lowers_temperature(self) -> None:
+        params = boss_generation_params_for_attempt({"temperature": 0.9}, 220, 2)
+        self.assertEqual(params["max_tokens"], 220)
+        self.assertEqual(params["temperature"], 0.4)
 
     def test_stabilizes_english_accept_directive_before_boss_defeat(self) -> None:
         directive = stabilize_hidden_directive(

@@ -39,6 +39,14 @@ class GameContentTests(unittest.TestCase):
 
         self.assertIn("do not fully agree with the player's main thesis", rendered)
 
+    def test_boss_prompt_contains_anti_anachronism_language_rule(self) -> None:
+        campaign = self.catalog.get("ru", "light_nature")
+        stage = campaign.stages[0]
+        template = (self.root / "prompts" / "boss_prompt.ru.txt").read_text(encoding="utf-8")
+        rendered = render_prompt(template, campaign, stage)
+
+        self.assertIn("Не употребляй названия будущих экспериментов", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()
