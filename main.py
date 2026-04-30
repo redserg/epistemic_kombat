@@ -324,6 +324,10 @@ def run_self_check(
         locale="en",
         response_token_limit=resolved_llm.boss_response_tokens,
     )
+    if judge_verdict.damage < 5 or not judge_verdict.reasoning.strip():
+        raise ValueError(f"Judge self-check looks suspicious: damage={judge_verdict.damage}, reasoning={judge_verdict.reasoning!r}")
+    if len(boss_reply.split()) < 5:
+        raise ValueError(f"Boss self-check reply is too short: {boss_reply!r}")
     return [
         f"LLM mode: {resolved_llm.mode}",
         f"Base URL: {resolved_llm.base_url}",

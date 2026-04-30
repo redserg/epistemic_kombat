@@ -26,6 +26,18 @@ class FakeAgentAPI:
         return "I still resist your claim."
 
 
+class BadFakeAgentAPI(FakeAgentAPI):
+    def judge(self, **kwargs):
+        return JudgeVerdict(
+            is_anachronism=False,
+            damage=0,
+            player_damage=0,
+            reasoning="",
+            hidden_directive="Resist.",
+            used_fact_summary="",
+        )
+
+
 class SelfCheckTests(unittest.TestCase):
     def test_parse_turn_command_understands_help_status_and_quit(self) -> None:
         self.assertEqual(parse_turn_command("help"), "help")
@@ -56,6 +68,23 @@ class SelfCheckTests(unittest.TestCase):
         self.assertIn("Boss OK: I still resist your claim.", "\n".join(lines))
         self.assertEqual(api.judge_calls[0]["llm_mode"], "local")
         self.assertEqual(api.boss_calls[0]["llm_mode"], "local")
+
+    def test_run_self_check_rejects_suspicious_outputs(self) -> None:
+        api = BadFakeAgentAPI()
+        resolved_llm = SimpleNamespace(
+            mode="local",
+            base_url="http://127.0.0.1:11434/v1",
+            judge_response_tokens=800,
+            boss_response_tokens=500,
+        )
+
+        with self.assertRaisesRegex(ValueError, "Judge self-check looks suspicious"):
+            run_self_check(
+                api,
+                judge_model_cfg=ModelConfig(model="judge-model"),
+                boss_model_cfg=ModelConfig(model="boss-model"),
+                resolved_llm=resolved_llm,
+            )
 
 
 if __name__ == "__main__":
